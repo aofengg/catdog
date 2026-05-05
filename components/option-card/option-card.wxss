@@ -1,0 +1,43 @@
+.option-card {
+  display: flex;
+  align-items: center;
+  padding: 36rpx 32rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 16rpx;
+  transition: all 0.2s ease;
+}
+
+.option-card:active {
+  transform: scale(0.98);
+}
+
+.option-selected {
+  border-color: var(--primary, #6B5CE7);
+  background: rgba(107, 92, 231, 0.05);
+}
+
+.option-label {
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #F0F0F0;
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #666;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.option-selected .option-label {
+  background: var(--primary, #6B5CE7);
+  color: #fff;
+}
+
+.option-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.4;
+}

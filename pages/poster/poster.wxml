@@ -1,0 +1,41 @@
+<view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
+  <!-- 离屏 Canvas（仅用于绘制导出） -->
+  <canvas type="2d" id="posterCanvas" class="offscreen-canvas"></canvas>
+
+  <!-- 海报预览区 -->
+  <view class="preview-wrap">
+    <image wx:if="{{posterImage}}" class="preview-img" src="{{posterImage}}" mode="widthFix" />
+    <!-- 加载态 -->
+    <view wx:if="{{isDrawing}}" class="canvas-loading">
+      <text class="loading-text">海报生成中...</text>
+    </view>
+    <!-- 异常兜底 -->
+    <view wx:if="{{drawError}}" class="canvas-error">
+      <text class="error-text">海报生成失败，请重试</text>
+      <view class="retry-btn" bindtap="onRetryDraw">
+        <text>重新生成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作区 -->
+  <view class="action-area">
+    <!-- 匹配 toggle -->
+    <view wx:if="{{masterCode}}" class="toggle-wrap" bindtap="onToggleMatch">
+      <view class="toggle-box {{showMatch ? 'toggle-on' : ''}}">
+        <view class="toggle-dot"></view>
+      </view>
+      <text class="toggle-label">展示和主人的匹配结果</text>
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="save-btn {{petType === 'cat' ? 'btn-cat' : 'btn-dog'}}" bindtap="onSaveToAlbum">
+      <text class="save-text">💾 保存到相册</text>
+    </view>
+
+    <!-- 分享按钮 -->
+    <view class="share-btn {{petType === 'cat' ? 'btn-cat' : 'btn-dog'}}" bindtap="onShareImage">
+      <text class="share-text">📤 分享给好友</text>
+    </view>
+  </view>
+</view>

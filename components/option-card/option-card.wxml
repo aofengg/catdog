@@ -1,0 +1,4 @@
+<view class="option-card {{selected ? 'option-selected' : ''}}" bindtap="onTap">
+  <text class="option-label">{{label}}</text>
+  <text class="option-text">{{text}}</text>
+</view>

@@ -1,0 +1,79 @@
+<view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
+  <!-- 人格结果头部 -->
+  <view class="result-header">
+    <text class="result-code">{{resultCode}}</text>
+    <text class="result-name">「{{personality.petName}}」</text>
+    <view class="rare-badge" style="background: {{rareBgColor}}">
+      <text class="rare-text">{{personality.posterBadge}}</text>
+    </view>
+  </view>
+
+  <!-- 照片区域 -->
+  <view class="photo-area" bindtap="onUploadPhoto">
+    <image wx:if="{{photoPath}}" class="photo-img" src="{{photoPath}}" mode="aspectFill" />
+    <view wx:else class="photo-placeholder">
+      <image class="placeholder-img" src="/assets/images/{{petType}}-placeholder.jpg" mode="aspectFit" />
+      <text class="placeholder-tip">点击上传宠物照片</text>
+    </view>
+  </view>
+
+  <!-- 一句话概括 -->
+  <view class="short-desc">
+    <text>「{{personality.posterShort}}」</text>
+  </view>
+
+  <!-- 人格详情 -->
+  <view class="section">
+    <text class="section-title">▌你家{{petType === 'cat' ? '猫咪' : '修勾'}}是这样的</text>
+    <text class="section-content">{{personality.description}}</text>
+  </view>
+
+  <!-- 相处建议 -->
+  <view class="section">
+    <text class="section-title">▌和它相处的小秘诀</text>
+    <text class="section-content">{{personality.tips}}</text>
+  </view>
+
+  <!-- 匹配区域（仅当有 masterCode 时显示） -->
+  <view wx:if="{{matchInfo}}" class="match-section">
+    <text class="section-title">▌你和它的默契指数</text>
+    <view class="match-score-area">
+      <text class="match-score">{{matchInfo.score}}</text>
+      <text class="match-tag">· {{matchInfo.tag}}</text>
+    </view>
+    <text class="section-content">{{matchInfo.matchDesc}}</text>
+  </view>
+
+  <!-- 主 CTA -->
+  <view class="cta-area">
+    <view class="cta-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onGeneratePoster">
+      <text class="cta-text">🎨 生成我的专属海报</text>
+    </view>
+  </view>
+
+  <!-- 次级操作 -->
+  <view class="sub-actions">
+    <view class="sub-btn" bindtap="onRetest">
+      <text>🔄 再测一次</text>
+    </view>
+    <view class="sub-btn" bindtap="onCopyText">
+      <text>📋 复制文案</text>
+    </view>
+  </view>
+
+  <!-- Banner 广告位 -->
+  <view wx:if="{{showAd}}" class="ad-area">
+    <ad unit-id="{{adUnitId}}" ad-type="banner" ad-theme="white" binderror="onAdError"></ad>
+  </view>
+
+  <!-- 免责声明（可折叠详版） -->
+  <view class="disclaimer" bindtap="onToggleDisclaimer">
+    <text class="disclaimer-title">📋 关于 PETI 测试 {{showDisclaimer ? '▲' : '▼'}}</text>
+    <view wx:if="{{showDisclaimer}}" class="disclaimer-detail">
+      <text class="disclaimer-text">1. PETI（Pet Personality Type Indicator）是「喵汪人格测试」原创的宠物人格分类体系，与任何专业心理学评估工具无关。</text>
+      <text class="disclaimer-text">2. 测试结果基于日常行为观察的趣味分析，不具有科学诊断效力，不应作为宠物健康、行为矫正或医疗决策的依据。</text>
+      <text class="disclaimer-text">3. 如果您的宠物存在行为异常，请咨询专业兽医或动物行为学家。</text>
+      <text class="disclaimer-text">4. 本小程序不采集任何个人信息，您上传的照片仅在本地生成海报使用，不会上传至任何服务器，关闭小程序后自动清除。</text>
+    </view>
+  </view>
+</view>

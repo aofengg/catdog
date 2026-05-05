@@ -1,0 +1,232 @@
+.container {
+  min-height: 100vh;
+  padding: 60rpx 40rpx 80rpx;
+}
+
+.theme-cat {
+  background: linear-gradient(180deg, #F8F7FF 0%, #FFFFFF 50%);
+}
+
+.theme-dog {
+  background: linear-gradient(180deg, #FFFAF0 0%, #FFFFFF 50%);
+}
+
+/* 结果头部 */
+.result-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.result-code {
+  font-size: 100rpx;
+  font-weight: bold;
+  letter-spacing: 16rpx;
+  color: #2C2C2C;
+  margin-bottom: 12rpx;
+}
+
+.theme-cat .result-code {
+  color: #6B5CE7;
+}
+
+.theme-dog .result-code {
+  color: #FF8C42;
+}
+
+.result-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  margin-bottom: 16rpx;
+}
+
+.rare-badge {
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+}
+
+.rare-text {
+  font-size: 24rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 照片区域 */
+.photo-area {
+  width: 400rpx;
+  height: 400rpx;
+  margin: 0 auto 40rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-img {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 16rpx;
+  opacity: 0.6;
+}
+
+.placeholder-tip {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 一句话 */
+.short-desc {
+  text-align: center;
+  margin-bottom: 48rpx;
+  font-size: 30rpx;
+  color: #666;
+  font-style: italic;
+}
+
+/* 内容区段 */
+.section {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.section-content {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  display: block;
+}
+
+/* 匹配区 */
+.match-section {
+  margin-bottom: 40rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.match-score-area {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+}
+
+.match-score {
+  font-size: 72rpx;
+  font-weight: bold;
+  margin-right: 12rpx;
+}
+
+.theme-cat .match-score {
+  color: #6B5CE7;
+}
+
+.theme-dog .match-score {
+  color: #FF8C42;
+}
+
+.match-tag {
+  font-size: 30rpx;
+  color: #666;
+  font-weight: bold;
+}
+
+/* 主 CTA */
+.cta-area {
+  margin: 48rpx 0 32rpx;
+}
+
+.cta-btn {
+  width: 100%;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 48rpx;
+}
+
+.cta-btn:active {
+  transform: scale(0.97);
+}
+
+.cta-cat {
+  background: linear-gradient(135deg, #6B5CE7, #8B7CF7);
+}
+
+.cta-dog {
+  background: linear-gradient(135deg, #FF8C42, #FFA366);
+}
+
+.cta-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* 次级操作 */
+.sub-actions {
+  display: flex;
+  justify-content: center;
+  gap: 48rpx;
+  margin-bottom: 40rpx;
+}
+
+.sub-btn {
+  font-size: 28rpx;
+  color: #999;
+  padding: 16rpx 24rpx;
+}
+
+/* 广告区 */
+.ad-area {
+  margin: 32rpx 0;
+}
+
+/* 免责声明 */
+.disclaimer {
+  margin-top: 40rpx;
+  padding: 32rpx 0;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.disclaimer-title {
+  font-size: 26rpx;
+  color: #999999;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.disclaimer-detail {
+  padding-top: 8rpx;
+}
+
+.disclaimer-text {
+  font-size: 22rpx;
+  color: #BBBBBB;
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 12rpx;
+}

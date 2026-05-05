@@ -1,0 +1,120 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx 60rpx;
+  background: linear-gradient(180deg, #F8F7FF 0%, #FFFFFF 100%);
+}
+
+/* 品牌区 */
+.brand-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80rpx;
+}
+
+.brand-icon {
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+}
+
+.brand-title {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  margin-bottom: 16rpx;
+}
+
+.brand-slogan {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 物种选择区 */
+.species-area {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24rpx;
+  margin-bottom: 80rpx;
+}
+
+.species-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 20rpx;
+  border-radius: 24rpx;
+  transition: transform 0.2s ease;
+}
+
+.species-card.tap-active {
+  transform: scale(0.95);
+}
+
+.cat-card {
+  background: linear-gradient(180deg, #F0EDFF 0%, #FFFFFF 100%);
+  border: 2rpx solid #E8E4FF;
+}
+
+.dog-card {
+  background: linear-gradient(180deg, #FFF5EC 0%, #FFFFFF 100%);
+  border: 2rpx solid #FFE8D4;
+}
+
+.card-img-area {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+}
+
+.card-img {
+  width: 180rpx;
+  height: 180rpx;
+}
+
+.card-btn {
+  width: 100%;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12rpx;
+}
+
+.cat-btn {
+  background: #6B5CE7;
+}
+
+.dog-btn {
+  background: #FF8C42;
+}
+
+.card-sub {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 免责声明 */
+.disclaimer {
+  padding: 0 20rpx;
+  margin-top: auto;
+}
+
+.disclaimer-text {
+  font-size: 22rpx;
+  color: #BBBBBB;
+  text-align: center;
+  line-height: 1.6;
+}

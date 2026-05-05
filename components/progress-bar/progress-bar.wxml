@@ -1,0 +1,5 @@
+<view class="progress-wrap">
+  <view class="progress-bar">
+    <view class="progress-fill" style="width: {{percent}}%; background: {{color}}"></view>
+  </view>
+</view>

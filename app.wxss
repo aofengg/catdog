@@ -1,0 +1,44 @@
+/* 全局样式 */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  color: #2C2C2C;
+  background-color: #F8F7FF;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* 猫版主题变量覆盖 */
+.theme-cat page,
+page.theme-cat {
+  --primary: #6B5CE7;
+  --accent: #4ECDC4;
+  --bg: #F8F7FF;
+}
+
+/* 狗版主题变量覆盖 */
+.theme-dog page,
+page.theme-dog {
+  --primary: #FF8C42;
+  --accent: #FFD93D;
+  --bg: #FFFAF0;
+}
+
+/* 稀有度色 */
+.rare-legend { color: #FFD700; }
+.rare-rare { color: #9B59B6; }
+.rare-unique { color: #3498DB; }
+.rare-common { color: #95A5A6; }
+
+/* 通用工具类 */
+.text-center { text-align: center; }
+.text-bold { font-weight: bold; }
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
