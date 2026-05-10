@@ -4,13 +4,13 @@
  */
 
 var DEFAULT_SHARE = {
-  title: '来喵汪人格测试，测测你家毛孩子的隐藏人格！',
+  title: '来《它眼中的你》，测测在毛孩子眼中你是什么样的存在！',
   path: '/pages/home/home',
   imageUrl: '/assets/images/share-cover.jpg'
 }
 
 var DEFAULT_TIMELINE = {
-  title: '测测你家毛孩子是什么人格？',
+  title: '测测在毛孩子眼中，你是什么样的存在？',
   query: ''
 }
 

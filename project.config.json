@@ -1,5 +1,5 @@
 {
-  "description": "喵汪人格测试 - 宠物 PETI 人格测试微信小程序",
+  "description": "它眼中的你 - 人宠关系测试微信小程序",
   "packOptions": {
     "ignore": [
       {
@@ -52,7 +52,7 @@
     "disableSWC": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.25.0",
+  "libVersion": "2.26.0",
   "appid": "wx48c9b0f68a86d349",
   "projectname": "catdog",
   "condition": {},

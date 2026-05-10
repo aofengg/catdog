@@ -78,52 +78,49 @@
   padding: 16rpx 0;
 }
 
-.toggle-wrap {
+/* 分享配文卡片 */
+.copy-card {
   display: flex;
   align-items: center;
-  margin-bottom: 32rpx;
-  padding: 16rpx 0;
+  padding: 24rpx 28rpx;
+  margin-bottom: 24rpx;
+  background: #FAFAFA;
+  border: 2rpx solid #EEEEEE;
+  border-radius: 16rpx;
 }
 
-.toggle-box {
-  width: 80rpx;
-  height: 44rpx;
-  border-radius: 22rpx;
-  background: #E0E0E0;
-  position: relative;
-  transition: background 0.3s;
-  margin-right: 16rpx;
+.copy-card:active {
+  background: #F0F0F0;
 }
 
-.toggle-on {
-  background: #6B5CE7;
-}
-
-.theme-dog .toggle-on {
-  background: #FF8C42;
-}
-
-.toggle-dot {
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  top: 4rpx;
-  left: 4rpx;
-  transition: transform 0.3s;
-}
-
-.toggle-on .toggle-dot {
-  transform: translateX(36rpx);
-}
-
-.toggle-label {
-  font-size: 28rpx;
+.copy-content {
+  flex: 1;
+  font-size: 26rpx;
   color: #666;
+  line-height: 1.6;
 }
 
-.save-btn {
+.copy-action {
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 20rpx;
+  padding: 8rpx 20rpx;
+  border: 2rpx solid #DDDDDD;
+  border-radius: 20rpx;
+}
+
+.theme-cat .copy-action {
+  color: #6B5CE7;
+  border-color: #D8D0F5;
+}
+
+.theme-dog .copy-action {
+  color: #FF8C42;
+  border-color: #FFD8B8;
+}
+
+.share-btn {
   width: 100%;
   height: 96rpx;
   display: flex;
@@ -131,10 +128,6 @@
   justify-content: center;
   border-radius: 48rpx;
   margin-bottom: 20rpx;
-}
-
-.save-btn:active {
-  transform: scale(0.97);
 }
 
 .btn-cat {
@@ -145,13 +138,17 @@
   background: linear-gradient(135deg, #FF8C42, #FFA366);
 }
 
-.save-text {
+.share-btn:active {
+  transform: scale(0.97);
+}
+
+.share-text {
   font-size: 32rpx;
   font-weight: bold;
   color: #fff;
 }
 
-.share-btn {
+.save-btn {
   width: 100%;
   height: 96rpx;
   display: flex;
@@ -162,11 +159,11 @@
   border: 2rpx solid #E8E8E8;
 }
 
-.share-btn:active {
+.save-btn:active {
   transform: scale(0.97);
 }
 
-.share-text {
+.save-text {
   font-size: 32rpx;
   font-weight: bold;
   color: #333;

@@ -1,13 +1,12 @@
 /**
  * 海报 Canvas 绘制工具
- * 离屏绘制，动态画布高度，自动换行
+ * 新版：关系称号为主角，金句突出展示
  */
 
 var CANVAS_W = 750
 var IMG_TIMEOUT = 5000
 var PADDING = 56
 
-// 7 套海报主题色
 var THEMES = {
   milkWhite: { bg: '#FFFDF8', primary: '#4A3728', accent: '#F0C78E' },
   warmOrange: { bg: '#FFF7F0', primary: '#5C3A1E', accent: '#FFB76B' },
@@ -91,57 +90,59 @@ function measureLines(ctx, text, maxWidth) {
 
 /**
  * 绘制海报主函数
+ * opts: { relationship, petData, resultCode, photoPath, canvas }
  */
 function draw(ctx, opts, callback) {
-  var personality = opts.personality
+  var relationship = opts.relationship
   var petData = opts.petData
   var resultCode = opts.resultCode
-  var matchInfo = opts.matchInfo
   var photoPath = opts.photoPath
   var canvas = opts.canvas
 
-  var themeName = personality.posterTheme || 'milkWhite'
+  var themeName = relationship.posterTheme || 'milkWhite'
   var theme = THEMES[themeName] || THEMES.milkWhite
-  var noun = petData.petType === 'cat' ? '猫咪' : '修勾'
 
   var ctaList = petData.brand.posterCTA
   var cta = ctaList[Math.floor(Math.random() * ctaList.length)]
+
+  // 配图路径
+  var illustPath = '/assets/images/result/' + petData.petType + '/' + resultCode + '.jpg'
 
   // --- 预计算动态高度 ---
   var cardW = CANVAS_W - PADDING * 2
   var lineW = 4
   var textMaxW = cardW - lineW - 16
+
   ctx.font = '24px PingFang SC'
-  var descLines = measureLines(ctx, personality.description, textMaxW)
-  var tipsLines = measureLines(ctx, personality.tips, textMaxW)
+  var descLines = measureLines(ctx, relationship.description, textMaxW)
+  var tipsLines = measureLines(ctx, relationship.tips, textMaxW)
 
-  // petComment 语录气泡高度
-  var commentH = personality.petComment ? 50 : 0
+  var quoteFont = '26px PingFang SC'
+  ctx.font = quoteFont
+  var quoteMaxW = cardW - 64
+  var quoteLines = measureLines(ctx, relationship.goldQuote, quoteMaxW)
 
-  var photoSize = 320
-  var headerH = 80 + photoSize + 48 + 50 + 52 + commentH
-  var descCardH = 44 + descLines * 34 + 24
-  var tipsCardH = 44 + tipsLines * 34 + 24
-
-  // 匹配区（左竖线样式）
-  var matchH = 0
-  var matchContentLines = 0
-  if (matchInfo) {
-    var matchText = matchInfo.score + '分 · ' + matchInfo.tag + '  主人 ' + opts.masterCode + ' × ' + noun + ' ' + resultCode
-    matchH = 44 + 30 + 16
-    if (matchInfo.matchCircleText) {
-      ctx.font = '20px PingFang SC'
-      matchContentLines = measureLines(ctx, matchInfo.matchCircleText, textMaxW)
-      matchH += matchContentLines * 30 + 8
-    }
+  var commentLines = 0
+  if (relationship.petComment) {
+    ctx.font = '22px PingFang SC'
+    commentLines = measureLines(ctx, relationship.petComment, cardW - 48)
   }
 
+  // 并排图片尺寸
+  var imgSize = 280
+  var imgGap = 24
+  var headerH = 60 + 56 + 36 + 44 + 24     // top padding + title + gap + badges + gap
+  var photosRowH = imgSize + 24              // side-by-side row + gap
+  var quoteH = 32 + quoteLines * 36 + 32
+  var commentH = commentLines > 0 ? (32 + commentLines * 32 + 32) : 0
+  var descCardH = 44 + descLines * 34 + 24
+  var tipsCardH = 44 + tipsLines * 34 + 24
   var ctaH = 100
-  var totalH = headerH + descCardH + 28 + tipsCardH + 28 + matchH + ctaH + 60
 
+  var totalH = headerH + photosRowH + quoteH + 24 + commentH + 24 + descCardH + 24 + tipsCardH + 32 + ctaH + 60
   if (totalH < 1334) totalH = 1334
 
-  // 设置画布（低端机用较低 dpr 避免 OOM）
+  // 设置画布
   var sysDpr = wx.getWindowInfo ? wx.getWindowInfo().pixelRatio : (wx.getSystemInfoSync().pixelRatio || 2)
   var dpr = sysDpr >= 2 ? 2 : 1.5
   canvas.width = CANVAS_W * dpr
@@ -152,80 +153,155 @@ function draw(ctx, opts, callback) {
   ctx.fillStyle = theme.bg
   ctx.fillRect(0, 0, CANVAS_W, totalH)
 
-  // --- 2. 照片 ---
-  var photoX = (CANVAS_W - photoSize) / 2
-  var photoY = 80
+  // --- 2. 标题（关系称号，Hero） ---
+  var y = 60
+  ctx.textAlign = 'center'
+  ctx.font = 'bold 48px PingFang SC'
+  ctx.fillStyle = theme.primary
+  ctx.fillText(relationship.title, CANVAS_W / 2, y + 44)
+  y += 56 + 36
 
-  if (photoPath) {
-    loadImage(canvas, photoPath, function (err, img) {
-      if (img) {
-        ctx.save()
-        roundRect(ctx, photoX, photoY, photoSize, photoSize, 32)
-        ctx.clip()
-        ctx.drawImage(img, photoX, photoY, photoSize, photoSize)
-        ctx.restore()
-      } else {
-        drawPlaceholder()
-      }
-      drawBody()
-    })
-  } else {
-    drawPlaceholder()
-    drawBody()
-  }
+  // --- 3. 徽章行（posterBadge + emotionTag） ---
+  ctx.font = 'bold 20px PingFang SC'
+  var badgeText = relationship.posterBadge
+  var tagText = relationship.emotionTag
+  var badgeW = ctx.measureText(badgeText).width + 28
+  var tagW = ctx.measureText(tagText).width + 28
+  var totalBadgeW = badgeW + 12 + tagW
+  var badgeStartX = (CANVAS_W - totalBadgeW) / 2
+  var pillH = 32
 
-  function drawPlaceholder() {
-    ctx.fillStyle = theme.accent
-    roundRect(ctx, photoX, photoY, photoSize, photoSize, 32)
-    ctx.fill()
-    ctx.font = '100px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillStyle = theme.primary
-    ctx.fillText(petData.petType === 'cat' ? '🐱' : '🐶', CANVAS_W / 2, photoY + photoSize / 2 + 35)
-  }
+  ctx.fillStyle = theme.accent
+  roundRect(ctx, badgeStartX, y - 22, badgeW, pillH, pillH / 2)
+  ctx.fill()
+  ctx.fillStyle = theme.primary
+  ctx.textAlign = 'center'
+  ctx.fillText(badgeText, badgeStartX + badgeW / 2, y)
 
-  function drawBody() {
-    var y = photoY + photoSize + 48
+  var tagX = badgeStartX + badgeW + 12
+  ctx.fillStyle = '#F0F0F0'
+  roundRect(ctx, tagX, y - 22, tagW, pillH, pillH / 2)
+  ctx.fill()
+  ctx.fillStyle = '#666666'
+  ctx.fillText(tagText, tagX + tagW / 2, y)
+  y += 44 + 24
 
-    // --- 3. 昵称（主角，大字） ---
-    ctx.textAlign = 'center'
-    ctx.font = 'bold 42px PingFang SC'
-    ctx.fillStyle = theme.primary
-    ctx.fillText(personality.petName, CANVAS_W / 2, y)
-    y += 50
+  // --- 4. 配图 + 照片并排 ---
+  var rowTotalW = imgSize + imgGap + imgSize
+  var rowStartX = (CANVAS_W - rowTotalW) / 2
+  var illustX = rowStartX
+  var photoX = rowStartX + imgSize + imgGap
+  var rowY = y
 
-    // --- 4. 人格码标签（pill 形状） ---
-    ctx.font = 'bold 22px PingFang SC'
-    var codeText = resultCode + '  ' + personality.posterBadge + ' · ' + noun + '同款'
-    var pillW = ctx.measureText(codeText).width + 36
-    var pillH = 36
-    var pillX = (CANVAS_W - pillW) / 2
-    ctx.fillStyle = theme.accent
-    roundRect(ctx, pillX, y - 24, pillW, pillH, pillH / 2)
-    ctx.fill()
-    ctx.fillStyle = theme.primary
-    ctx.fillText(codeText, CANVAS_W / 2, y)
-    y += 52
+  // 并行加载三张图（配图 + 照片 + 小程序码）
+  var illustImg = null
+  var photoImg = null
+  var qrcodeImg = null
+  var loadCount = 0
+  var loadTotal = 3
 
-    // --- 5. 宠物语录气泡 ---
-    if (personality.petComment) {
-      ctx.font = '20px PingFang SC'
-      var quoteText = '「' + personality.petComment + '」'
-      var bubbleW = ctx.measureText(quoteText).width + 32
-      var bubbleH = 36
-      var bubbleX = (CANVAS_W - bubbleW) / 2
-      ctx.fillStyle = 'rgba(0,0,0,0.04)'
-      roundRect(ctx, bubbleX, y - 24, bubbleW, bubbleH, bubbleH / 2)
-      ctx.fill()
-      ctx.fillStyle = '#888888'
-      ctx.textAlign = 'center'
-      ctx.fillText(quoteText, CANVAS_W / 2, y)
-      y += 50
+  function onAllLoaded() {
+    // 画配图
+    if (illustImg) {
+      ctx.save()
+      roundRect(ctx, illustX, rowY, imgSize, imgSize, 20)
+      ctx.clip()
+      ctx.drawImage(illustImg, illustX, rowY, imgSize, imgSize)
+      ctx.restore()
     }
 
-    // --- 6. 性格描述区（左竖线 + 文字） ---
+    // 画照片或占位
+    if (photoImg) {
+      ctx.save()
+      roundRect(ctx, photoX, rowY, imgSize, imgSize, 20)
+      ctx.clip()
+      ctx.drawImage(photoImg, photoX, rowY, imgSize, imgSize)
+      ctx.restore()
+    } else {
+      ctx.fillStyle = theme.accent
+      roundRect(ctx, photoX, rowY, imgSize, imgSize, 20)
+      ctx.fill()
+      ctx.font = '72px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.fillStyle = theme.primary
+      ctx.fillText(petData.petType === 'cat' ? '\ud83d\udc31' : '\ud83d\udc36', photoX + imgSize / 2, rowY + imgSize / 2 + 24)
+    }
+
+    y = rowY + imgSize + 24
+    drawContent()
+  }
+
+  loadImage(canvas, illustPath, function (err, img) {
+    illustImg = img
+    loadCount++
+    if (loadCount === loadTotal) onAllLoaded()
+  })
+
+  loadImage(canvas, photoPath, function (err, img) {
+    photoImg = img
+    loadCount++
+    if (loadCount === loadTotal) onAllLoaded()
+  })
+
+  loadImage(canvas, '/assets/images/qrcode.jpg', function (err, img) {
+    qrcodeImg = img
+    loadCount++
+    if (loadCount === loadTotal) onAllLoaded()
+  })
+
+  function drawContent() {
+    // --- 5. 金句卡片 ---
+    var quoteCardX = PADDING
+    var quoteCardW = cardW
+    var quoteCardH = quoteH
+    ctx.fillStyle = 'rgba(255,255,255,0.7)'
+    roundRect(ctx, quoteCardX, y, quoteCardW, quoteCardH, 16)
+    ctx.fill()
+    ctx.strokeStyle = theme.accent
+    ctx.lineWidth = 1.5
+    roundRect(ctx, quoteCardX, y, quoteCardW, quoteCardH, 16)
+    ctx.stroke()
+
+    ctx.textAlign = 'center'
+    ctx.font = quoteFont
+    ctx.fillStyle = '#555555'
+    var quoteY = y + 32 + 26
+    var quoteText = '\u201c' + relationship.goldQuote + '\u201d'
+    var qChars = quoteText.split('')
+    var qLine = ''
+    var qLineY = quoteY
+    for (var qi = 0; qi < qChars.length; qi++) {
+      var qTest = qLine + qChars[qi]
+      if (ctx.measureText(qTest).width > quoteMaxW && qLine !== '') {
+        ctx.fillText(qLine, CANVAS_W / 2, qLineY)
+        qLine = qChars[qi]
+        qLineY += 36
+      } else {
+        qLine = qTest
+      }
+    }
+    if (qLine) ctx.fillText(qLine, CANVAS_W / 2, qLineY)
+    y += quoteCardH + 24
+
+    // --- 6. 宠物评价气泡 ---
+    if (relationship.petComment) {
+      var bubbleX = PADDING + 24
+      var bubbleW = cardW - 48
+      var bubbleH = 24 + commentLines * 32 + 24
+      ctx.fillStyle = 'rgba(0,0,0,0.03)'
+      roundRect(ctx, PADDING, y, cardW, bubbleH, 14)
+      ctx.fill()
+
+      ctx.textAlign = 'left'
+      ctx.font = '22px PingFang SC'
+      ctx.fillStyle = '#666666'
+      var commentText = '\ud83d\udcac ' + relationship.petComment
+      fillWrappedText(ctx, commentText, bubbleX, y + 24 + 16, bubbleW, 32)
+      y += bubbleH + 24
+    }
+
+    // --- 7. 关系描述区（左竖线） ---
     var cardX = PADDING
-    var lineW = 4
     var textX = cardX + lineW + 16
 
     ctx.fillStyle = theme.accent
@@ -235,14 +311,14 @@ function draw(ctx, opts, callback) {
     ctx.textAlign = 'left'
     ctx.font = 'bold 24px PingFang SC'
     ctx.fillStyle = theme.primary
-    ctx.fillText('🐾 我家' + noun + '是这样的', textX, y + 34)
+    ctx.fillText('\u2728 \u4f60\u4eec\u7684\u5173\u7cfb', textX, y + 34)
 
     ctx.font = '24px PingFang SC'
     ctx.fillStyle = '#444444'
-    fillWrappedText(ctx, personality.description, textX, y + 70, cardW - lineW - 16, 34)
-    y += descCardH + 28
+    fillWrappedText(ctx, relationship.description, textX, y + 70, textMaxW, 34)
+    y += descCardH + 24
 
-    // --- 7. 相处秘诀区（左竖线 + 文字） ---
+    // --- 8. 相处秘诀区（左竖线） ---
     ctx.fillStyle = theme.accent
     roundRect(ctx, cardX, y, lineW, tipsCardH, 2)
     ctx.fill()
@@ -250,42 +326,18 @@ function draw(ctx, opts, callback) {
     ctx.textAlign = 'left'
     ctx.font = 'bold 24px PingFang SC'
     ctx.fillStyle = theme.primary
-    ctx.fillText('💡 和它相处的秘诀', textX, y + 34)
+    ctx.fillText('\ud83d\udca1 \u8ba9\u5173\u7cfb\u66f4\u597d', textX, y + 34)
 
     ctx.font = '24px PingFang SC'
     ctx.fillStyle = '#444444'
-    fillWrappedText(ctx, personality.tips, textX, y + 70, cardW - lineW - 16, 34)
-    y += tipsCardH + 28
+    fillWrappedText(ctx, relationship.tips, textX, y + 70, textMaxW, 34)
+    y += tipsCardH + 32
 
-    // --- 8. 匹配区（左竖线样式，与上面一致） ---
-    if (matchInfo) {
-      ctx.fillStyle = theme.accent
-      roundRect(ctx, cardX, y, lineW, matchH, 2)
-      ctx.fill()
-
-      ctx.textAlign = 'left'
-      ctx.font = 'bold 24px PingFang SC'
-      ctx.fillStyle = theme.primary
-      ctx.fillText('💕 ' + matchInfo.score + '分 · ' + matchInfo.tag, textX, y + 34)
-
-      ctx.font = '20px PingFang SC'
-      ctx.fillStyle = '#999999'
-      ctx.fillText('主人 ' + opts.masterCode + ' × ' + noun + ' ' + resultCode, textX, y + 62)
-
-      if (matchInfo.matchCircleText) {
-        ctx.font = '20px PingFang SC'
-        ctx.fillStyle = '#666666'
-        fillWrappedText(ctx, '"' + matchInfo.matchCircleText + '"', textX, y + 90, textMaxW, 30)
-      }
-      y += matchH + 28
-    }
-
-    // --- 9. 底部品牌区（左文案 + 右小程序码） ---
+    // --- 9. 底部品牌区 ---
     var footerY = totalH - 100
     var codeSize = 56
     var codeX = CANVAS_W - PADDING - codeSize
 
-    // 分隔线
     ctx.strokeStyle = theme.accent
     ctx.lineWidth = 1
     ctx.beginPath()
@@ -294,9 +346,7 @@ function draw(ctx, opts, callback) {
     ctx.stroke()
     footerY += 16
 
-    // 左侧：CTA + 品牌（两行，与右侧码垂直居中）
     var textOffsetY = Math.floor((codeSize - 40) / 2)
-
     ctx.textAlign = 'left'
     ctx.font = 'bold 22px PingFang SC'
     ctx.fillStyle = theme.primary
@@ -304,17 +354,22 @@ function draw(ctx, opts, callback) {
 
     ctx.font = '16px PingFang SC'
     ctx.fillStyle = '#BBBBBB'
-    ctx.fillText('喵汪人格测试 · PETI · 仅供娱乐', PADDING, footerY + textOffsetY + 44)
+    ctx.fillText('\u5b83\u773c\u4e2d\u7684\u4f60 \u00b7 \u4eba\u5ba0\u5173\u7cfb\u6d4b\u8bd5 \u00b7 \u4ec5\u4f9b\u5a31\u4e50', PADDING, footerY + textOffsetY + 44)
 
-    // 右侧小程序码占位
-    ctx.beginPath()
-    ctx.arc(codeX + codeSize / 2, footerY + codeSize / 2, codeSize / 2, 0, Math.PI * 2)
-    ctx.fillStyle = '#F0F0F0'
-    ctx.fill()
-    ctx.font = '12px sans-serif'
-    ctx.fillStyle = '#CCCCCC'
-    ctx.textAlign = 'center'
-    ctx.fillText('小程序码', codeX + codeSize / 2, footerY + codeSize / 2 + 4)
+    // 小程序码
+    if (qrcodeImg) {
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(codeX + codeSize / 2, footerY + codeSize / 2, codeSize / 2, 0, Math.PI * 2)
+      ctx.clip()
+      ctx.drawImage(qrcodeImg, codeX, footerY, codeSize, codeSize)
+      ctx.restore()
+    } else {
+      ctx.beginPath()
+      ctx.arc(codeX + codeSize / 2, footerY + codeSize / 2, codeSize / 2, 0, Math.PI * 2)
+      ctx.fillStyle = '#F0F0F0'
+      ctx.fill()
+    }
 
     callback(null)
   }

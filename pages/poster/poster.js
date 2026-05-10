@@ -1,7 +1,6 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
 var adConfig = require('../../config/adConfig.js')
-var scorer = require('../../utils/scorer.js')
 var posterHelper = require('../../utils/posterHelper.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
@@ -10,9 +9,7 @@ Page({
   data: {
     petType: 'cat',
     resultCode: '',
-    masterCode: '',
     photoPath: '',
-    showMatch: true,
     isDrawing: true,
     drawError: false,
     posterImage: ''
@@ -24,11 +21,9 @@ Page({
   _interstitialAd: null,
   _adTimer: null,
   _petData: null,
-  _personality: null,
-  _matchInfo: null,
+  _relationship: null,
 
   onLoad: function (options) {
-    // 防深链接
     var pages = getCurrentPages()
     if (pages.length <= 1) {
       wx.redirectTo({ url: '/pages/home/home' })
@@ -36,31 +31,24 @@ Page({
     }
 
     var petType = options.petType || 'cat'
-    var resultCode = options.resultCode || 'ENFP'
-    var masterCode = options.masterCode || ''
+    var resultCode = options.resultCode || 'SHCD'
     var photoPath = options.photoPath ? decodeURIComponent(options.photoPath) : ''
 
     this._petData = petType === 'dog' ? dogData : catData
-    this._personality = this._petData.personalities[resultCode]
+    this._relationship = this._petData.relationships[resultCode]
 
-    if (!this._personality) {
+    if (!this._relationship) {
       wx.redirectTo({ url: '/pages/home/home' })
       return
-    }
-
-    if (masterCode) {
-      this._matchInfo = scorer.getMatch(resultCode, masterCode, this._petData)
     }
 
     this.setData({
       petType: petType,
       resultCode: resultCode,
-      masterCode: masterCode,
       photoPath: photoPath,
-      showMatch: !!masterCode
+      circleText: this._relationship.circleText
     })
 
-    // 初始化插屏广告
     this._initInterstitialAd()
   },
 
@@ -75,9 +63,9 @@ Page({
         this._interstitialAd = wx.createInterstitialAd({
           adUnitId: adConfig.interstitial.posterSave
         })
-        this._interstitialAd.onError(function () { /* 静默 */ })
+        this._interstitialAd.onError(function () { })
       }
-    } catch (e) { /* 静默 */ }
+    } catch (e) { }
   },
 
   _drawPoster: function () {
@@ -96,16 +84,13 @@ Page({
       self._canvas = canvas
 
       var ctx = canvas.getContext('2d')
-      // 画布尺寸由 posterHelper 内部动态设置
 
       try {
         posterHelper.draw(ctx, {
           canvas: canvas,
           petData: self._petData,
-          personality: self._personality,
+          relationship: self._relationship,
           resultCode: self.data.resultCode,
-          masterCode: self.data.masterCode,
-          matchInfo: self.data.showMatch ? self._matchInfo : null,
           photoPath: self.data.photoPath
         }, function (err) {
           if (err) {
@@ -130,7 +115,6 @@ Page({
       success: function (res) {
         self._tempImagePath = res.tempFilePath
         self.setData({ isDrawing: false, posterImage: res.tempFilePath })
-        // 释放 canvas 内存（已导出为图片，不再需要）
         self._canvas.width = 0
         self._canvas.height = 0
       },
@@ -141,12 +125,6 @@ Page({
   },
 
   onRetryDraw: function () {
-    this._drawPoster()
-  },
-
-  onToggleMatch: function () {
-    var showMatch = !this.data.showMatch
-    this.setData({ showMatch: showMatch })
     this._drawPoster()
   },
 
@@ -176,40 +154,40 @@ Page({
 
   onSaveToAlbum: function () {
     var self = this
-    if (!self._canvas) {
-      toast.showError('海报未就绪')
+    if (!self._canvas && !self._tempImagePath) {
+      toast.showError('\u6d77\u62a5\u672a\u5c31\u7eea')
       return
     }
 
-    toast.showLoading('保存中...')
+    toast.showLoading('\u4fdd\u5b58\u4e2d...')
 
     self._ensureTempImage(function (err, filePath) {
       if (err) {
         toast.hideLoading()
-        toast.showError('生成图片失败')
+        toast.showError('\u751f\u6210\u56fe\u7247\u5931\u8d25')
         return
       }
       wx.saveImageToPhotosAlbum({
         filePath: filePath,
         success: function () {
           toast.hideLoading()
-          toast.showSuccess('已保存到相册')
+          toast.showSuccess('\u5df2\u4fdd\u5b58\u5230\u76f8\u518c')
           self._showAdAfterSave()
         },
         fail: function (errObj) {
           toast.hideLoading()
           if (errObj.errMsg && errObj.errMsg.indexOf('auth deny') !== -1) {
             toast.showModal({
-              title: '需要授权',
-              content: '请在设置中允许保存图片到相册',
-              confirmText: '去设置'
+              title: '\u9700\u8981\u6388\u6743',
+              content: '\u8bf7\u5728\u8bbe\u7f6e\u4e2d\u5141\u8bb8\u4fdd\u5b58\u56fe\u7247\u5230\u76f8\u518c',
+              confirmText: '\u53bb\u8bbe\u7f6e'
             }).then(function (confirmed) {
               if (confirmed) {
                 wx.openSetting()
               }
             })
           } else {
-            toast.showError('保存失败')
+            toast.showError('\u4fdd\u5b58\u5931\u8d25')
           }
         }
       })
@@ -218,30 +196,30 @@ Page({
 
   onShareImage: function () {
     var self = this
-    if (!self._canvas) {
-      toast.showError('海报未就绪')
+    if (!self._canvas && !self._tempImagePath) {
+      toast.showError('\u6d77\u62a5\u672a\u5c31\u7eea')
       return
     }
 
-    toast.showLoading('准备中...')
+    toast.showLoading('\u51c6\u5907\u4e2d...')
 
     self._ensureTempImage(function (err, filePath) {
       toast.hideLoading()
       if (err) {
-        toast.showError('生成图片失败')
+        toast.showError('\u751f\u6210\u56fe\u7247\u5931\u8d25')
         return
       }
       if (wx.showShareImageMenu) {
         wx.showShareImageMenu({
           path: filePath,
           menus: ['shareAppMessage', 'shareTimeline', 'savePicture', 'collectPicture'],
-          fail: function () { toast.showError('分享失败') }
+          fail: function () { toast.showError('\u5206\u4eab\u5931\u8d25') }
         })
       } else {
         wx.saveImageToPhotosAlbum({
           filePath: filePath,
-          success: function () { toast.showSuccess('已保存到相册') },
-          fail: function () { toast.showError('保存失败') }
+          success: function () { toast.showSuccess('\u5df2\u4fdd\u5b58\u5230\u76f8\u518c') },
+          fail: function () { toast.showError('\u4fdd\u5b58\u5931\u8d25') }
         })
       }
     })
@@ -252,8 +230,8 @@ Page({
     var self = this
     self._adTimer = setTimeout(function () {
       try {
-        self._interstitialAd.show().catch(function () { /* 静默 */ })
-      } catch (e) { /* 静默 */ }
+        self._interstitialAd.show().catch(function () { })
+      } catch (e) { }
     }, 500)
   },
 
@@ -277,6 +255,16 @@ Page({
       clearTimeout(this._adTimer)
       this._adTimer = null
     }
+  },
+
+  onCopyText: function () {
+    var text = this.data.circleText + ' #\u5b83\u773c\u91cc\u7684\u4f60 #\u4eba\u5ba0\u5173\u7cfb\u6d4b\u8bd5'
+    wx.setClipboardData({
+      data: text,
+      success: function () {
+        toast.showSuccess('\u5df2\u590d\u5236')
+      }
+    })
   },
 
   onShareAppMessage: function () {

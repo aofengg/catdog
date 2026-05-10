@@ -1,502 +1,466 @@
 /**
- * 狗狗 PETI 人格测试 - 完整配置数据
- * 纯前端静态数据，ES5 严格兼容
+ * 狗狗版 - 它眼中的你 · 人宠关系测试
+ * 配置文件：品牌 + 维度 + 20 题 + 16 种关系结果
  */
 
 var dogData = {
   petType: 'dog',
-
   brand: {
-    title: '狗狗 PETI 人格测试',
-    slogan: '每一只修勾，都有专属暖心性格',
-    subtitle: '读懂狗狗的温柔与忠诚',
-    shareTitle: '测你家狗狗是什么 PETI 人格？',
-    shareDesc: '测出狗狗真实性格，还能和你 PETI 灵魂配对',
+    productName: '它眼中的你',
+    title: '狗狗版 · 人宠关系测试',
+    slogan: '原来你在它心里，是这样的存在',
+    shareTitle: '我在我家狗眼里竟然是这样的！你呢？',
+    shareDesc: '测测你在它心里到底是什么角色',
     posterCTA: [
-      '你家修勾是什么人格？敢不敢测',
-      '你和你家狗的默契指数有多高？',
-      '不服？让你家修勾也来接受鉴定'
+      '你在你家狗眼里是什么？',
+      '敢不敢测你家修勾怎么看你？',
+      '你可能低估了你在它心里的位置'
     ]
   },
-
   dimensions: {
-    EI: { positive: '热情社交', negative: '腼腆害羞' },
-    TF: { positive: '暖心粘人', negative: '沉稳淡定' },
-    JP: { positive: '活泼随性', negative: '听话守矩' },
-    NS: { positive: '探索好动', negative: '居家慵懒' }
+    SF: { positive: '温暖港湾', negative: '自由灵魂' },
+    HL: { positive: '浓情蜜意', negative: '清淡自在' },
+    CP: { positive: '宠溺家长', negative: '平等伙伴' },
+    DR: { positive: '探索冒险', negative: '安稳日常' }
   },
-
   questions: [
+    // === SF + HL 配对（3 题）===
     {
       id: 1,
-      question: '家里来陌生人，狗狗会？',
-      optionA: '主动上前摇尾巴亲近',
-      optionB: '躲在主人身后警惕害羞',
-      dimension: 'EI',
-      scoreA: 'E',
-      scoreB: 'I'
+      scene: '你出门前，狗在门口摇尾巴看着你——',
+      dimensions: 'SF_HL',
+      options: [
+        { text: '蹲下来抱抱它说"乖乖等我回来"', score: 'SH' },
+        { text: '摸摸头就出门，心里知道它会等', score: 'SL' },
+        { text: '跟它玩闹一阵说"想我就叫啊"', score: 'FH' },
+        { text: '正常出门，它习惯了你的节奏', score: 'FL' }
+      ]
     },
     {
       id: 2,
-      question: '你坐下休息，狗狗会？',
-      optionA: '主动贴过来撒娇求抱抱',
-      optionB: '趴在一旁自己休息不打扰',
-      dimension: 'TF',
-      scoreA: 'F',
-      scoreB: 'T'
+      scene: '你回家开门，狗冲过来扑你——',
+      dimensions: 'SF_HL',
+      options: [
+        { text: '放下所有东西蹲下来让它扑，激动回应', score: 'SH' },
+        { text: '笑着拍拍它，换好鞋再说', score: 'SL' },
+        { text: '跟它一起疯，假装也很激动地叫', score: 'FH' },
+        { text: '淡定走进去，它蹦几下就好了', score: 'FL' }
+      ]
     },
     {
       id: 3,
-      question: '看到新玩具/新零食？',
-      optionA: '立刻兴奋凑上去探索',
-      optionB: '瞟一眼无兴趣继续趴着',
-      dimension: 'NS',
-      scoreA: 'N',
-      scoreB: 'S'
+      scene: '出差几天回来，狗见到你后一直哼哼叫——',
+      dimensions: 'SF_HL',
+      options: [
+        { text: '抱着它说"对不起让你等了"', score: 'SH' },
+        { text: '安静地坐它旁边陪一会儿', score: 'SL' },
+        { text: '一边逗它一边说"想爸爸/妈妈了吧"', score: 'FH' },
+        { text: '该干嘛干嘛，它一会儿就好了', score: 'FL' }
+      ]
     },
+    // === SF + CP 配对（4 题）===
     {
       id: 4,
-      question: '到点没及时遛它？',
-      optionA: '围着你转圈哼哼催促',
-      optionB: '安静等待不吵不闹',
-      dimension: 'JP',
-      scoreA: 'P',
-      scoreB: 'J'
+      scene: '遛弯时狗突然冲向陌生人——',
+      dimensions: 'SF_CP',
+      options: [
+        { text: '立刻拽回来，蹲下安抚它说"没事"', score: 'SC' },
+        { text: '让它靠近闻闻，它想社交就社交', score: 'SP' },
+        { text: '紧张地抱起它跟路人道歉', score: 'FC' },
+        { text: '松松牵绳让它自己判断要不要过去', score: 'FP' }
+      ]
     },
     {
       id: 5,
-      question: '你强行抱住撸它？',
-      optionA: '乖乖享受温顺不动',
-      optionB: '扭动挣脱不愿被束缚',
-      dimension: 'JP',
-      scoreA: 'J',
-      scoreB: 'P'
+      scene: '狗把你的鞋叼走了——',
+      dimensions: 'SF_CP',
+      options: [
+        { text: '追过去拿回来，认真说"不可以"', score: 'SC' },
+        { text: '随它玩，反正旧鞋无所谓', score: 'SP' },
+        { text: '假装追它，当成一场游戏', score: 'FC' },
+        { text: '等它自己玩腻了放下', score: 'FP' }
+      ]
     },
     {
       id: 6,
-      question: '打开大门准备出门？',
-      optionA: '兴奋冲出去想往外跑',
-      optionB: '谨慎犹豫不敢轻易出门',
-      dimension: 'EI',
-      scoreA: 'E',
-      scoreB: 'I'
+      scene: '狗生病要去医院，它死活不肯进笼子——',
+      dimensions: 'SF_CP',
+      options: [
+        { text: '用零食一点点引进去，全程轻声安慰', score: 'SC' },
+        { text: '直接抱进去，该看病得看', score: 'SP' },
+        { text: '在笼子里铺满它喜欢的毯子和玩具', score: 'FC' },
+        { text: '打开笼门等着，它迟早会进', score: 'FP' }
+      ]
     },
     {
       id: 7,
-      question: '家里家具、布局重新挪动？',
-      optionA: '到处嗅闻巡视新环境',
-      optionB: '无所谓依旧躺老位置',
-      dimension: 'NS',
-      scoreA: 'N',
-      scoreB: 'S'
+      scene: '狗在沙发上留了一大片毛——',
+      dimensions: 'SF_CP',
+      options: [
+        { text: '默默清理，以后给它铺个专用垫子', score: 'SC' },
+        { text: '无所谓，反正沙发本来就是它的', score: 'SP' },
+        { text: '假装哭穷说"你知道这沙发多贵吗"', score: 'FC' },
+        { text: '它家它做主，有毛就有毛吧', score: 'FP' }
+      ]
     },
+    // === SF + DR 配对（3 题）===
     {
       id: 8,
-      question: '做错事被你轻声批评？',
-      optionA: '耷拉耳朵委屈低头认错',
-      optionB: '若无其事扭头走开',
-      dimension: 'TF',
-      scoreA: 'F',
-      scoreB: 'T'
+      scene: '下雨天没法遛弯，狗在家躁动——',
+      dimensions: 'SF_DR',
+      options: [
+        { text: '在客厅跟它做室内游戏消耗精力', score: 'SD' },
+        { text: '让它自己找乐子，你窝沙发上', score: 'SR' },
+        { text: '穿上雨衣带它出去淋雨撒欢', score: 'FD' },
+        { text: '给它个玩具让它安静待着', score: 'FR' }
+      ]
     },
     {
       id: 9,
-      question: '日常作息吃饭遛弯是否固定？',
-      optionA: '想玩就玩想睡就睡',
-      optionB: '作息超规律定点行事',
-      dimension: 'JP',
-      scoreA: 'P',
-      scoreB: 'J'
+      scene: '你打算换个新的遛弯路线——',
+      dimensions: 'SF_DR',
+      options: [
+        { text: '先走一遍确认安全再带它去', score: 'SD' },
+        { text: '还是老路线吧，它熟悉比较放松', score: 'SR' },
+        { text: '直接带它走新路，看它什么反应', score: 'FD' },
+        { text: '它喜欢哪条就走哪条，跟着它', score: 'FR' }
+      ]
     },
     {
       id: 10,
-      question: '出门遇到别的小狗？',
-      optionA: '热情想上前玩耍社交',
-      optionB: '回避远离甚至警惕低吼',
-      dimension: 'EI',
-      scoreA: 'E',
-      scoreB: 'I'
+      scene: '朋友约你带狗去宠物聚会——',
+      dimensions: 'SF_DR',
+      options: [
+        { text: '去，但全程盯着它确保安全', score: 'SD' },
+        { text: '算了，人多狗杂它可能不自在', score: 'SR' },
+        { text: '去！让它多认识新朋友', score: 'FD' },
+        { text: '看它心情，出门前如果不情愿就不去', score: 'FR' }
+      ]
     },
+    // === HL + CP 配对（3 题）===
     {
       id: 11,
-      question: '你情绪低落不开心？',
-      optionA: '安静靠过来安慰陪伴',
-      optionB: '自顾自玩耍毫无察觉',
-      dimension: 'TF',
-      scoreA: 'F',
-      scoreB: 'T'
+      scene: '狗趴在你脚边睡着了，你要起来——',
+      dimensions: 'HL_CP',
+      options: [
+        { text: '轻轻地绕开，不忍心吵醒它', score: 'HC' },
+        { text: '正常起来，它醒了再哄两下', score: 'LC' },
+        { text: '忍不住摸摸它脑袋再走', score: 'HP' },
+        { text: '直接起来，它皮实着呢', score: 'LP' }
+      ]
     },
     {
       id: 12,
-      question: '换全新狗粮/狗窝？',
-      optionA: '很快愿意尝试适应',
-      optionB: '挑食抗拒很难适应新东西',
-      dimension: 'NS',
-      scoreA: 'N',
-      scoreB: 'S'
+      scene: '狗学会了新技能（比如握手），你——',
+      dimensions: 'HL_CP',
+      options: [
+        { text: '疯狂夸奖+零食奖励+拍视频', score: 'HC' },
+        { text: '淡定地说一句"真棒"，继续训练', score: 'LC' },
+        { text: '兴奋地叫家人来看"快看它会了！"', score: 'HP' },
+        { text: '拍拍它表示认可，回头给它加餐', score: 'LP' }
+      ]
     },
     {
       id: 13,
-      question: '在家会不会疯狂跑酷拆家？',
-      optionA: '经常疯跑拆家精力旺盛',
-      optionB: '安静乖巧从不乱闹腾',
-      dimension: 'JP',
-      scoreA: 'P',
-      scoreB: 'J'
+      scene: '你心情很差的时候，狗安静地靠过来——',
+      dimensions: 'HL_CP',
+      options: [
+        { text: '抱着它哭，跟它说"还好有你"', score: 'HC' },
+        { text: '摸摸它，什么都不说但好多了', score: 'LC' },
+        { text: '跟它聊天倾诉今天的事', score: 'HP' },
+        { text: '感觉到它的善意，继续做自己的事', score: 'LP' }
+      ]
     },
+    // === HL + DR 配对（4 题）===
     {
       id: 14,
-      question: '更喜欢出门撒欢还是在家躺平？',
-      optionA: '超爱出门到处探索',
-      optionB: '宁愿在家趴着发呆睡觉',
-      dimension: 'NS',
-      scoreA: 'N',
-      scoreB: 'S'
+      scene: '看到一款新的狗狗零食——',
+      dimensions: 'HL_DR',
+      options: [
+        { text: '买来亲手喂它，看它吃得开心自己更开心', score: 'HD' },
+        { text: '看看配料表，觉得行就买', score: 'LD' },
+        { text: '买一堆不同口味的让它挑最喜欢的', score: 'HR' },
+        { text: '不特别在意，它现在吃的就挺好', score: 'LR' }
+      ]
     },
     {
       id: 15,
-      question: '摸肚子、摸敏感部位？',
-      optionA: '很享受随便撸不抗拒',
-      optionB: '躲闪警惕不让随便碰',
-      dimension: 'TF',
-      scoreA: 'F',
-      scoreB: 'T'
+      scene: '你考虑要不要给狗报个游泳课——',
+      dimensions: 'HL_DR',
+      options: [
+        { text: '报！到时候自己也下水陪它', score: 'HD' },
+        { text: '观望一下，看它对水什么态度再说', score: 'LD' },
+        { text: '兴奋地跟狗说"我们去游泳好不好！"', score: 'HR' },
+        { text: '没必要，遛弯就够它运动了', score: 'LR' }
+      ]
     },
     {
       id: 16,
-      question: '去宠物店洗澡/就医？',
-      optionA: '虽紧张但能慢慢适应',
-      optionB: '极度应激害怕浑身发抖',
-      dimension: 'EI',
-      scoreA: 'E',
-      scoreB: 'I'
+      scene: '狗特别喜欢趴在你工作的椅子旁边——',
+      dimensions: 'HL_DR',
+      options: [
+        { text: '在椅子旁放了它的专属垫子', score: 'HD' },
+        { text: '随它趴，不影响你', score: 'LD' },
+        { text: '边工作边跟它说话，当它听得懂', score: 'HR' },
+        { text: '习惯了，你们就是互不打扰的状态', score: 'LR' }
+      ]
     },
     {
       id: 17,
-      question: '家里来客吵闹热闹？',
-      optionA: '好奇围观适应嘈杂氛围',
-      optionB: '躲安静角落不愿凑热闹',
-      dimension: 'EI',
-      scoreA: 'E',
-      scoreB: 'I'
+      scene: '假期你打算带狗自驾出游——',
+      dimensions: 'HL_DR',
+      options: [
+        { text: '精心规划路线，专门找宠物友好的地方', score: 'HD' },
+        { text: '搜个允许带狗的地方就行', score: 'LD' },
+        { text: '光是想到一起出门就兴奋不行', score: 'HR' },
+        { text: '还是别折腾了，它在家更自在', score: 'LR' }
+      ]
     },
+    // === CP + DR 配对（3 题）===
     {
       id: 18,
-      question: '有没有拆家咬鞋、乱翻东西习惯？',
-      optionA: '调皮爱搞小破坏',
-      optionB: '乖巧安分从不闯祸',
-      dimension: 'JP',
-      scoreA: 'P',
-      scoreB: 'J'
+      scene: '狗拆了家你回来看到一片狼藉——',
+      dimensions: 'CP_DR',
+      options: [
+        { text: '反省自己是不是留它太久了，以后多陪', score: 'CD' },
+        { text: '收拾干净，下次出门把东西收好', score: 'CR' },
+        { text: '看着它做贼心虚的样子忍不住笑了', score: 'PD' },
+        { text: '叹口气收拾，它就这样', score: 'PR' }
+      ]
     },
     {
       id: 19,
-      question: '是粘人跟屁虫还是独立狗狗？',
-      optionA: '走哪跟哪超级粘人',
-      optionB: '独立独行不用时刻陪伴',
-      dimension: 'TF',
-      scoreA: 'F',
-      scoreB: 'T'
+      scene: '狗在外面遇到其他狗特别兴奋——',
+      dimensions: 'CP_DR',
+      options: [
+        { text: '让它们互相闻闻，自己在旁边看着', score: 'CD' },
+        { text: '赶紧牵走，不确定对方狗是否友好', score: 'CR' },
+        { text: '放长牵绳让它去玩，它开心就好', score: 'PD' },
+        { text: '叫它回来，今天不社交', score: 'PR' }
+      ]
     },
     {
       id: 20,
-      question: '去到陌生新环境（搬家/亲戚家）？',
-      optionA: '慢慢探索很快适应',
-      optionB: '一直躲藏很久不敢放松',
-      dimension: 'NS',
-      scoreA: 'N',
-      scoreB: 'S'
+      scene: '你想记录和狗的日常，打算——',
+      dimensions: 'CP_DR',
+      options: [
+        { text: '精心拍一组照片，给它搭配小道具', score: 'CD' },
+        { text: '翻手机看看之前随手拍的就够了', score: 'CR' },
+        { text: '带它去新地方拍，制造不一样的背景', score: 'PD' },
+        { text: '不刻意记录，美好在心里就行', score: 'PR' }
+      ]
     }
   ],
-
-  personalities: {
-    ESTJ: {
-      petName: '霸气队长修勾',
+  relationships: {
+    SHCD: {
+      title: '被拿捏的重症患者',
+      goldQuote: '它冲向你的每一步，都在说"你就是我的全世界"',
       rare: '传说款',
       rareLevel: '3%',
-      posterBadge: '\u2b50 传说款 3%',
-      posterTheme: 'teaBrown',
-      posterShort: '天生肩负守护，沉稳自带威严',
-      description: '天生自带护卫队长气场，家里有它在谁都不敢乱来。忠诚守家稳重靠谱，听到门外有动静第一个冲上去。虽然看着严肃，但摸摸头就立刻露出傻笑，反差萌直接拉满。',
-      tips: '给它明确的口令训练，它天生爱执行任务；带它巡视小区时让它走前面，满足它的护卫本能；别忘了严肃背后也需要肚皮按摩',
-      bestMatch: ['ISFJ', 'INFP', 'ISFP'],
-      score: 96,
-      tag: '天命绝配',
-      matchDesc: '霸气修勾遇上温柔主人，它负责守护你负责被保护。有它在的日子，出门安全感满格，回家被威严护卫迎接，这就是最靠谱的陪伴。',
-      matchCircleText: '我家修勾是天生的保镖队长，走在我前面帮我开路，安全感直接拉满\ud83d\ude24',
-      circleText: '天生自带护卫气场，顾家又稳重，全家安全感都被它承包了\ud83d\ude24',
-      petComment: '有本汪在，谁都别想欺负你'
-    },
-    ESTP: {
-      petName: '社牛快乐修勾',
-      rare: '独特款',
-      rareLevel: '15%',
-      posterBadge: '\u2728 独特款 15%',
+      posterBadge: '⭐ 传说款 3%',
+      emotionTag: '羡慕型',
       posterTheme: 'warmOrange',
-      posterShort: '外向乐天开朗，社交从不怯场',
-      description: '出门见谁都摇尾巴，社交天花板本汪。在公园能跟所有狗打成一片，回家精力还剩一半继续拆家。永远活力满满，快乐是真快乐，闯祸也是真闯祸。但看它开心的样子，你也跟着开心了。',
-      tips: '每天保证充足的户外时间，不然它会自己找乐子；社交场合不用担心它，它比你更会交朋友；回家后的拆家行为……尽量把贵重物品收高',
-      bestMatch: ['ENFP', 'ESFP'],
-      score: 95,
-      tag: '天命绝配',
-      matchDesc: '两个快乐星球的居民终于汇合了！你爱出门它更爱出门，你爱社交它社交天花板。一起逛公园、一起交朋友，快乐从来都是双份的。',
-      matchCircleText: '我和我家修勾出门比赛谁先交到新朋友，每次都是它赢\ud83e\udd2a',
-      circleText: '出门社交天花板，在家调皮乐天，永远活力满满，生活从不无聊\ud83e\udd2a',
-      petComment: '走！出门交朋友去！'
+      description: '在它眼里，你就是太阳——你出现的方向就是光的方向。它不是单纯地粘你，而是发自骨子里信任你。你愿意为它改变计划、调整生活，也愿意带它去看更大的世界。这种关系里有最浓烈的依恋，也有最踏实的安全感。',
+      tips: '它为什么每次你回来都那么疯？因为在它的时间里，你不在的每一分钟都很漫长。你是它生命里最确定的事，所以它愿意把全部的信任交给你。这份沉甸甸的爱，不是每个人都承接得住的。',
+      petComment: '你看我的眼神！你完了！你已经是我的人了！',
+      circleText: '我在我家狗眼里是"行走的安全感"！它冲向我的每一步都在说我是它的全世界😭 被狗爱着好幸福 #它眼中的你 #人宠关系测试'
     },
-    ESFJ: {
-      petName: '甩不掉小尾巴修勾',
-      rare: '大众款',
-      rareLevel: '25%',
-      posterBadge: '\ud83e\uddf8 大众款 25%',
-      posterTheme: 'milkWhite',
-      posterShort: '走到哪跟到哪，甩不掉的小尾巴',
-      description: '走到哪跟到哪的贴身小尾巴，你上厕所它在门口等，你做饭它在脚边守着，你洗澡它在浴室门口趴着。粘人程度堪称一流，分离焦虑重灾区。但正因为这样，你回家时它摇到整个身体都在晃的样子，才是一天中最治愈的瞬间。',
-      tips: '出门前给它留一件你的旧衣服，有你的气味它会安心；回家后要第一时间给它打招呼；训练适度独处，但不要冷落它',
-      bestMatch: ['INTJ', 'INTP'],
-      score: 93,
-      tag: '神仙合拍',
-      matchDesc: '社恐主人遇上贴心跟班修勾，它用无条件的陪伴慢慢融化你的心墙。你不爱出门？没关系，它趴在你脚边就很开心。',
-      matchCircleText: '我是社恐本人，但我家修勾每天用蹭腿大法逼我营业，根本拒绝不了\ud83d\udc36\u2764\ufe0f',
-      circleText: '粘人忠诚又温柔，天生贴身小跟班，治愈所有坏情绪\ud83d\udc36\u2764\ufe0f',
-      petComment: '你去哪我跟哪，别想甩掉我'
-    },
-    ESFP: {
-      petName: '卖萌担当修勾',
+    SHCR: {
+      title: '7×24在线客服',
+      goldQuote: '你不用做什么特别的事，你在就是最好的日常',
       rare: '独特款',
       rareLevel: '15%',
-      posterBadge: '\u2728 独特款 15%',
-      posterTheme: 'pinkPeach',
-      posterShort: '可爱自带光环，元气温暖日常',
-      description: '长了一张让人毫无抵抗力的脸，会用眼神杀向你要零食，会在你面前翻肚皮求摸摸。走到哪都是焦点，出门散步路人纷纷拍照。靠可爱吃饭这件事，它做到了极致。',
-      tips: '定期打理毛发，颜值选手要保持竞争力；多带它出门社交，它享受被夸奖的感觉；拍照时它会配合，试试跟它对视',
-      bestMatch: ['ESFP', 'ENFJ', 'ISFJ'],
-      score: 95,
-      tag: '天命绝配',
-      matchDesc: '你对可爱的东西毫无抵抗力，而它就是可爱本身。每天一起出门散步就是你最好的朋友圈素材，每次回头看它都觉得"我怎么这么幸运"。',
-      matchCircleText: '有了我家修勾之后朋友圈点赞翻了三倍，颜值就是生产力\ud83e\udd70',
-      circleText: '长相讨喜性格活泼，走到哪都是焦点，靠可爱圈粉所有人\ud83e\udd70',
-      petComment: '看我这么可爱，零食呢？'
+      posterBadge: '✨ 独特款 15%',
+      emotionTag: '治愈型',
+      posterTheme: 'milkWhite',
+      description: '你是那种把爱融进生活细节里的人——按时遛弯、定时喂饭、晚上它趴脚边你看电视。在它眼里你就是最温暖的日常本身。你不会做太出格的事，但你的稳定就是它最大的幸福来源。',
+      tips: '狗对时间的感知比你想象中精确——每天同一时间你拿牵绳的声音，就是它一天中最期待的时刻。你给它的不是轰轰烈烈的爱，而是每一天都如约而至的温暖。这种长久的承诺，比任何零食都管用。',
+      petComment: '你走到哪我跟到哪，这不叫跟踪叫贴心',
+      circleText: '在我家修勾眼里我是温暖发电站🔋 不用做什么特别的事，在就是最好的日常…被暖到了 #它眼中的你 #人宠关系测试'
     },
-    ISTJ: {
-      petName: '按时打卡修勾',
+    SHPD: {
+      title: '它的疯批搭子',
+      goldQuote: '有你在身边，它觉得去哪里都不怕',
       rare: '珍稀款',
       rareLevel: '8%',
-      posterBadge: '\ud83d\udc8e 珍稀款 8%',
+      posterBadge: '💎 珍稀款 8%',
+      emotionTag: '勇敢型',
+      posterTheme: 'mintGreen',
+      description: '你和它是最佳搭档——你给它安全感的方式不是把它关起来保护，而是带它一起去冒险。在它眼里你是那个"跟着它就不会有事"的人。你们一起跑步、一起探索新路线、一起迎接每个意想不到的惊喜。',
+      tips: '它跟着你时脚步特别轻快，因为它知道你永远在前面为它探路。那些别的狗不敢做的事，它都敢——不是因为它天生胆大，是因为有你。这种"被撑腰"的感觉，让它活得像一只自由勇敢的狗。',
+      petComment: '冲！今天一起拆家吗！等等我先叼个拖鞋！',
+      circleText: '我和我家狗是狂热冒险搭子！💪 难怪它跟着我什么都敢，原来是把我当靠山了 #它眼中的你 #人宠关系测试'
+    },
+    SHPR: {
+      title: '双向奔赴天花板',
+      goldQuote: '不需要语言，你们之间的默契已经说明一切',
+      rare: '大众款',
+      rareLevel: '25%',
+      posterBadge: '🧸 大众款 25%',
+      emotionTag: '温暖型',
+      posterTheme: 'pinkPeach',
+      description: '你和它的关系自然而然——不需要刻意经营也不需要太多规矩。你给它安全感和温暖，但不限制它做自己。在它眼里你是温柔的、稳定的、让它能完全放松的存在。你们之间有一种不说出口但双方都懂的默契。',
+      tips: '它每次安静地趴在你身边，就是在享受这段关系里最舒服的部分——不需要表演，不需要讨好，只需要在一起。你给了它"被允许做自己"的自由，这对一只狗来说是最大的礼物。',
+      petComment: '你对我好我也对你好，这叫双向奔赴懂不懂！',
+      circleText: '我家修勾觉得我是贴心小太阳☀️ 不用做什么就很安心…这种双向奔赴的感觉太好了 #它眼中的你 #人宠关系测试'
+    },
+    SLCD: {
+      title: '嘴硬心软代言人',
+      goldQuote: '你的爱从不张扬，但它感受到了每一分',
+      rare: '珍稀款',
+      rareLevel: '8%',
+      posterBadge: '💎 珍稀款 8%',
+      emotionTag: '深情型',
+      posterTheme: 'coolGray',
+      description: '你不是那种会把"宝贝我爱你"挂嘴边的人，但你做的每件事都在守护它——疫苗驱虫一次不落、每天准时遛弯、听到它哼一声就立刻看过去。在它眼里你是那个话不多但从不缺席的人。你的爱含蓄但无比深沉。',
+      tips: '你可能不知道，它之所以那么乖那么听话，是因为它在回报你的守护。那些安静对视的时刻，它在说的是"我知道你为我做了很多，我都记得"。有些爱不需要热烈，只需要始终如一。',
+      petComment: '假装不在意我？行啊，那半夜谁偷偷给我盖被子的',
+      circleText: '我在我家狗眼里是沉默守护者💙 我的爱从不张扬但它全都收到了…这个形容也太准了 #它眼中的你 #人宠关系测试'
+    },
+    SLCR: {
+      title: '口嫌体正直',
+      goldQuote: '在它心里，你是这个家最稳定的存在',
+      rare: '大众款',
+      rareLevel: '25%',
+      posterBadge: '🧸 大众款 25%',
+      emotionTag: '踏实型',
       posterTheme: 'teaBrown',
-      posterShort: '比你还自律，生物钟精准到秒',
-      description: '全家最自律的存在——早上7:01叫你起床（比闹钟还准），下午5:30准时站在门口暗示该遛弯了。定点吃饭定点散步，作息比你还规律。安静本分到你偶尔会忘记家里还有只狗，但它从不忘记每一个和你有关的时间点。',
-      tips: '保持固定的作息和散步路线，它喜欢规律；迟到五分钟它真的会焦虑；不需要花哨的训练，基础口令一遍记住，是天生的优等生',
-      bestMatch: ['ISTJ', 'ESTJ'],
-      score: 96,
-      tag: '天命绝配',
-      matchDesc: '两个自律打卡人的日常：定点起床、定点散步、定点各做各的事。不需要惊喜，日复一日的同步作息就是最长情的告白。',
-      matchCircleText: '我和我家修勾作息一模一样，7点起床5点半遛弯，比情侣还同步\ud83d\ude0c',
-      circleText: '生物钟精准到秒，作息比主人还自律，安静稳重不闹腾\ud83d\ude0c',
-      petComment: '定时吃饭遛弯，不接受变动'
+      description: '你和它之间的关系简单朴实——定时遛弯、按时喂饭、生病就看医生。你不会对它过分溺爱，也不会忽略它的基本需求。在它眼里你是"那个每天都会出现的靠谱人类"。没有戏剧性，但有最踏实的信任。',
+      tips: '别小看"每天定时出现"这件事——对狗来说，规律感就是爱。它每天固定时间开始摇尾巴，不是因为饿了，是因为知道你快来了。你的准时就是它的心安。',
+      petComment: '你嘴上说别跟着，脚步慢了等我，当我傻啊',
+      circleText: '我家修勾给我的定位：靠谱遛弯人🚶 好吧确实是，每天最准时的事就是遛它 实在人养实在狗 #它眼中的你 #人宠关系测试'
     },
-    ISTP: {
-      petName: '独立酷盖修勾',
-      rare: '传说款',
-      rareLevel: '3%',
-      posterBadge: '\u2b50 传说款 3%',
-      posterTheme: 'coolGray',
-      posterShort: '随性自有态度，独立不失温柔',
-      description: '不粘人、不讨好、有自己的节奏和态度。你叫它它看你一眼，可能来也可能不来——取决于心情。独立得不像一般修勾，但偶尔也会安静地躺在你脚边，用最酷的方式说"我在呢"。',
-      tips: '不要强迫它做不想做的事；给它独处空间，它会更信任你；它主动靠近你时要珍惜，酷盖的温柔很稀有',
-      bestMatch: ['ISTP', 'INTJ', 'ENTJ'],
-      score: 97,
-      tag: '天命绝配',
-      matchDesc: '独立的你遇上独立的修勾，完美。不需要时刻黏在一起，你忙你的它趴它的，但心里都知道对方在。偶尔它主动靠过来的瞬间，比任何热烈的示好都珍贵。',
-      matchCircleText: '我和我家修勾是同款酷盖——各自独立，但偶尔对视的那一秒全是温柔\ud83d\ude0e',
-      circleText: '独立有主见，不刻意粘人，洒脱自在，有自己的小坚持\ud83d\ude0e',
-      petComment: '本汪今天心情好，允许你摸一下'
-    },
-    ISFJ: {
-      petName: '死心眼等门修勾',
-      rare: '大众款',
-      rareLevel: '25%',
-      posterBadge: '\ud83e\uddf8 大众款 25%',
-      posterTheme: 'milkWhite',
-      posterShort: '认准你就是一辈子，等你是每天的头等大事',
-      description: '认定你就是一辈子的修勾，你出门它趴在门口等，你加班它等到打瞌睡也不挪窝。温顺腼腆但内心无比坚定——下雨天等你回来、生病时守在床边、你哭的时候默默把头搁在你腿上。它不会说话，但比谁都死心眼。',
-      tips: '出门前跟它说一句"等我回来"，它真的在等；回家第一件事先理它，不然它会委屈到哼唧；它的忠诚是天生的，不需要用零食换',
-      bestMatch: ['ENFP', 'ESFJ', 'ISTJ'],
-      score: 94,
-      tag: '神仙合拍',
-      matchDesc: '它会在你出门前的眼神里写满不舍，在你回来时用全身摇摆说"你终于回来了"。不需要复杂的互动，它的忠诚和等待就是最纯粹的爱。',
-      matchCircleText: '我家修勾每天在门口等我回家，那个摇尾巴的样子，是我一天中最温暖的画面\ud83e\udd7a',
-      circleText: '死心眼认准主人，每天趴门口等我回家，那股子执着让人心疼\ud83e\udd7a',
-      petComment: '等你回来，是我每天最重要的事'
-    },
-    ISFP: {
-      petName: '佛系宅家修勾',
+    SLPD: {
+      title: '佛系带娃达人',
+      goldQuote: '你从不替它做决定，只是默默陪它走每一步',
       rare: '独特款',
       rareLevel: '15%',
-      posterBadge: '\u2728 独特款 15%',
-      posterTheme: 'mintGreen',
-      posterShort: '偏爱居家静好，温柔慢度时光',
-      description: '别的修勾出门撒欢，它更想窝在家里晒太阳。不爱跑酷不爱闹，最大的爱好是找个舒服的地方趴着放空。温柔安静得像一团会呼吸的毛绒玩具，居家治愈感拉满。',
-      tips: '不需要高强度运动，在小区慢慢遛就够了；给它准备一个晒得到太阳的软垫；安静的陪伴对它来说就是最好的爱',
-      bestMatch: ['INFP', 'ISFP'],
-      score: 93,
-      tag: '神仙合拍',
-      matchDesc: '一人一修勾，各自佛系，各自舒服。你在沙发刷剧，它在旁边打盹，阳光从窗户照进来，这就是最理想的居家时光。',
-      matchCircleText: '我和我家修勾的最佳状态：各自躺平，互不打扰，偶尔对视一笑就很好\ud83c\udf3f',
-      circleText: '不爱疯跑不爱闹，喜欢安静居家发呆，温柔佛系过狗生\ud83c\udf3f',
-      petComment: '出门？不了，我选择躺平'
-    },
-    ENTJ: {
-      petName: '聪明大佬修勾',
-      rare: '传说款',
-      rareLevel: '3%',
-      posterBadge: '\u2b50 传说款 3%',
-      posterTheme: 'coolGray',
-      posterShort: '自带领袖格局，聪慧有分寸感',
-      description: '聪明到你怀疑它是不是偷偷看过训练教程。学口令一遍就会，看你眼色行事从不出错。表面乖巧听话，实际上全家的地位排序它心里门儿清。智商在线加情商在线，修勾界的卷王。',
-      tips: '给它有挑战性的训练任务，太简单的它不屑；别以为你能骗它，它比你想象中精；聪明修勾需要精神刺激，益智玩具必备',
-      bestMatch: ['ENTJ', 'ISTP', 'ESTJ'],
-      score: 96,
-      tag: '天命绝配',
-      matchDesc: '聪明人遇上聪明修勾，日常就是互相斗智。你教它新技能它一遍就会，你藏零食它三秒找到。虽然经常被它的智商碾压，但这种势均力敌的感觉也挺有意思。',
-      matchCircleText: '我以为我在训练我家修勾，后来发现是它在训练我——大佬就是大佬\ud83d\ude24',
-      circleText: '气场强、有主见，懂事又聪明，悄悄拿捏家里地位\ud83d\ude24',
-      petComment: '你以为你在训练我？天真'
-    },
-    ENTP: {
-      petName: '戏精捣蛋修勾',
-      rare: '珍稀款',
-      rareLevel: '8%',
-      posterBadge: '\ud83d\udc8e 珍稀款 8%',
-      posterTheme: 'coolGray',
-      posterShort: '好奇奔赴山海，调皮不失可爱',
-      description: '好奇心爆棚的小戏精，每天都在上演不同的剧本。今天翻垃圾桶明天扒沙发，闯完祸还一脸无辜地看你，演技堪称影帝。精力旺盛到让你怀疑它是不是接了电源，但生活有它确实从不无聊。',
-      tips: '易碎品、垃圾桶、拖鞋——能收的全收起来；给它足够的探索空间和玩具轮换；闯祸后认真批评，但别太凶，戏精会记仇',
-      bestMatch: ['ENTP', 'INTP', 'ESTP'],
-      score: 95,
-      tag: '天命绝配',
-      matchDesc: '戏精主人遇上戏精修勾，家里每天都是即兴表演现场。它翻垃圾桶你假装生气，它装无辜你假装心软，来来回回就是一出双人喜剧。',
-      matchCircleText: '我和我家修勾每天都在上演"捣蛋-被抓-装无辜-原谅"的无限循环\ud83e\udd2f',
-      circleText: '好奇心拉满，精力旺盛爱探索，每天都有新花样，生活充满惊喜\ud83e\udd2f',
-      petComment: '今天的拆家计划已排满'
-    },
-    ENFJ: {
-      petName: '氛围感暖男修勾',
-      rare: '独特款',
-      rareLevel: '15%',
-      posterBadge: '\u2728 独特款 15%',
-      posterTheme: 'milkWhite',
-      posterShort: '情商在线，全家氛围组组长',
-      description: '对所有人都温柔，社交场合进退得体，在家暖心治愈。你难过时它默默蹭过来，你开心时它跟着摇尾巴。情商高到你怀疑它是不是上辈子做过心理咨询师——家里谁情绪不好它第一个发现，然后默默去蹭。',
-      tips: '多带它见不同的人和狗，社交是它的快乐源泉；记得也给它情绪价值，暖男也需要被暖；它很在意你的态度，尽量多给正面反馈',
-      bestMatch: ['INFJ', 'ESFP'],
-      score: 94,
-      tag: '神仙合拍',
-      matchDesc: '暖心的你遇上暖心的修勾，这个家变成了温柔的避风港。你照顾它它也照顾你，你治愈世界它治愈你。双向奔赴的温柔，就是最好的生活。',
-      matchCircleText: '温柔的人养了温柔的修勾，我们互相治愈的日子真的太甜了\u2600\ufe0f',
-      circleText: '情商在线、温柔到骨子里，全家的氛围担当，有它在家里永远暖暖的\u2600\ufe0f',
-      petComment: '交给本汪，包你今天心情好'
-    },
-    ENFP: {
-      petName: '元气满满修勾',
-      rare: '大众款',
-      rareLevel: '25%',
-      posterBadge: '\ud83e\uddf8 大众款 25%',
-      posterTheme: 'warmOrange',
-      posterShort: '元气洒满日常，活泼治愈人心',
-      description: '精力值永远显示100%的快乐小马达。出门撒欢跑不停，回家继续蹦蹦跳跳。见谁都热情，看什么都新鲜，整个修勾就是一团移动的快乐能量。虽然偶尔闹腾到崩溃，但没有它的日子真的会无聊。',
-      tips: '每天至少两次高强度户外活动，消耗它的核能；家里备足玩具并定期更换，保持新鲜感；它的快乐很有感染力，跟着它一起疯就对了',
-      bestMatch: ['INFJ', 'INTJ', 'ESTP'],
-      score: 97,
-      tag: '天命绝配',
-      matchDesc: '元气修勾像一团移动的快乐能量，直接闯进了你安静的世界。你本来不爱出门，自从有了它天天被拽出去散步，结果发现户外也挺好的。它改变了你的生活方式，而且是往更快乐的方向。',
-      matchCircleText: '自从养了这只元气修勾，我的社恐好了运动量上去了心情也变好了，这是什么神仙狗\ud83e\udd73',
-      circleText: '天生活泼好动，元气永远用不完，给家里带来满满热闹与欢乐\ud83e\udd73',
-      petComment: '快快快！出去玩！现在！马上！'
-    },
-    INTJ: {
-      petName: '深沉学霸修勾',
-      rare: '传说款',
-      rareLevel: '3%',
-      posterBadge: '\u2b50 传说款 3%',
+      posterBadge: '✨ 独特款 15%',
+      emotionTag: '稳重型',
       posterTheme: 'lavender',
-      posterShort: '沉静自带睿智，内敛自有气场',
-      description: '安静内敛的思考者，不爱凑热闹，喜欢独自趴在角落观察世界。眼神深沉得像在写论文，安静得让你忘记它的存在。但当它用那双懂事的眼睛看你时，你会觉得它什么都明白，只是选择了沉默。',
-      tips: '不要强迫它社交，独处是它充电的方式；给它一个固定的安静角落；跟它对视时多说几句话，它在认真听',
-      bestMatch: ['ENFP', 'ENTP'],
-      score: 96,
-      tag: '天命绝配',
-      matchDesc: '安静的它懂你的安静，你不需要在它面前假装外向。你对着电脑工作到深夜，它就安静地趴在脚边，不吵不闹。那种"你做你的，我陪着你"的默契，是最高级的陪伴。',
-      matchCircleText: '我家修勾是INTJ，它那双深沉的眼睛看我时，我觉得它比我还成熟\ud83d\udd2e',
-      circleText: '性格沉静内敛，心思深沉懂事，安静看着你，仿佛什么都懂\ud83d\udd2e',
-      petComment: '本汪在思考，请勿打扰'
+      description: '你给它空间去探索世界，但你永远走在它旁边。你不会过度干预它的行为，也不会因为它偶尔调皮而大惊小怪。在它眼里你是一个安静但可靠的同行者——不控制它的方向，但让它知道无论去哪都有人陪。',
+      tips: '它在你身边时特别自在地跑来跑去，因为它知道无论跑多远你都在。那些"看起来不管它"的时刻，其实是你给它的最大信任。一只被信任的狗，才会长成自信的样子。',
+      petComment: '你佛你的，我自己遛自己也行',
+      circleText: '安静领航员——不控制方向但一直陪着走🧭 我和我家狗的关系被说透了 #它眼中的你 #人宠关系测试'
     },
-    INTP: {
-      petName: '摆烂躺平修勾',
-      rare: '珍稀款',
-      rareLevel: '8%',
-      posterBadge: '\ud83d\udc8e 珍稀款 8%',
-      posterTheme: 'mintGreen',
-      posterShort: '闲来无事躺平，佛系安度余生',
-      description: '把"躺平"刻进了DNA的修勾，出门五分钟就想回家，回家直奔最软的垫子。对运动毫无兴趣，对零食兴趣一般般，唯一热爱的就是晒太阳和睡觉。别担心它是不是不开心——它只是很会享受生活。',
-      tips: '适量散步就好，别逼它长跑；准备一个超软的狗窝，是它最大的快乐；它的佛系不需要纠正，随它去吧',
-      bestMatch: ['INTP', 'INFP'],
-      score: 93,
-      tag: '神仙合拍',
-      matchDesc: '两个躺平星人的同居日常：你刷手机它打盹，你点外卖它闻味道，你困了它早困了。零内耗零争吵，世界上最和平的人狗关系。',
-      matchCircleText: '我和我家修勾的共同爱好：躺着。区别是它比我更擅长，而且完全不焦虑\u2601\ufe0f',
-      circleText: '不爱折腾不爱闹，只想躺平晒太阳，佛系度日，自在随心\u2601\ufe0f',
-      petComment: '动？不存在的，选择原地躺'
-    },
-    INFJ: {
-      petName: '温柔读心修勾',
-      rare: '珍稀款',
-      rareLevel: '8%',
-      posterBadge: '\ud83d\udc8e 珍稀款 8%',
-      posterTheme: 'lavender',
-      posterShort: '温柔善解人意，共情温暖人心',
-      description: '心思细腻到让人心疼的修勾，能精准感知你的每一丝情绪。你加班到深夜它安静守在脚边，你哭的时候它把脑袋搁在你膝盖上。温柔得像一颗暖暖的小太阳，不说一句话却比谁都懂你的心。',
-      tips: '尽量不在它面前有负面情绪爆发，它会跟着焦虑；多给它安全感和稳定的环境；它的温柔需要被看见，记得常常夸它',
-      bestMatch: ['ENFP', 'ENFJ'],
-      score: 98,
-      tag: '天命绝配',
-      matchDesc: '它能感知你说不出口的每一种疲惫，在你最需要的时候把头轻轻搁在你膝盖上。不需要解释，它都懂。这种跨物种的心灵感应，是养修勾最奢侈的礼物。',
-      matchCircleText: '我不开心的时候我家修勾总是第一个发现，它不说话就蹭蹭我，眼泪瞬间掉下来\ud83e\udd7a',
-      circleText: '心思细腻温柔，很会感知主人情绪，贴心又懂事，治愈感拉满\ud83e\udd7a',
-      petComment: '你累了对吧？靠过来吧'
-    },
-    INFP: {
-      petName: '软萌治愈修勾',
+    SLPR: {
+      title: '精神室友',
+      goldQuote: '你们共享一个家，各自精彩，偶尔温情',
       rare: '独特款',
       rareLevel: '15%',
-      posterBadge: '\u2728 独特款 15%',
+      posterBadge: '✨ 独特款 15%',
+      emotionTag: '默契型',
+      posterTheme: 'coolGray',
+      description: '你和它像两个默契的室友——各自有自己的空间和节奏，但住在同一个屋檐下就是莫名安心。你不会时刻关注它，它也不会无时无刻黏你。但你们都知道：对方在就好。',
+      tips: '别人可能觉得你"不够爱狗"，但只有你知道——它能自在地在角落睡觉不焦虑，就是因为信任你不会消失。你给它的是最高级的爱：存在感而非压迫感。',
+      petComment: '你在沙发左边，我在右边，中间放零食，完美',
+      circleText: '我和我家狗居然是高冷同居室友😂 各自安好偶尔温情…这不就是最舒服的关系吗 #它眼中的你 #人宠关系测试'
+    },
+    FHCD: {
+      title: '氪金奶妈',
+      goldQuote: '你给它的爱太满了，满到它以为全世界都是好人',
+      rare: '独特款',
+      rareLevel: '15%',
+      posterBadge: '✨ 独特款 15%',
+      emotionTag: '甜蜜型',
       posterTheme: 'pinkPeach',
-      posterShort: '软萌治愈人间，温柔温暖岁月',
-      description: '软乎乎的小可爱，性格单纯天真，对世界充满好奇又有点胆小。遇到新事物先躲在你身后偷看，确认安全了才慢慢探出头。它的存在本身就是治愈——不需要做什么，光看着它就觉得世界变温柔了。',
-      tips: '带它见新事物时要有耐心，不要催促；温柔的语气是打开它心门的钥匙；给它足够的安全感，它会慢慢变勇敢',
-      bestMatch: ['ENFJ', 'ESFJ', 'INFJ'],
-      score: 95,
-      tag: '天命绝配',
-      matchDesc: '软萌修勾遇上温柔主人，整个画面就是一幅治愈系水彩画。你蹲下来它就趴你腿上，你说话它就歪头看你。世界可能很复杂，但你们之间的关系很简单——就是温柔。',
-      matchCircleText: '我家修勾是世界上最软萌的存在，每天看着它我都觉得生活没那么难\ud83c\udf43',
-      circleText: '性格单纯软乎乎，天真又温柔，安静陪伴，治愈所有生活疲惫\ud83c\udf43',
-      petComment: '世界有点吓人，但有你就不怕了'
+      description: '你对它的宠爱没有上限——什么都给最好的、犯错了舍不得骂、出门恨不得背着它。在它眼里你大概是这世上最温柔的存在。你给它自由又给它安全感，唯一的问题是：被你宠成了"社会狗"，出去谁都不怕。',
+      tips: '它之所以对谁都热情、胆子大、从不退缩——全是因为从小被你无条件接纳。你的宠爱教会了它一件事：世界是安全的。一只从不怀疑自己被爱的狗，就是最幸福的狗。',
+      petComment: '又！买！新！的！了！好耶好耶好耶！',
+      circleText: '宠溺甜心！我家修勾觉得我对它太好了🍯 好吧我确实把它宠上天了…谁让它可爱呢！ #它眼中的你 #人宠关系测试'
+    },
+    FHCR: {
+      title: '随叫随到外卖员',
+      goldQuote: '你的存在就是它每天的能量来源',
+      rare: '珍稀款',
+      rareLevel: '8%',
+      posterBadge: '💎 珍稀款 8%',
+      emotionTag: '能量型',
+      posterTheme: 'warmOrange',
+      description: '你对它热情但不控制、宠爱但有分寸。你们的日常充满了轻松愉快的互动——摸头、喊名字、回应它的每一次凑过来。在它眼里你就像一个取之不尽的能量源，靠近你就能恢复元气。',
+      tips: '注意到了吗？它每次跟你互动完就精神焕发地跑去玩了——那就是被你充满电的表现。你给它的不只是食物和遮风的屋顶，还有每天都在线的情绪价值。你是它快乐的直接来源。',
+      petComment: '你递啥我都接着，你让干啥我都乐意',
+      circleText: '我在我家狗心里是专属充电宝⚡ 靠近我就满电出发哈哈哈 果然养狗就是双向充电 #它眼中的你 #人宠关系测试'
+    },
+    FHPD: {
+      title: '显眼包二人组',
+      goldQuote: '你们不是主人和宠物，是互相选择的灵魂伙伴',
+      rare: '传说款',
+      rareLevel: '3%',
+      posterBadge: '⭐ 传说款 3%',
+      emotionTag: '灵魂型',
+      posterTheme: 'lavender',
+      description: '你和它之间没有"主从关系"——你们更像是互相选择的同行者。你给它完全的自由和尊重，它回报你的是无条件的陪伴和信任。你们一起跑步、一起发呆、一起面对生活的琐碎和惊喜。这种平等而热烈的关系，是人与狗之间最高级的形态。',
+      tips: '这种关系之所以是传说款，是因为它需要人类放下"主人"的身份，真正把狗当成平等的生命来对待。你做到了——你从不命令它，但它愿意跟随你。这不是驯服，这是选择。',
+      petComment: '今天一起当显眼包了吗？我准备好了！',
+      circleText: '传说款！我和我家修勾是人生搭子🤝 不是主人宠物是灵魂伙伴！它选择了我我也选择了它 太感动了 #它眼中的你 #人宠关系测试'
+    },
+    FHPR: {
+      title: '快乐贴贴怪',
+      goldQuote: '你们在一起永远在笑，快乐就是你们的主旋律',
+      rare: '大众款',
+      rareLevel: '25%',
+      posterBadge: '🧸 大众款 25%',
+      emotionTag: '快乐型',
+      posterTheme: 'mintGreen',
+      description: '你跟它在一起永远充满笑声——它蠢你也蠢，它闹你也闹，你们的日常就是一出欢乐剧。你不会给它太多规矩，它也不会给你找太多麻烦。在它眼里你是"那个超好玩的人类"，在你眼里它是"行走的开心果"。',
+      tips: '快乐是你们关系的核心——你不需要它完美，它也不需要你全能。你们给彼此最好的礼物就是：无忧无虑地在一起。那些一起疯跑一起犯傻的时刻，就是属于你们的黄金岁月。',
+      petComment: '贴贴贴贴！还要贴！永远贴！',
+      circleText: '快乐共生体！我和我家狗在一起就是停不下来地笑🤣 它蠢我也蠢 我们就是天生的开心搭档 #它眼中的你 #人宠关系测试'
+    },
+    FLCD: {
+      title: '心甘情愿工具人',
+      goldQuote: '你以为它只是把你当工具人，其实你是它离不开的日常',
+      rare: '传说款',
+      rareLevel: '3%',
+      posterBadge: '⭐ 传说款 3%',
+      emotionTag: '反差型',
+      posterTheme: 'teaBrown',
+      description: '表面上看你们像最务实的搭配——你负责开门、倒粮、遛弯，它负责吃睡拆家。但实际上你比谁都在意它：疫苗表贴冰箱上、驱虫日历精确到天、半夜它哼一声你就醒。你嘴上说"它就把我当工具人"，心里全是它。',
+      tips: '这段关系的精髓在于"反差"——你表面佛系实则操心到爆。而它呢？表面一副"你是谁"的样子，你要是晚回家十分钟它就在门口急得打转。你们都不会表达爱，但爱比谁都深。',
+      petComment: '你的作用就是开门和倒粮，但我允许你额外摸头',
+      circleText: '传说款！会开门的室友🚪 我以为我家狗把我当工具人，结果"你是它离不开的日常"这句直接看哭😭 #它眼中的你 #人宠关系测试'
+    },
+    FLCR: {
+      title: '定时投喂机器',
+      goldQuote: '你管好它的生活，它管好你的心情',
+      rare: '独特款',
+      rareLevel: '15%',
+      posterBadge: '✨ 独特款 15%',
+      emotionTag: '佛系型',
+      posterTheme: 'milkWhite',
+      description: '你们像运行在两条轨道上的列车——各自行驶但方向相同。你负责它的衣食住行，它负责在你需要的时候出现在旁边。不需要过多交流，彼此存在本身就是最好的安排。',
+      tips: '你觉得自己养狗很"佛系"，但其实你提供的规律照顾本身就是最好的爱。它每天在你出门后安静等待、在你回来后自然迎接——这种从不焦虑的样子，恰恰证明了它对这段关系的安心。',
+      petComment: '饭点到了没？到了叫我，没到别吵',
+      circleText: '平行世界管理员🌐 我管它的生活它管我的心情——这种互相需要又互不打扰的关系也太理想了 #它眼中的你 #人宠关系测试'
+    },
+    FLPD: {
+      title: '各玩各的合租搭子',
+      goldQuote: '你们最好的相处方式，就是给彼此足够的空间',
+      rare: '珍稀款',
+      rareLevel: '8%',
+      posterBadge: '💎 珍稀款 8%',
+      emotionTag: '独立型',
+      posterTheme: 'mintGreen',
+      description: '你尊重它是一个独立个体——它想玩就玩，想躺就躺，你不会因为它没搭理你就焦虑。在它眼里你是那种"很酷的人类"：不会过度干涉它的自由，但在它需要你时永远在。你们之间最珍贵的默契是：各自精彩，偶尔交汇。',
+      tips: '这种关系需要双方都足够成熟——你不会强迫它表演亲密，它也不会依赖你到失去自我。别人说"你养的像野狗"，你知道那叫"活得像一只真正的狗"。',
+      petComment: '你看你的剧，我啃我的骨头，互不打扰各自精彩',
+      circleText: '各自精彩的灵魂✨ 不黏不远各自闪光偶尔交汇——我和我家修勾也太独立了吧哈哈 但确实舒服 #它眼中的你 #人宠关系测试'
+    },
+    FLPR: {
+      title: '上辈子签的合同',
+      goldQuote: '没有理由，你们就是该在一起的',
+      rare: '传说款',
+      rareLevel: '3%',
+      posterBadge: '⭐ 传说款 3%',
+      emotionTag: '缘分型',
+      posterTheme: 'lavender',
+      description: '你跟它之间有一种说不清道不明的缘分——不是轰轰烈烈的爱，但就是莫名合拍。你不会刻意改变它，它也不会要求你做什么。你们的相遇和相处没有太多戏剧性，但就是有一种"这只狗就该是我的"的笃定。',
+      tips: '这是最难得的关系形态——不是因为需要才在一起，而是因为"就是你"。你没有想过换一只狗，它也从没想过跟别人走。有些缘分不需要轰轰烈烈，安安静静地同框一辈子就够了。',
+      petComment: '也不知道怎么就选了你，但也没打算退货',
+      circleText: '传说款！命中注定的同框💫 "没有理由你们就是该在一起的"——养狗养出了命中注定的感觉 太浪漫了 #它眼中的你 #人宠关系测试'
     }
-  },
-
-  lowMatch: {
-    score: 72,
-    tag: '欢喜冤家',
-    matchDesc: '性格虽然不太一样，但修勾最大的优点就是——不管你是什么 PETI，它都无条件爱你。磨合期可能闹点小别扭，但日子越过越甜。',
-    matchCircleText: '测出来跟我家修勾不太配，但它看我的眼神分明写着"我不管我就要跟你"\ud83e\udd7a'
-  },
-
-  masterPetiList: [
-    'ISTJ', 'ISFJ', 'INFJ', 'INTJ',
-    'ISTP', 'ISFP', 'INFP', 'INTP',
-    'ESTP', 'ESFP', 'ENFP', 'ENTP',
-    'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'
-  ]
+  }
 }
 
 module.exports = dogData

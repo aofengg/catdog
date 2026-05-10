@@ -18,24 +18,22 @@
     </view>
   </view>
 
+  <!-- 分享配文（可见 + 点击复制） -->
+  <view class="copy-card" bindtap="onCopyText">
+    <text class="copy-content">{{circleText}}</text>
+    <text class="copy-action">点击复制</text>
+  </view>
+
   <!-- 操作区 -->
   <view class="action-area">
-    <!-- 匹配 toggle -->
-    <view wx:if="{{masterCode}}" class="toggle-wrap" bindtap="onToggleMatch">
-      <view class="toggle-box {{showMatch ? 'toggle-on' : ''}}">
-        <view class="toggle-dot"></view>
-      </view>
-      <text class="toggle-label">展示和主人的匹配结果</text>
-    </view>
-
-    <!-- 保存按钮 -->
-    <view class="save-btn {{petType === 'cat' ? 'btn-cat' : 'btn-dog'}}" bindtap="onSaveToAlbum">
-      <text class="save-text">💾 保存到相册</text>
-    </view>
-
-    <!-- 分享按钮 -->
+    <!-- 分享按钮（主引导） -->
     <view class="share-btn {{petType === 'cat' ? 'btn-cat' : 'btn-dog'}}" bindtap="onShareImage">
-      <text class="share-text">📤 分享给好友</text>
+      <text class="share-text">分享给好友</text>
+    </view>
+
+    <!-- 保存按钮（次级） -->
+    <view class="save-btn" bindtap="onSaveToAlbum">
+      <text class="save-text">保存到相册</text>
     </view>
   </view>
 </view>

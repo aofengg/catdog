@@ -1,62 +1,36 @@
 <view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
-  <!-- 答题阶段 -->
-  <block wx:if="{{stage === 'quiz'}}">
-    <!-- 进度条 -->
-    <view class="progress-wrap">
-      <text class="progress-num">{{currentIndex + 1}}/{{totalQuestions}}</text>
-      <view class="progress-bar">
-        <view class="progress-fill" style="width: {{(currentIndex + 1) / totalQuestions * 100}}%"></view>
-      </view>
+  <!-- 进度条 -->
+  <view class="progress-wrap">
+    <text class="progress-num">{{currentIndex + 1}}/{{totalQuestions}}</text>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{(currentIndex + 1) / totalQuestions * 100}}%"></view>
     </view>
+  </view>
 
-    <!-- 题目区 -->
-    <view class="question-area">
-      <text class="question-text">{{currentQuestion.question}}</text>
+  <!-- 题目区 -->
+  <view class="question-area">
+    <text class="question-text">{{currentQuestion.scene}}</text>
+  </view>
+
+  <!-- 选项区 -->
+  <view class="options-area">
+    <view
+      wx:for="{{currentQuestion.options}}"
+      wx:key="index"
+      class="option-card {{selectedIndex === index ? 'option-selected' : ''}}"
+      bindtap="onSelectOption"
+      data-index="{{index}}"
+    >
+      <text class="option-label">{{optionLabels[index]}}</text>
+      <text class="option-text">{{item.text}}</text>
     </view>
+  </view>
 
-    <!-- 选项区 -->
-    <view class="options-area">
-      <view class="option-card {{answers[currentIndex] === 'A' ? 'option-selected' : ''}}" bindtap="onSelectOption" data-choice="A">
-        <text class="option-label">A</text>
-        <text class="option-text">{{currentQuestion.optionA}}</text>
-      </view>
-      <view class="option-card {{answers[currentIndex] === 'B' ? 'option-selected' : ''}}" bindtap="onSelectOption" data-choice="B">
-        <text class="option-label">B</text>
-        <text class="option-text">{{currentQuestion.optionB}}</text>
-      </view>
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="prev-btn {{currentIndex === 0 ? 'prev-disabled' : ''}}" bindtap="onPrev">
+      <text>← 上一题</text>
     </view>
-
-    <!-- 底部操作栏 -->
-    <view class="bottom-bar">
-      <view class="prev-btn {{currentIndex === 0 ? 'prev-disabled' : ''}}" bindtap="onPrev">
-        <text>← 上一题</text>
-      </view>
-      <text class="pet-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
-    </view>
-  </block>
-
-  <!-- 选择主人类型阶段 -->
-  <block wx:if="{{stage === 'master'}}">
-    <view class="progress-wrap">
-      <text class="progress-num">20/20</text>
-      <view class="progress-bar">
-        <view class="progress-fill" style="width: 100%"></view>
-      </view>
-    </view>
-
-    <view class="master-area">
-      <text class="master-title">最后一步！</text>
-      <text class="master-subtitle">选择你自己的 PETI 类型，看看和你家{{petType === 'cat' ? '猫咪' : '修勾'}}有多配～</text>
-
-      <view class="master-grid">
-        <view wx:for="{{masterList}}" wx:key="*this" class="master-cell {{selectedMaster === item ? 'master-selected' : ''}}" bindtap="onSelectMaster" data-code="{{item}}">
-          <text>{{item}}</text>
-        </view>
-      </view>
-
-      <view class="skip-btn" bindtap="onSkipMaster">
-        <text class="skip-text">跳过，直接看结果 →</text>
-      </view>
-    </view>
-  </block>
+    <text class="pet-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
+  </view>
 </view>

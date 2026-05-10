@@ -1,7 +1,6 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
 var adConfig = require('../../config/adConfig.js')
-var scorer = require('../../utils/scorer.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
 
@@ -9,20 +8,16 @@ Page({
   data: {
     petType: 'cat',
     resultCode: '',
-    masterCode: '',
-    personality: null,
-    matchInfo: null,
+    relationship: null,
     photoPath: '',
     showAd: false,
     adUnitId: '',
-    rareBgColor: '#95A5A6',
-    showDisclaimer: false
+    rareBgColor: '#95A5A6'
   },
 
   _petData: null,
 
   onLoad: function (options) {
-    // 防深链接：页面栈仅 1 层 = 外部直接进入
     var pages = getCurrentPages()
     if (pages.length <= 1) {
       wx.redirectTo({ url: '/pages/home/home' })
@@ -30,30 +25,21 @@ Page({
     }
 
     var petType = options.petType || 'cat'
-    var resultCode = options.resultCode || 'ENFP'
-    var masterCode = options.masterCode || ''
+    var resultCode = options.resultCode || 'SHCD'
 
     var petData = petType === 'dog' ? dogData : catData
-    var personality = petData.personalities[resultCode]
+    var relationship = petData.relationships[resultCode]
 
-    if (!personality) {
+    if (!relationship) {
       wx.redirectTo({ url: '/pages/home/home' })
       return
     }
 
-    // 计算匹配
-    var matchInfo = null
-    if (masterCode) {
-      matchInfo = scorer.getMatch(resultCode, masterCode, petData)
-    }
-
-    // 稀有度颜色
     var rareBgColor = '#95A5A6'
-    if (personality.rare === '传说款') rareBgColor = '#FFD700'
-    else if (personality.rare === '珍稀款') rareBgColor = '#9B59B6'
-    else if (personality.rare === '独特款') rareBgColor = '#3498DB'
+    if (relationship.rare === '\u4f20\u8bf4\u6b3e') rareBgColor = '#FFD700'
+    else if (relationship.rare === '\u73cd\u7a00\u6b3e') rareBgColor = '#9B59B6'
+    else if (relationship.rare === '\u72ec\u7279\u6b3e') rareBgColor = '#3498DB'
 
-    // 广告配置
     var showAd = adConfig.banner.enabled
     var adUnitId = adConfig.banner.result
 
@@ -61,9 +47,8 @@ Page({
     this.setData({
       petType: petType,
       resultCode: resultCode,
-      masterCode: masterCode,
-      personality: personality,
-      matchInfo: matchInfo,
+      relationship: relationship,
+      resultImage: '/assets/images/result/' + petType + '/' + resultCode + '.jpg',
       rareBgColor: rareBgColor,
       showAd: showAd,
       adUnitId: adUnitId
@@ -78,7 +63,20 @@ Page({
       sourceType: ['album', 'camera'],
       success: function (res) {
         var tempPath = res.tempFiles[0].tempFilePath
-        self.setData({ photoPath: tempPath })
+        if (wx.cropImage) {
+          wx.cropImage({
+            src: tempPath,
+            cropScale: '1:1',
+            success: function (cropRes) {
+              self.setData({ photoPath: cropRes.tempFilePath })
+            },
+            fail: function () {
+              self.setData({ photoPath: tempPath })
+            }
+          })
+        } else {
+          self.setData({ photoPath: tempPath })
+        }
       }
     })
   },
@@ -86,9 +84,6 @@ Page({
   onGeneratePoster: function () {
     var url = '/pages/poster/poster?petType=' + this.data.petType +
       '&resultCode=' + this.data.resultCode
-    if (this.data.masterCode) {
-      url += '&masterCode=' + this.data.masterCode
-    }
     if (this.data.photoPath) {
       url += '&photoPath=' + encodeURIComponent(this.data.photoPath)
     }
@@ -98,9 +93,9 @@ Page({
   onRetest: function () {
     var self = this
     toast.showModal({
-      title: '确定重新测试吗？',
-      content: '当前结果不会被保存',
-      confirmText: '重新测试',
+      title: '\u786e\u5b9a\u91cd\u65b0\u6d4b\u8bd5\u5417\uff1f',
+      content: '\u5f53\u524d\u7ed3\u679c\u4e0d\u4f1a\u88ab\u4fdd\u5b58',
+      confirmText: '\u91cd\u65b0\u6d4b\u8bd5',
       confirmColor: self.data.petType === 'cat' ? '#6B5CE7' : '#FF8C42'
     }).then(function (confirmed) {
       if (confirmed) {
@@ -109,41 +104,17 @@ Page({
     })
   },
 
-  onCopyText: function () {
-    var text = ''
-    if (this.data.matchInfo) {
-      text = this.data.matchInfo.matchCircleText
-    } else {
-      text = this.data.personality.circleText
-    }
-    text += ' #喵汪人格测试 #PETI人格测试'
-
-    wx.setClipboardData({
-      data: text,
-      success: function () {
-        toast.showSuccess('已复制')
-      }
-    })
-  },
-
   onAdError: function () {
     this.setData({ showAd: false })
   },
 
-  onToggleDisclaimer: function () {
-    this.setData({ showDisclaimer: !this.data.showDisclaimer })
-  },
-
   onShareAppMessage: function () {
-    var petLabel = this.data.petType === 'cat' ? '猫咪' : '修勾'
-    var name = this.data.personality ? this.data.personality.petName : ''
+    var r = this.data.relationship
     var title = ''
-    if (this.data.matchInfo) {
-      title = '我家' + petLabel + '是' + name + '，和我' + this.data.matchInfo.tag + '！你家呢？'
-    } else if (this.data.personality) {
-      title = '我家' + petLabel + '是' + name + '，' + this.data.personality.posterBadge + '！你家呢？'
+    if (r) {
+      title = '\u300c' + r.title + '\u300d\u2014\u2014' + r.goldQuote
     } else {
-      title = '来喵汪人格测试，测测你家毛孩子的隐藏人格！'
+      title = '\u6765\u300a\u5b83\u773c\u91cc\u7684\u4f60\u300b\uff0c\u6d4b\u6d4b\u4f60\u5728\u6bdb\u5b69\u5b50\u773c\u4e2d\u662f\u8c01\uff01'
     }
     return {
       title: title,

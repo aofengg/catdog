@@ -6,13 +6,12 @@ var share = require('../../utils/share.js')
 Page({
   data: {
     petType: 'cat',
-    stage: 'quiz',
     currentIndex: 0,
     totalQuestions: 20,
     currentQuestion: null,
     answers: [],
-    masterList: [],
-    selectedMaster: ''
+    selectedIndex: -1,
+    optionLabels: ['A', 'B', 'C', 'D']
   },
 
   _petData: null,
@@ -25,26 +24,36 @@ Page({
       petType: petType,
       totalQuestions: questions.length,
       currentQuestion: questions[0],
-      answers: Array.apply(null, Array(questions.length)).map(function () { return '' }),
-      masterList: this._petData.masterPetiList
+      answers: []
     })
   },
 
   onSelectOption: function (e) {
-    var choice = e.currentTarget.dataset.choice
+    var selected = e.currentTarget.dataset.index
     var idx = this.data.currentIndex
-    var answers = this.data.answers
-    answers[idx] = choice
+    var answers = this.data.answers.slice()
+
+    // 查找是否已有该题答案
+    var found = false
+    for (var i = 0; i < answers.length; i++) {
+      if (answers[i].questionId === idx) {
+        answers[i] = { questionId: idx, selected: selected }
+        found = true
+        break
+      }
+    }
+    if (!found) {
+      answers.push({ questionId: idx, selected: selected })
+    }
 
     var self = this
-    self.setData({ answers: answers })
+    self.setData({ answers: answers, selectedIndex: selected })
 
     setTimeout(function () {
       if (idx < self.data.totalQuestions - 1) {
         self._goNext()
       } else {
-        // 第 20 题选完，进入选择主人类型
-        self.setData({ stage: 'master' })
+        self._goResult()
       }
     }, 300)
   },
@@ -54,7 +63,8 @@ Page({
     var newIdx = this.data.currentIndex - 1
     this.setData({
       currentIndex: newIdx,
-      currentQuestion: this._petData.questions[newIdx]
+      currentQuestion: this._petData.questions[newIdx],
+      selectedIndex: this._getSelectedFor(newIdx)
     })
   },
 
@@ -62,30 +72,23 @@ Page({
     var newIdx = this.data.currentIndex + 1
     this.setData({
       currentIndex: newIdx,
-      currentQuestion: this._petData.questions[newIdx]
+      currentQuestion: this._petData.questions[newIdx],
+      selectedIndex: this._getSelectedFor(newIdx)
     })
   },
 
-  onSelectMaster: function (e) {
-    var masterCode = e.currentTarget.dataset.code
-    var self = this
-    self.setData({ selectedMaster: masterCode })
-    setTimeout(function () {
-      self._goResult(masterCode)
-    }, 300)
-  },
-
-  onSkipMaster: function () {
-    this._goResult('')
-  },
-
-  _goResult: function (masterCode) {
+  _goResult: function () {
     var resultCode = scorer.calculate(this.data.answers, this._petData.questions)
     var url = '/pages/result/result?petType=' + this.data.petType + '&resultCode=' + resultCode
-    if (masterCode) {
-      url += '&masterCode=' + masterCode
-    }
     wx.redirectTo({ url: url })
+  },
+
+  _getSelectedFor: function (questionIdx) {
+    var answers = this.data.answers
+    for (var i = 0; i < answers.length; i++) {
+      if (answers[i].questionId === questionIdx) return answers[i].selected
+    }
+    return -1
   },
 
   onShareAppMessage: function () {
