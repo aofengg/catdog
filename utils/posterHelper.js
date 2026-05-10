@@ -131,7 +131,7 @@ function draw(ctx, opts, callback) {
   // 并排图片尺寸
   var imgSize = 280
   var imgGap = 24
-  var headerH = 60 + 56 + 36 + 44 + 24     // top padding + title + gap + badges + gap
+  var headerH = 60 + 50 + 24 + 56 + 36 + 44 + 24  // top padding + brand + gap + title + gap + badges + gap
   var photosRowH = imgSize + 24              // side-by-side row + gap
   var quoteH = 32 + quoteLines * 36 + 32
   var commentH = commentLines > 0 ? (32 + commentLines * 32 + 32) : 0
@@ -153,15 +153,49 @@ function draw(ctx, opts, callback) {
   ctx.fillStyle = theme.bg
   ctx.fillRect(0, 0, CANVAS_W, totalH)
 
-  // --- 2. 标题（关系称号，Hero） ---
+  // --- 2. 品牌名（装饰线 + 标题 + 装饰线） ---
   var y = 60
   ctx.textAlign = 'center'
+  ctx.font = 'bold 30px PingFang SC'
+  ctx.fillStyle = theme.primary
+  var brandText = '\u5ba0\u7269\u773c\u4e2d\u7684\u4f60'
+  var brandTextW = ctx.measureText(brandText).width
+  ctx.fillText(brandText, CANVAS_W / 2, y + 30)
+
+  // 两侧装饰线
+  var decoLineW = 48
+  var decoGap = 16
+  var decoY = y + 22
+  ctx.strokeStyle = theme.accent
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(CANVAS_W / 2 - brandTextW / 2 - decoGap - decoLineW, decoY)
+  ctx.lineTo(CANVAS_W / 2 - brandTextW / 2 - decoGap, decoY)
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(CANVAS_W / 2 + brandTextW / 2 + decoGap, decoY)
+  ctx.lineTo(CANVAS_W / 2 + brandTextW / 2 + decoGap + decoLineW, decoY)
+  ctx.stroke()
+
+  // 底部点缀小菱形
+  var dotY = y + 30 + 18
+  ctx.fillStyle = theme.accent
+  ctx.beginPath()
+  ctx.moveTo(CANVAS_W / 2, dotY - 4)
+  ctx.lineTo(CANVAS_W / 2 + 4, dotY)
+  ctx.lineTo(CANVAS_W / 2, dotY + 4)
+  ctx.lineTo(CANVAS_W / 2 - 4, dotY)
+  ctx.closePath()
+  ctx.fill()
+  y += 50 + 24
+
+  // --- 3. 标题（关系称号，Hero） ---
   ctx.font = 'bold 48px PingFang SC'
   ctx.fillStyle = theme.primary
   ctx.fillText(relationship.title, CANVAS_W / 2, y + 44)
   y += 56 + 36
 
-  // --- 3. 徽章行（posterBadge + emotionTag） ---
+  // --- 4. 徽章行（posterBadge + emotionTag） ---
   ctx.font = 'bold 20px PingFang SC'
   var badgeText = relationship.posterBadge
   var tagText = relationship.emotionTag
