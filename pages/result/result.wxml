@@ -1,16 +1,32 @@
 <view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
+  <!-- 顶部认证标题 -->
+  <view wx:if="{{resultHeader}}" class="result-header-label">
+    <text class="header-line">——</text>
+    <text class="header-text">{{resultHeader}}</text>
+    <text class="header-line">——</text>
+  </view>
+
   <!-- 关系称号（Hero） -->
   <view class="result-header">
     <view class="title-row">
       <text class="result-title">{{relationship.title}}</text>
     </view>
+    <!-- 副标题 -->
+    <view wx:if="{{relationship.subtitle}}" class="subtitle-row">
+      <text class="result-subtitle">{{relationship.subtitle}}</text>
+    </view>
+    <!-- 稀有度 + 标签 -->
     <view class="badge-row">
       <view class="rare-badge" style="background: {{rareBgColor}}">
         <text class="rare-text">{{relationship.posterBadge}}</text>
       </view>
-      <view class="emotion-badge">
-        <text class="emotion-text">{{relationship.emotionTag}}</text>
-      </view>
+    </view>
+    <!-- 人设标签组 -->
+    <view wx:if="{{relationship.tags.length}}" class="tags-row">
+      <block wx:for="{{relationship.tags}}" wx:key="*this">
+        <text class="tag-item">{{item}}</text>
+        <text wx:if="{{index < relationship.tags.length - 1}}" class="tag-sep">|</text>
+      </block>
     </view>
   </view>
 
@@ -28,14 +44,26 @@
     </view>
   </view>
 
-  <!-- 金句 -->
+  <!-- 双金句 -->
   <view class="gold-quote">
-    <text class="quote-text">"{{relationship.goldQuote}}"</text>
+    <text class="quote-main">"{{relationship.goldQuote}}"</text>
+    <text wx:if="{{relationship.subQuote}}" class="quote-sub">{{relationship.subQuote}}</text>
+  </view>
+
+  <!-- 维度指数条 -->
+  <view wx:if="{{relationship.indices.length}}" class="indices-section">
+    <view wx:for="{{relationship.indices}}" wx:key="label" class="index-row">
+      <text class="index-label">{{item.label}}</text>
+      <view class="index-bar-bg">
+        <view class="index-bar-fill" style="width: {{item.value}}%; background: {{rareBgColor}}"></view>
+      </view>
+      <text class="index-value">{{item.value}}</text>
+    </view>
   </view>
 
   <!-- 宠物视角评价 -->
   <view class="section pet-comment-section">
-    <text class="section-title">▌它想对你说</text>
+    <text class="section-title">{{petType === 'cat' ? '🐱 本喵有话说' : '🐶 本汪有话说'}}</text>
     <view class="pet-comment-bubble">
       <text class="pet-comment-text">{{relationship.petComment}}</text>
     </view>
@@ -43,14 +71,24 @@
 
   <!-- 关系描述 -->
   <view class="section">
-    <text class="section-title">▌你们的关系是这样的</text>
+    <text class="section-title">{{petType === 'cat' ? '✨ 你们关系的真相' : '✨ 你在它心里的位置'}}</text>
+    <text wx:if="{{relationship.summary}}" class="section-summary">{{relationship.summary}}</text>
     <text class="section-content">{{relationship.description}}</text>
+    <!-- 关键词标签 -->
+    <view wx:if="{{relationship.keywords.length}}" class="keywords-row">
+      <text wx:for="{{relationship.keywords}}" wx:key="*this" class="keyword-tag">#{{item}}</text>
+    </view>
   </view>
 
   <!-- 相处建议 -->
   <view class="section">
-    <text class="section-title">▌让关系更好的小秘诀</text>
-    <text class="section-content">{{relationship.tips}}</text>
+    <text class="section-title">{{petType === 'cat' ? '🐱 本喵建议你这样宠我' : '🐶 本汪给你的小提醒'}}</text>
+    <view class="tips-list">
+      <view wx:for="{{relationship.tips}}" wx:key="*this" class="tip-item">
+        <text class="tip-bullet">•</text>
+        <text class="tip-text">{{item}}</text>
+      </view>
+    </view>
   </view>
 
   <!-- 主 CTA -->

@@ -11,6 +11,27 @@
   background: linear-gradient(180deg, #FFFAF0 0%, #FFFFFF 50%);
 }
 
+/* 顶部认证标题 */
+.result-header-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.header-text {
+  font-size: 26rpx;
+  color: #999;
+  letter-spacing: 4rpx;
+}
+
+.header-line {
+  font-size: 26rpx;
+  color: #D0D0D0;
+  letter-spacing: 2rpx;
+}
+
 /* 结果头部 */
 .result-header {
   display: flex;
@@ -20,7 +41,7 @@
 }
 
 .title-row {
-  margin-bottom: 20rpx;
+  margin-bottom: 12rpx;
 }
 
 .result-title {
@@ -37,10 +58,22 @@
   color: #FF8C42;
 }
 
+/* 副标题 */
+.subtitle-row {
+  margin-bottom: 16rpx;
+}
+
+.result-subtitle {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.5;
+}
+
 .badge-row {
   display: flex;
   align-items: center;
   gap: 16rpx;
+  margin-bottom: 16rpx;
 }
 
 .rare-badge {
@@ -54,16 +87,33 @@
   font-weight: bold;
 }
 
-.emotion-badge {
-  padding: 8rpx 20rpx;
-  border-radius: 24rpx;
-  background: #F0F0F0;
+/* 人设标签组 */
+.tags-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.emotion-text {
-  font-size: 22rpx;
+.tag-item {
+  font-size: 24rpx;
   color: #666;
   font-weight: bold;
+}
+
+.theme-cat .tag-item {
+  color: #8B7CF7;
+}
+
+.theme-dog .tag-item {
+  color: #FFA366;
+}
+
+.tag-sep {
+  font-size: 22rpx;
+  color: #D0D0D0;
+  margin: 0 4rpx;
 }
 
 /* 配图 + 照片并排 */
@@ -120,21 +170,88 @@
   color: #999;
 }
 
-/* 金句 */
+/* 双金句 */
 .gold-quote {
   text-align: center;
   margin-bottom: 40rpx;
-  padding: 24rpx 32rpx;
+  padding: 32rpx 32rpx 28rpx;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 16rpx;
   border: 2rpx solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.quote-text {
-  font-size: 30rpx;
-  color: #555;
-  font-style: italic;
+.quote-main {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: bold;
   line-height: 1.6;
+  margin-bottom: 12rpx;
+}
+
+.theme-cat .quote-main {
+  color: #4A3728;
+}
+
+.theme-dog .quote-main {
+  color: #5C3A1E;
+}
+
+.quote-sub {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.5;
+}
+
+/* 维度指数条 */
+.indices-section {
+  margin-bottom: 40rpx;
+  padding: 24rpx 20rpx;
+  background: #FAFAFA;
+  border-radius: 16rpx;
+}
+
+.index-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.index-row:last-child {
+  margin-bottom: 0;
+}
+
+.index-label {
+  font-size: 24rpx;
+  color: #666;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.index-bar-bg {
+  flex: 1;
+  height: 16rpx;
+  background: #E8E8E8;
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin: 0 16rpx;
+}
+
+.index-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.6s ease;
+}
+
+.index-value {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: bold;
+  width: 60rpx;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 /* 宠物评价气泡 */
@@ -184,6 +301,76 @@
   color: #555;
   line-height: 1.8;
   display: block;
+}
+
+/* 关系总结 */
+.section-summary {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  line-height: 1.7;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+/* 建议列表 */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.tip-bullet {
+  font-size: 28rpx;
+  color: #999;
+  flex-shrink: 0;
+  line-height: 1.8;
+}
+
+.theme-cat .tip-bullet {
+  color: #8B7CF7;
+}
+
+.theme-dog .tip-bullet {
+  color: #FFA366;
+}
+
+.tip-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* 关键词标签 */
+.keywords-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+  flex-wrap: wrap;
+}
+
+.keyword-tag {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  background: #F5F5F5;
+  color: #888;
+}
+
+.theme-cat .keyword-tag {
+  background: #F3F0FF;
+  color: #8B7CF7;
+}
+
+.theme-dog .keyword-tag {
+  background: #FFF5ED;
+  color: #FFA366;
 }
 
 /* 主 CTA */

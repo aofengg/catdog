@@ -8,6 +8,7 @@ Page({
   data: {
     petType: 'cat',
     resultCode: '',
+    resultHeader: '',
     relationship: null,
     photoPath: '',
     showAd: false,
@@ -36,9 +37,10 @@ Page({
     }
 
     var rareBgColor = '#95A5A6'
-    if (relationship.rare === '\u4f20\u8bf4\u6b3e') rareBgColor = '#FFD700'
-    else if (relationship.rare === '\u73cd\u7a00\u6b3e') rareBgColor = '#9B59B6'
-    else if (relationship.rare === '\u72ec\u7279\u6b3e') rareBgColor = '#3498DB'
+    if (relationship.rare === '\u524d3%') rareBgColor = '#FFD700'
+    else if (relationship.rare === '\u524d8%') rareBgColor = '#9B59B6'
+    else if (relationship.rare === '\u524d15%') rareBgColor = '#3498DB'
+    else if (relationship.rare === '\u524d25%') rareBgColor = '#78B4A0'
 
     var showAd = adConfig.banner.enabled
     var adUnitId = adConfig.banner.result
@@ -47,6 +49,7 @@ Page({
     this.setData({
       petType: petType,
       resultCode: resultCode,
+      resultHeader: petData.brand.resultHeader || '',
       relationship: relationship,
       resultImage: '/assets/images/result/' + petType + '/' + resultCode + '.jpg',
       rareBgColor: rareBgColor,
@@ -82,12 +85,24 @@ Page({
   },
 
   onGeneratePoster: function () {
+    if (this._navigating) return
+    this._navigating = true
+    var self = this
+    wx.showLoading({ title: '海报生成中...', mask: true })
     var url = '/pages/poster/poster?petType=' + this.data.petType +
       '&resultCode=' + this.data.resultCode
     if (this.data.photoPath) {
       url += '&photoPath=' + encodeURIComponent(this.data.photoPath)
     }
-    wx.navigateTo({ url: url })
+    setTimeout(function () {
+      wx.hideLoading()
+      wx.navigateTo({
+        url: url,
+        complete: function () {
+          self._navigating = false
+        }
+      })
+    }, 800)
   },
 
   onRetest: function () {
