@@ -101,9 +101,21 @@
   background: #FF8C42;
 }
 
+.card-title {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+  padding: 0 8rpx;
+}
+
 .card-sub {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 22rpx;
+  color: #AAAAAA;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* 免责声明 */

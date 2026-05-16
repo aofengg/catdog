@@ -1,6 +1,6 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
-var adConfig = require('../../config/adConfig.js')
+var appConfig = require('../../config/appConfig.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
 
@@ -8,12 +8,19 @@ Page({
   data: {
     petType: 'cat',
     resultCode: '',
+    tScore: 0,
     resultHeader: '',
     relationship: null,
     photoPath: '',
-    showAd: false,
-    adUnitId: '',
-    rareBgColor: '#95A5A6'
+    petName: '',
+    placeholderImg: '/assets/images/cat-placeholder.jpg',
+    rareBgColor: '#95A5A6',
+    miniCards: [],
+    customIndices: [],
+    indicesTitle: '',
+    relationshipDef: null,
+    ctaUploadText: '上传照片，生成专属海报',
+    ctaGoText: '生成我的专属海报'
   },
 
   _petData: null,
@@ -27,38 +34,95 @@ Page({
 
     var petType = options.petType || 'cat'
     var resultCode = options.resultCode || 'SHCD'
+    var tScore = parseInt(options.tScore) || 0
+    var predAnswer = options.predAnswer || null
+    var petName = options.petName ? decodeURIComponent(options.petName) : ''
 
     var petData = petType === 'dog' ? dogData : catData
-    var relationship = petData.relationships[resultCode]
+    var rel = petData.relationships[resultCode]
 
-    if (!relationship) {
+    if (!rel) {
       wx.redirectTo({ url: '/pages/home/home' })
       return
     }
 
-    var rareBgColor = '#95A5A6'
-    if (relationship.rare === '\u524d3%') rareBgColor = '#FFD700'
-    else if (relationship.rare === '\u524d8%') rareBgColor = '#9B59B6'
-    else if (relationship.rare === '\u524d15%') rareBgColor = '#3498DB'
-    else if (relationship.rare === '\u524d25%') rareBgColor = '#78B4A0'
+    // T分修正
+    var displayTitle = rel.title
+    var displayGoldQuote = rel.goldQuote
+    var displayTags = rel.tags.slice()
+    var tLabel = ''
 
-    var showAd = adConfig.banner.enabled
-    var adUnitId = adConfig.banner.result
+    if (tScore >= 4 && rel.tOverride) {
+      displayTitle = rel.tOverride.title
+      displayGoldQuote = rel.tOverride.goldQuote
+      tLabel = '相爱相杀'
+    }
+    if (tScore >= 2 && rel.tTag) {
+      displayTags.unshift(rel.tTag)
+      if (!tLabel) tLabel = '嘴硬心软'
+    }
+
+    // 预判题影响 petComment
+    var petComment = rel.petComment
+    if (predAnswer && rel.predComments && rel.predComments[predAnswer]) {
+      petComment = rel.predComments[predAnswer]
+    }
+
+    // 构造展示用 relationship 对象（不污染原数据）
+    var displayRel = {}
+    for (var k in rel) { displayRel[k] = rel[k] }
+    displayRel.title = displayTitle
+    displayRel.goldQuote = displayGoldQuote
+    displayRel.tags = displayTags
+    displayRel.petComment = petComment
+
+    var rareBgColor = '#95A5A6'
+    if (rel.rare === '前3%') rareBgColor = '#FFD700'
+    else if (rel.rare === '前8%') rareBgColor = '#9B59B6'
+    else if (rel.rare === '前15%') rareBgColor = '#3498DB'
+    else if (rel.rare === '前25%') rareBgColor = '#78B4A0'
+
+
+    // 专属指数（优先 customIndices，fallback 到旧 indices）
+    var customIndices = rel.customIndices || (rel.indices ? rel.indices.map(function(item) {
+      return { label: item.label, value: item.value, comment: '' }
+    }) : [])
+
+    // 指数卡标题
+    var indicesTitle = (tLabel || rel.emotionTag || '关系') + '指数'
+
+    // 关系定义（优先 relationshipDef，fallback 到旧 summary + description）
+    var relationshipDef = rel.relationshipDef || {
+      headline: rel.summary || '',
+      detail: rel.description || '',
+      cards: []
+    }
 
     this._petData = petData
     this.setData({
       petType: petType,
       resultCode: resultCode,
+      tScore: tScore,
       resultHeader: petData.brand.resultHeader || '',
-      relationship: relationship,
-      resultImage: '/assets/images/result/' + petType + '/' + resultCode + '.jpg',
+      relationship: displayRel,
       rareBgColor: rareBgColor,
-      showAd: showAd,
-      adUnitId: adUnitId
+      miniCards: rel.miniCards || [],
+      petName: petName,
+      placeholderImg: petType === 'dog' ? '/assets/images/dog-placeholder.jpg' : '/assets/images/cat-placeholder.jpg',
+      customIndices: customIndices,
+      indicesTitle: indicesTitle,
+      relationshipDef: relationshipDef,
+      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : '',
+      ctaUploadText: appConfig.is520()
+        ? '上传照片，生成 5.20 专属告白海报'
+        : '上传照片，生成专属海报',
+      ctaGoText: appConfig.is520()
+        ? '生成 5.20 专属告白海报'
+        : '生成我的专属海报'
     })
   },
 
-  onUploadPhoto: function () {
+  onUploadPhoto: function (callback) {
     var self = this
     wx.chooseMedia({
       count: 1,
@@ -72,19 +136,35 @@ Page({
             cropScale: '1:1',
             success: function (cropRes) {
               self.setData({ photoPath: cropRes.tempFilePath })
+              if (typeof callback === 'function') callback()
             },
             fail: function () {
               self.setData({ photoPath: tempPath })
+              if (typeof callback === 'function') callback()
             }
           })
         } else {
           self.setData({ photoPath: tempPath })
+          if (typeof callback === 'function') callback()
         }
       }
     })
   },
 
   onGeneratePoster: function () {
+    var self = this
+    if (!self.data.photoPath) {
+      self.onUploadPhoto(function () {
+        if (self.data.photoPath) {
+          self._navigateToPoster()
+        }
+      })
+      return
+    }
+    self._navigateToPoster()
+  },
+
+  _navigateToPoster: function () {
     if (this._navigating) return
     this._navigating = true
     var self = this
@@ -93,6 +173,12 @@ Page({
       '&resultCode=' + this.data.resultCode
     if (this.data.photoPath) {
       url += '&photoPath=' + encodeURIComponent(this.data.photoPath)
+    }
+    if (this.data.petName) {
+      url += '&petName=' + encodeURIComponent(this.data.petName)
+    }
+    if (this.data.tScore) {
+      url += '&tScore=' + this.data.tScore
     }
     setTimeout(function () {
       wx.hideLoading()
@@ -108,9 +194,9 @@ Page({
   onRetest: function () {
     var self = this
     toast.showModal({
-      title: '\u786e\u5b9a\u91cd\u65b0\u6d4b\u8bd5\u5417\uff1f',
-      content: '\u5f53\u524d\u7ed3\u679c\u4e0d\u4f1a\u88ab\u4fdd\u5b58',
-      confirmText: '\u91cd\u65b0\u6d4b\u8bd5',
+      title: '确定重新测试吗？',
+      content: '当前结果不会被保存',
+      confirmText: '重新测试',
       confirmColor: self.data.petType === 'cat' ? '#6B5CE7' : '#FF8C42'
     }).then(function (confirmed) {
       if (confirmed) {
@@ -119,17 +205,13 @@ Page({
     })
   },
 
-  onAdError: function () {
-    this.setData({ showAd: false })
-  },
-
   onShareAppMessage: function () {
     var r = this.data.relationship
     var title = ''
     if (r) {
       title = '\u300c' + r.title + '\u300d\u2014\u2014' + r.goldQuote
     } else {
-      title = '\u6765\u300a\u5b83\u773c\u91cc\u7684\u4f60\u300b\uff0c\u6d4b\u6d4b\u4f60\u5728\u6bdb\u5b69\u5b50\u773c\u4e2d\u662f\u8c01\uff01'
+      title = '来《它眼中的你》，测测你在毛孩子眼中是谁！'
     }
     return {
       title: title,

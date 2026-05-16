@@ -3,7 +3,7 @@
   <view class="brand-area">
     <text class="brand-icon">🐾</text>
     <text class="brand-title">它眼中的你</text>
-    <text class="brand-slogan">测测在毛孩子眼中，你是什么样的存在</text>
+    <text class="brand-slogan">{{brandSlogan}}</text>
   </view>
 
   <!-- 物种选择区 -->
@@ -13,8 +13,8 @@
       <view class="card-img-area">
         <image class="card-img" src="/assets/images/cat-placeholder.jpg" mode="aspectFit" />
       </view>
-      <view class="card-btn cat-btn">测猫咪视角</view>
-      <text class="card-sub">在它眼里你是谁</text>
+      <view class="card-btn cat-btn">{{catBtnText}}</view>
+      <text class="card-sub">{{catSubtitle}}</text>
     </view>
 
     <!-- 狗入口 -->
@@ -22,8 +22,8 @@
       <view class="card-img-area">
         <image class="card-img" src="/assets/images/dog-placeholder.jpg" mode="aspectFit" />
       </view>
-      <view class="card-btn dog-btn">测修勾视角</view>
-      <text class="card-sub">在它眼里你是谁</text>
+      <view class="card-btn dog-btn">{{dogBtnText}}</view>
+      <text class="card-sub">{{dogSubtitle}}</text>
     </view>
   </view>
 

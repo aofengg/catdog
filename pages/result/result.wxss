@@ -11,6 +11,31 @@
   background: linear-gradient(180deg, #FFFAF0 0%, #FFFFFF 50%);
 }
 
+/* 首屏视觉焦点：宠物头像 */
+.hero-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24rpx;
+}
+
+.hero-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  border: 6rpx solid #fff;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.theme-cat .hero-avatar {
+  border-color: #E8E0FF;
+  box-shadow: 0 8rpx 24rpx rgba(107, 92, 231, 0.12);
+}
+
+.theme-dog .hero-avatar {
+  border-color: #FFE8D4;
+  box-shadow: 0 8rpx 24rpx rgba(255, 140, 66, 0.12);
+}
+
 /* 顶部认证标题 */
 .result-header-label {
   display: flex;
@@ -37,7 +62,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 32rpx;
+  margin-bottom: 16rpx;
 }
 
 .title-row {
@@ -60,7 +85,7 @@
 
 /* 副标题 */
 .subtitle-row {
-  margin-bottom: 16rpx;
+  margin-bottom: 0;
 }
 
 .result-subtitle {
@@ -69,11 +94,34 @@
   line-height: 1.5;
 }
 
-.badge-row {
+/* 金句卡 */
+.gold-quote-card {
+  text-align: center;
+  margin: 8rpx 0 12rpx;
+  padding: 16rpx 32rpx;
+}
+
+.gold-quote-card .quote-main {
+  font-size: 34rpx;
+  color: #333;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+.theme-cat .gold-quote-card .quote-main {
+  color: #4A3728;
+}
+
+.theme-dog .gold-quote-card .quote-main {
+  color: #5C3A1E;
+}
+
+/* 稀有度 + 标签 */
+.badge-tags-row {
   display: flex;
   align-items: center;
-  gap: 16rpx;
-  margin-bottom: 16rpx;
+  justify-content: center;
+  margin-bottom: 10rpx;
 }
 
 .rare-badge {
@@ -94,6 +142,7 @@
   gap: 8rpx;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 24rpx;
 }
 
 .tag-item {
@@ -116,266 +165,47 @@
   margin: 0 4rpx;
 }
 
-/* 配图 + 照片并排 */
-.photos-row {
-  display: flex;
-  justify-content: center;
-  gap: 24rpx;
-  margin-bottom: 32rpx;
+/* 身份小卡片 2x2 网格 */
+.mini-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+  margin: 24rpx 0;
+  padding: 0 8rpx;
 }
 
-.illust-cell {
-  width: 310rpx;
-  height: 310rpx;
-  border-radius: 24rpx;
-  overflow: hidden;
-}
-
-.illust-img {
-  width: 100%;
-  height: 100%;
-}
-
-.photo-cell {
-  width: 310rpx;
-  height: 310rpx;
-  border-radius: 24rpx;
-  overflow: hidden;
-  background: #f5f5f5;
-}
-
-.photo-img {
-  width: 100%;
-  height: 100%;
-}
-
-.photo-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.placeholder-img {
-  width: 140rpx;
-  height: 140rpx;
-  margin-bottom: 12rpx;
-  opacity: 0.6;
-}
-
-.placeholder-tip {
-  font-size: 22rpx;
-  color: #999;
-}
-
-/* 双金句 */
-.gold-quote {
-  text-align: center;
-  margin-bottom: 40rpx;
-  padding: 32rpx 32rpx 28rpx;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 16rpx;
-  border: 2rpx solid #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.quote-main {
-  font-size: 36rpx;
-  color: #333;
-  font-weight: bold;
-  line-height: 1.6;
-  margin-bottom: 12rpx;
-}
-
-.theme-cat .quote-main {
-  color: #4A3728;
-}
-
-.theme-dog .quote-main {
-  color: #5C3A1E;
-}
-
-.quote-sub {
-  font-size: 26rpx;
-  color: #888;
-  line-height: 1.5;
-}
-
-/* 维度指数条 */
-.indices-section {
-  margin-bottom: 40rpx;
-  padding: 24rpx 20rpx;
+.mini-card-item {
   background: #FAFAFA;
   border-radius: 16rpx;
+  padding: 24rpx 20rpx;
+  text-align: center;
 }
 
-.index-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20rpx;
+.theme-cat .mini-card-item {
+  background: #F8F5FF;
 }
 
-.index-row:last-child {
-  margin-bottom: 0;
+.theme-dog .mini-card-item {
+  background: #FFF8F2;
 }
 
-.index-label {
-  font-size: 24rpx;
-  color: #666;
-  width: 160rpx;
-  flex-shrink: 0;
-}
-
-.index-bar-bg {
-  flex: 1;
-  height: 16rpx;
-  background: #E8E8E8;
-  border-radius: 8rpx;
-  overflow: hidden;
-  margin: 0 16rpx;
-}
-
-.index-bar-fill {
-  height: 100%;
-  border-radius: 8rpx;
-  transition: width 0.6s ease;
-}
-
-.index-value {
+.mini-card-label {
   font-size: 24rpx;
   color: #999;
-  font-weight: bold;
-  width: 60rpx;
-  text-align: right;
-  flex-shrink: 0;
-}
-
-/* 宠物评价气泡 */
-.pet-comment-section {
-  margin-bottom: 40rpx;
-}
-
-.pet-comment-bubble {
-  background: #FFFFFF;
-  border: 2rpx solid #E8E8E8;
-  border-radius: 20rpx;
-  padding: 28rpx 32rpx;
-  position: relative;
-}
-
-.theme-cat .pet-comment-bubble {
-  border-color: #E8E0FF;
-  background: #FDFCFF;
-}
-
-.theme-dog .pet-comment-bubble {
-  border-color: #FFE8D4;
-  background: #FFFCFA;
-}
-
-.pet-comment-text {
-  font-size: 28rpx;
-  color: #444;
-  line-height: 1.7;
-}
-
-/* 内容区段 */
-.section {
-  margin-bottom: 40rpx;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #2C2C2C;
-  margin-bottom: 16rpx;
   display: block;
+  margin-bottom: 8rpx;
 }
 
-.section-content {
+.mini-card-value {
   font-size: 28rpx;
-  color: #555;
-  line-height: 1.8;
-  display: block;
-}
-
-/* 关系总结 */
-.section-summary {
-  font-size: 30rpx;
+  font-weight: bold;
   color: #333;
-  font-weight: bold;
-  line-height: 1.7;
   display: block;
-  margin-bottom: 12rpx;
-}
-
-/* 建议列表 */
-.tips-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.tip-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12rpx;
-}
-
-.tip-bullet {
-  font-size: 28rpx;
-  color: #999;
-  flex-shrink: 0;
-  line-height: 1.8;
-}
-
-.theme-cat .tip-bullet {
-  color: #8B7CF7;
-}
-
-.theme-dog .tip-bullet {
-  color: #FFA366;
-}
-
-.tip-text {
-  font-size: 28rpx;
-  color: #555;
-  line-height: 1.8;
-}
-
-/* 关键词标签 */
-.keywords-row {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 20rpx;
-  flex-wrap: wrap;
-}
-
-.keyword-tag {
-  font-size: 24rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 20rpx;
-  background: #F5F5F5;
-  color: #888;
-}
-
-.theme-cat .keyword-tag {
-  background: #F3F0FF;
-  color: #8B7CF7;
-}
-
-.theme-dog .keyword-tag {
-  background: #FFF5ED;
-  color: #FFA366;
 }
 
 /* 主 CTA */
 .cta-area {
-  margin: 48rpx 0 32rpx;
+  margin: 32rpx 0 48rpx;
 }
 
 .cta-btn {
@@ -405,6 +235,253 @@
   color: #fff;
 }
 
+/* 无照片时 CTA 呼吸动画 */
+.cta-pulse {
+  animation: ctaPulse 2s ease-in-out infinite;
+}
+
+@keyframes ctaPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(107, 92, 231, 0.4); }
+  50% { transform: scale(1.02); box-shadow: 0 8rpx 24rpx 0 rgba(107, 92, 231, 0.3); }
+}
+
+/* ========== 第二屏：详细模块 ========== */
+
+/* 内容区段通用 */
+.section {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+/* 模块1: 宠物评价气泡 */
+.comment-section {
+  margin-bottom: 40rpx;
+}
+
+.pet-comment-bubble {
+  background: #FFFFFF;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 20rpx;
+  padding: 28rpx 32rpx;
+}
+
+.theme-cat .pet-comment-bubble {
+  border-color: #E8E0FF;
+  background: #FDFCFF;
+}
+
+.theme-dog .pet-comment-bubble {
+  border-color: #FFE8D4;
+  background: #FFFCFA;
+}
+
+.pet-comment-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.7;
+  font-weight: bold;
+}
+
+/* 模块2: 关系定义 */
+.relationship-def-section .section-title {
+  font-size: 28rpx;
+  font-weight: normal;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.relationship-def-section .def-headline {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  display: block;
+  line-height: 1.6;
+}
+
+.theme-cat .relationship-def-section .def-headline {
+  color: #6B5CE7;
+}
+
+.theme-dog .relationship-def-section .def-headline {
+  color: #FF8C42;
+}
+
+.relationship-def-section .def-detail {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.def-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.def-card-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 24rpx;
+  background: #FAFAFA;
+  border-radius: 12rpx;
+}
+
+.theme-cat .def-card-item {
+  background: #F8F5FF;
+}
+
+.theme-dog .def-card-item {
+  background: #FFF8F2;
+}
+
+.def-card-label {
+  font-size: 24rpx;
+  color: #999;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.def-card-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 关键词标签 */
+.keywords-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+  flex-wrap: wrap;
+}
+
+.keyword-tag {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  background: #F5F5F5;
+  color: #888;
+}
+
+.theme-cat .keyword-tag {
+  background: #F3F0FF;
+  color: #8B7CF7;
+}
+
+.theme-dog .keyword-tag {
+  background: #FFF5ED;
+  color: #FFA366;
+}
+
+/* 模块3: 专属指数卡 2x2 */
+.custom-indices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.index-card-item {
+  background: #FAFAFA;
+  border-radius: 16rpx;
+  padding: 24rpx 20rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theme-cat .index-card-item {
+  background: #F8F5FF;
+}
+
+.theme-dog .index-card-item {
+  background: #FFF8F2;
+}
+
+.index-card-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.index-card-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.theme-cat .index-card-value {
+  color: #6B5CE7;
+}
+
+.theme-dog .index-card-value {
+  color: #FF8C42;
+}
+
+.index-card-comment {
+  font-size: 22rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+/* 模块4: 使用说明 */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  background: #FAFAFA;
+  border-radius: 20rpx;
+  padding: 28rpx 32rpx;
+}
+
+.theme-cat .tips-list {
+  background: #FDFCFF;
+  border: 2rpx solid #E8E0FF;
+}
+
+.theme-dog .tips-list {
+  background: #FFFCFA;
+  border: 2rpx solid #FFE8D4;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.tip-bullet {
+  font-size: 28rpx;
+  color: #999;
+  flex-shrink: 0;
+  line-height: 1.8;
+}
+
+.theme-cat .tip-bullet {
+  color: #8B7CF7;
+}
+
+.theme-dog .tip-bullet {
+  color: #FFA366;
+}
+
+.tip-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+}
+
 /* 次级操作 */
 .retest-wrap {
   display: flex;
@@ -418,10 +495,6 @@
   padding: 16rpx 24rpx;
 }
 
-/* 广告区 */
-.ad-area {
-  margin: 32rpx 0;
-}
 
 /* 免责声明 */
 .disclaimer {

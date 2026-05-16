@@ -1,4 +1,12 @@
 <view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
+
+  <!-- ========== 第一屏：身份卡 ========== -->
+
+  <!-- 首屏视觉焦点：宠物头像 -->
+  <view class="hero-avatar-wrap">
+    <image class="hero-avatar" src="{{photoPath || placeholderImg}}" mode="aspectFill"></image>
+  </view>
+
   <!-- 顶部认证标题 -->
   <view wx:if="{{resultHeader}}" class="result-header-label">
     <text class="header-line">——</text>
@@ -6,7 +14,7 @@
     <text class="header-line">——</text>
   </view>
 
-  <!-- 关系称号（Hero） -->
+  <!-- 结果名 -->
   <view class="result-header">
     <view class="title-row">
       <text class="result-title">{{relationship.title}}</text>
@@ -15,74 +23,84 @@
     <view wx:if="{{relationship.subtitle}}" class="subtitle-row">
       <text class="result-subtitle">{{relationship.subtitle}}</text>
     </view>
-    <!-- 稀有度 + 标签 -->
-    <view class="badge-row">
-      <view class="rare-badge" style="background: {{rareBgColor}}">
-        <text class="rare-text">{{relationship.posterBadge}}</text>
-      </view>
-    </view>
-    <!-- 人设标签组 -->
-    <view wx:if="{{relationship.tags.length}}" class="tags-row">
-      <block wx:for="{{relationship.tags}}" wx:key="*this">
-        <text class="tag-item">{{item}}</text>
-        <text wx:if="{{index < relationship.tags.length - 1}}" class="tag-sep">|</text>
-      </block>
-    </view>
   </view>
 
-  <!-- 关系配图 + 宠物照片并排 -->
-  <view class="photos-row">
-    <view class="illust-cell">
-      <image class="illust-img" src="{{resultImage}}" mode="aspectFit" />
-    </view>
-    <view class="photo-cell" bindtap="onUploadPhoto">
-      <image wx:if="{{photoPath}}" class="photo-img" src="{{photoPath}}" mode="aspectFill" />
-      <view wx:else class="photo-placeholder">
-        <image class="placeholder-img" src="/assets/images/{{petType}}-placeholder.jpg" mode="aspectFit" />
-        <text class="placeholder-tip">点击上传宠物照片</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 双金句 -->
-  <view class="gold-quote">
+  <!-- 金句 -->
+  <view class="gold-quote-card">
     <text class="quote-main">"{{relationship.goldQuote}}"</text>
-    <text wx:if="{{relationship.subQuote}}" class="quote-sub">{{relationship.subQuote}}</text>
   </view>
 
-  <!-- 维度指数条 -->
-  <view wx:if="{{relationship.indices.length}}" class="indices-section">
-    <view wx:for="{{relationship.indices}}" wx:key="label" class="index-row">
-      <text class="index-label">{{item.label}}</text>
-      <view class="index-bar-bg">
-        <view class="index-bar-fill" style="width: {{item.value}}%; background: {{rareBgColor}}"></view>
-      </view>
-      <text class="index-value">{{item.value}}</text>
+  <!-- 稀有度 + 标签 -->
+  <view class="badge-tags-row">
+    <view class="rare-badge" style="background: {{rareBgColor}}">
+      <text class="rare-text">{{relationship.posterBadge}}</text>
+    </view>
+  </view>
+  <view wx:if="{{relationship.tags.length}}" class="tags-row">
+    <block wx:for="{{relationship.tags}}" wx:key="*this">
+      <text class="tag-item">{{item}}</text>
+      <text wx:if="{{index < relationship.tags.length - 1}}" class="tag-sep">|</text>
+    </block>
+  </view>
+
+  <!-- 4张小卡片 (2x2) -->
+  <view wx:if="{{miniCards.length}}" class="mini-cards-grid">
+    <view wx:for="{{miniCards}}" wx:key="label" class="mini-card-item">
+      <text class="mini-card-label">{{item.label}}</text>
+      <text class="mini-card-value">{{item.value}}</text>
     </view>
   </view>
 
-  <!-- 宠物视角评价 -->
-  <view class="section pet-comment-section">
+  <!-- 主 CTA -->
+  <view class="cta-area">
+    <view class="cta-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}} {{photoPath ? '' : 'cta-pulse'}}" bindtap="onGeneratePoster">
+      <text class="cta-text">{{photoPath ? ctaGoText : ctaUploadText}}</text>
+    </view>
+  </view>
+
+  <!-- ========== 第二屏：详细解释 ========== -->
+
+  <!-- 模块1: 本喵/本汪有话说 -->
+  <view class="section comment-section">
     <text class="section-title">{{petType === 'cat' ? '🐱 本喵有话说' : '🐶 本汪有话说'}}</text>
     <view class="pet-comment-bubble">
       <text class="pet-comment-text">{{relationship.petComment}}</text>
     </view>
   </view>
 
-  <!-- 关系描述 -->
-  <view class="section">
-    <text class="section-title">{{petType === 'cat' ? '✨ 你们关系的真相' : '✨ 你在它心里的位置'}}</text>
-    <text wx:if="{{relationship.summary}}" class="section-summary">{{relationship.summary}}</text>
-    <text class="section-content">{{relationship.description}}</text>
+  <!-- 模块2: 关系定义 -->
+  <view class="section relationship-def-section">
+    <text class="section-title">💡 你们这段关系，说白了就是——</text>
+    <text class="def-headline">{{relationshipDef.headline}}</text>
+    <text class="def-detail">{{relationshipDef.detail}}</text>
+    <!-- 关系小卡 -->
+    <view wx:if="{{relationshipDef.cards.length}}" class="def-cards">
+      <view wx:for="{{relationshipDef.cards}}" wx:key="label" class="def-card-item">
+        <text class="def-card-label">{{item.label}}</text>
+        <text class="def-card-value">{{item.value}}</text>
+      </view>
+    </view>
     <!-- 关键词标签 -->
     <view wx:if="{{relationship.keywords.length}}" class="keywords-row">
       <text wx:for="{{relationship.keywords}}" wx:key="*this" class="keyword-tag">#{{item}}</text>
     </view>
   </view>
 
-  <!-- 相处建议 -->
-  <view class="section">
-    <text class="section-title">{{petType === 'cat' ? '🐱 本喵建议你这样宠我' : '🐶 本汪给你的小提醒'}}</text>
+  <!-- 模块3: 专属指数卡 (2x2) -->
+  <view class="section indices-card-section">
+    <text class="section-title">📊 {{indicesTitle}}</text>
+    <view class="custom-indices-grid">
+      <view wx:for="{{customIndices}}" wx:key="label" class="index-card-item">
+        <text class="index-card-label">{{item.label}}</text>
+        <text class="index-card-value">{{item.value}}</text>
+        <text wx:if="{{item.comment}}" class="index-card-comment">{{item.comment}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 模块4: 本喵/本汪使用说明 -->
+  <view class="section tips-section">
+    <text class="section-title">{{petType === 'cat' ? '🐱 本喵使用说明' : '🐶 本汪使用说明'}}</text>
     <view class="tips-list">
       <view wx:for="{{relationship.tips}}" wx:key="*this" class="tip-item">
         <text class="tip-bullet">•</text>
@@ -91,24 +109,13 @@
     </view>
   </view>
 
-  <!-- 主 CTA -->
-  <view class="cta-area">
-    <view class="cta-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onGeneratePoster">
-      <text class="cta-text">生成我的专属海报</text>
-    </view>
-  </view>
-
-  <!-- 再测一次 -->
+  <!-- 次级操作区 -->
   <view class="retest-wrap">
     <view class="sub-btn" bindtap="onRetest">
       <text>再测一次</text>
     </view>
   </view>
 
-  <!-- Banner 广告位 -->
-  <view wx:if="{{showAd}}" class="ad-area">
-    <ad unit-id="{{adUnitId}}" ad-type="banner" ad-theme="white" binderror="onAdError"></ad>
-  </view>
 
   <!-- 免责声明 -->
   <view class="disclaimer">

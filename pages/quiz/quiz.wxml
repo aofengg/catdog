@@ -1,36 +1,89 @@
 <view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
-  <!-- 进度条 -->
-  <view class="progress-wrap">
-    <text class="progress-num">{{currentIndex + 1}}/{{totalQuestions}}</text>
-    <view class="progress-bar">
-      <view class="progress-fill" style="width: {{(currentIndex + 1) / totalQuestions * 100}}%"></view>
-    </view>
-  </view>
 
-  <!-- 题目区 -->
-  <view class="question-area">
-    <text class="question-text">{{currentQuestion.scene}}</text>
-  </view>
+  <!-- ========== 上传引导步骤 ========== -->
+  <block wx:if="{{showUpload}}">
+    <view class="upload-guide">
+      <text class="upload-guide-title">{{uploadTitle}}</text>
+      <text class="upload-guide-desc">{{uploadDesc}}</text>
 
-  <!-- 选项区 -->
-  <view class="options-area">
-    <view
-      wx:for="{{currentQuestion.options}}"
-      wx:key="index"
-      class="option-card {{selectedIndex === index ? 'option-selected' : ''}}"
-      bindtap="onSelectOption"
-      data-index="{{index}}"
-    >
-      <text class="option-label">{{optionLabels[index]}}</text>
-      <text class="option-text">{{item.text}}</text>
-    </view>
-  </view>
+      <view class="upload-area" bindtap="onUploadPhoto">
+        <view wx:if="{{photoPath}}" class="upload-preview">
+          <image class="upload-preview-img" src="{{photoPath}}" mode="aspectFill" />
+        </view>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-plus">+</text>
+          <text class="upload-placeholder-tip">点击选择照片</text>
+        </view>
+      </view>
 
-  <!-- 底部操作栏 -->
-  <view class="bottom-bar">
-    <view class="prev-btn {{currentIndex === 0 ? 'prev-disabled' : ''}}" bindtap="onPrev">
-      <text>← 上一题</text>
+      <!-- 宠物名字输入（选填） -->
+      <view class="pet-name-wrap">
+        <input class="pet-name-input"
+          placeholder="{{petType === 'cat' ? '你家猫叫什么名字？（选填）' : '你家狗叫什么名字？（选填）'}}"
+          value="{{petName}}"
+          bindinput="onPetNameInput"
+          maxlength="8" />
+      </view>
+
+      <view class="upload-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onConfirmUpload">
+        <text class="upload-btn-text">{{photoPath ? '开始答题' : uploadCTA}}</text>
+      </view>
+
+      <view class="upload-skip" bindtap="onSkipUpload">
+        <text class="upload-skip-text">先跳过，稍后再补</text>
+      </view>
     </view>
-    <text class="pet-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
-  </view>
+  </block>
+
+  <!-- ========== 答题主流程 ========== -->
+  <block wx:else>
+    <!-- 进度条 -->
+    <view class="progress-wrap">
+      <block wx:if="{{questionType === 'prediction'}}">
+        <text class="progress-num">热身题</text>
+      </block>
+      <block wx:elif="{{questionType === 'bonus'}}">
+        <text class="progress-num">{{showPhaseLabel}}</text>
+      </block>
+      <block wx:else>
+        <text class="progress-num">{{normalProgress + 1}}/{{normalTotal}}</text>
+      </block>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{questionType === 'prediction' ? 0 : (questionType === 'bonus' ? 100 : (normalProgress + 1) / normalTotal * 100)}}%"></view>
+      </view>
+    </view>
+
+    <!-- 题目区 -->
+    <view class="question-area">
+      <text class="question-text">{{currentQuestion.scene}}</text>
+    </view>
+
+    <!-- 选项区 -->
+    <view class="options-area">
+      <view
+        wx:for="{{currentQuestion.options}}"
+        wx:key="index"
+        class="option-card {{selectedIndex === index ? 'option-selected' : ''}}"
+        bindtap="onSelectOption"
+        data-index="{{index}}"
+      >
+        <text class="option-label">{{optionLabels[index]}}</text>
+        <text class="option-text">{{item.text}}</text>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="prev-btn {{currentIndex === 0 ? 'prev-disabled' : ''}}" bindtap="onPrev">
+        <text>← 上一题</text>
+      </view>
+      <text class="pet-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
+    </view>
+
+    <!-- 宠物吐槽弹窗 -->
+    <view wx:if="{{feedbackText}}" class="feedback-toast">
+      <text class="feedback-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
+      <text class="feedback-text">{{feedbackText}}</text>
+    </view>
+  </block>
 </view>
