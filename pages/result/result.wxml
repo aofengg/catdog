@@ -58,53 +58,71 @@
     </view>
   </view>
 
-  <!-- ========== 第二屏：详细解释 ========== -->
-
-  <!-- 模块1: 本喵/本汪有话说 -->
-  <view class="section comment-section">
-    <text class="section-title">{{petType === 'cat' ? '🐱 本喵有话说' : '🐶 本汪有话说'}}</text>
-    <view class="pet-comment-bubble">
-      <text class="pet-comment-text">{{relationship.petComment}}</text>
-    </view>
+  <!-- 下滑引导（未解锁时显示） -->
+  <view wx:if="{{!contentUnlocked}}" class="scroll-hint" bindtap="onUnlockTap">
+    <text class="scroll-hint-text">👇 {{petType === 'cat' ? '本喵还写了一份完整鉴定报告' : '本汪还写了一份完整报告'}}，往下看</text>
   </view>
 
-  <!-- 模块2: 关系定义 -->
-  <view class="section relationship-def-section">
-    <text class="section-title">💡 你们这段关系，说白了就是——</text>
-    <text class="def-headline">{{relationshipDef.headline}}</text>
-    <text class="def-detail">{{relationshipDef.detail}}</text>
-    <!-- 关系小卡 -->
-    <view wx:if="{{relationshipDef.cards.length}}" class="def-cards">
-      <view wx:for="{{relationshipDef.cards}}" wx:key="label" class="def-card-item">
-        <text class="def-card-label">{{item.label}}</text>
-        <text class="def-card-value">{{item.value}}</text>
+  <!-- ========== 锁定内容区域 ========== -->
+  <text class="section-title comment-title">{{petType === 'cat' ? '🐱 本喵有话说' : '🐶 本汪有话说'}}</text>
+  <view class="locked-content-wrap">
+    <!-- 模糊遮罩 + 解锁按钮 -->
+    <view wx:if="{{!contentUnlocked}}" class="locked-overlay">
+      <text class="unlock-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
+      <view class="unlock-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onUnlockTap">
+        <text class="unlock-btn-text">{{petType === 'cat' ? '看个视频，解锁本喵的完整鉴定' : '看个视频，解锁本汪的完整报告'}}</text>
       </view>
+      <text class="unlock-hint">{{petType === 'cat' ? '本喵辛辛苦苦写的，不看完亏了' : '本汪用心写的，不看完可惜了'}}</text>
     </view>
-    <!-- 关键词标签 -->
-    <view wx:if="{{relationship.keywords.length}}" class="keywords-row">
-      <text wx:for="{{relationship.keywords}}" wx:key="*this" class="keyword-tag">#{{item}}</text>
-    </view>
-  </view>
 
-  <!-- 模块3: 专属指数卡 (2x2) -->
-  <view class="section indices-card-section">
-    <text class="section-title">📊 {{indicesTitle}}</text>
-    <view class="custom-indices-grid">
-      <view wx:for="{{customIndices}}" wx:key="label" class="index-card-item">
-        <text class="index-card-label">{{item.label}}</text>
-        <text class="index-card-value">{{item.value}}</text>
-        <text wx:if="{{item.comment}}" class="index-card-comment">{{item.comment}}</text>
+    <!-- 被锁定的内容 -->
+    <view class="locked-sections {{contentUnlocked ? '' : 'is-blurred'}}">
+      <!-- 模块1: 本喵/本汪有话说 -->
+      <view class="section comment-section">
+        <view class="pet-comment-bubble">
+          <text class="pet-comment-text">{{relationship.petComment}}</text>
+        </view>
       </view>
-    </view>
-  </view>
 
-  <!-- 模块4: 本喵/本汪使用说明 -->
-  <view class="section tips-section">
-    <text class="section-title">{{petType === 'cat' ? '🐱 本喵使用说明' : '🐶 本汪使用说明'}}</text>
-    <view class="tips-list">
-      <view wx:for="{{relationship.tips}}" wx:key="*this" class="tip-item">
-        <text class="tip-bullet">•</text>
-        <text class="tip-text">{{item}}</text>
+      <!-- 模块2: 关系定义 -->
+      <view class="section relationship-def-section">
+        <text class="section-title">💡 你们这段关系，说白了就是——</text>
+        <text class="def-headline">{{relationshipDef.headline}}</text>
+        <text class="def-detail">{{relationshipDef.detail}}</text>
+        <!-- 关系小卡 -->
+        <view wx:if="{{relationshipDef.cards.length}}" class="def-cards">
+          <view wx:for="{{relationshipDef.cards}}" wx:key="label" class="def-card-item">
+            <text class="def-card-label">{{item.label}}</text>
+            <text class="def-card-value">{{item.value}}</text>
+          </view>
+        </view>
+        <!-- 关键词标签 -->
+        <view wx:if="{{relationship.keywords.length}}" class="keywords-row">
+          <text wx:for="{{relationship.keywords}}" wx:key="*this" class="keyword-tag">#{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 模块3: 专属指数卡 (2x2) -->
+      <view class="section indices-card-section">
+        <text class="section-title">📊 {{indicesTitle}}</text>
+        <view class="custom-indices-grid">
+          <view wx:for="{{customIndices}}" wx:key="label" class="index-card-item">
+            <text class="index-card-label">{{item.label}}</text>
+            <text class="index-card-value">{{item.value}}</text>
+            <text wx:if="{{item.comment}}" class="index-card-comment">{{item.comment}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 模块4: 本喵/本汪使用说明 -->
+      <view class="section tips-section">
+        <text class="section-title">{{petType === 'cat' ? '🐱 本喵使用说明' : '🐶 本汪使用说明'}}</text>
+        <view class="tips-list">
+          <view wx:for="{{relationship.tips}}" wx:key="*this" class="tip-item">
+            <text class="tip-bullet">•</text>
+            <text class="tip-text">{{item}}</text>
+          </view>
+        </view>
       </view>
     </view>
   </view>

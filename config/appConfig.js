@@ -4,7 +4,9 @@
 
 var appConfig = {
   // 强制启用 520 模式（调试用），设为 true 可在任意日期看到 520 样式
-  force520: true
+  force520: true,
+  // 激励视频广告位ID，留空时降级为直接解锁（方便开发调试）
+  rewardedAdUnitId: ''
 }
 
 /**

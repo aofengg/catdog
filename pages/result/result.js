@@ -20,10 +20,13 @@ Page({
     indicesTitle: '',
     relationshipDef: null,
     ctaUploadText: '上传照片，生成专属海报',
-    ctaGoText: '生成我的专属海报'
+    ctaGoText: '生成我的专属海报',
+    contentUnlocked: false,
+    adLoaded: false
   },
 
   _petData: null,
+  _videoAd: null,
 
   onLoad: function (options) {
     var pages = getCurrentPages()
@@ -119,6 +122,56 @@ Page({
       ctaGoText: appConfig.is520()
         ? '生成 5.20 专属告白海报'
         : '生成我的专属海报'
+    })
+
+    // 激励视频广告初始化
+    this._initRewardedAd()
+  },
+
+  _initRewardedAd: function () {
+    var self = this
+    var adUnitId = appConfig.rewardedAdUnitId
+
+    if (!adUnitId || typeof wx.createRewardedVideoAd !== 'function') {
+      return
+    }
+
+    var videoAd = wx.createRewardedVideoAd({ adUnitId: adUnitId })
+    self._videoAd = videoAd
+
+    videoAd.onLoad(function () {
+      self.setData({ adLoaded: true })
+    })
+
+    videoAd.onError(function (err) {
+      console.warn('激励视频广告加载失败', err)
+      self.setData({ adLoaded: false })
+    })
+
+    videoAd.onClose(function (res) {
+      if (res && res.isEnded) {
+        self.setData({ contentUnlocked: true })
+      } else {
+        toast.showError('看完视频才能解锁哦~')
+      }
+    })
+  },
+
+  onUnlockTap: function () {
+    var self = this
+    if (!self._videoAd || !self.data.adLoaded) {
+      self.setData({ contentUnlocked: true })
+      toast.showSuccess('已为你解锁完整报告')
+      return
+    }
+
+    self._videoAd.show().catch(function () {
+      self._videoAd.load().then(function () {
+        self._videoAd.show()
+      }).catch(function () {
+        self.setData({ contentUnlocked: true })
+        toast.showSuccess('已为你解锁完整报告')
+      })
     })
   },
 
@@ -222,5 +275,14 @@ Page({
 
   onShareTimeline: function () {
     return share.getShareTimeline()
+  },
+
+  onUnload: function () {
+    if (this._videoAd) {
+      this._videoAd.offLoad()
+      this._videoAd.offError()
+      this._videoAd.offClose()
+      this._videoAd = null
+    }
   }
 })
