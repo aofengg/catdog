@@ -214,7 +214,7 @@ function draw(ctx, opts, callback) {
       ctx.fillStyle = '#999999'
       ctx.textBaseline = 'middle'
       var tags = relationship.tags || []
-      var tagsText = tags.slice(0, 3).join('  |  ')
+      var tagsText = tags.slice(0, 4).join('  |  ')
       ctx.fillText(tagsText, CANVAS_W / 2, y + 16)
       y += 32 + 24
 

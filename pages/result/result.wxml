@@ -70,7 +70,7 @@
     <view wx:if="{{!contentUnlocked}}" class="locked-overlay">
       <text class="unlock-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
       <view class="unlock-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onUnlockTap">
-        <text class="unlock-btn-text">{{petType === 'cat' ? '看个视频，解锁本喵的完整鉴定' : '看个视频，解锁本汪的完整报告'}}</text>
+        <text class="unlock-btn-text">{{petType === 'cat' ? '解锁本喵的隐藏评价' : '解锁本汪的隐藏评价'}}</text>
       </view>
       <text class="unlock-hint">{{petType === 'cat' ? '本喵辛辛苦苦写的，不看完亏了' : '本汪用心写的，不看完可惜了'}}</text>
     </view>

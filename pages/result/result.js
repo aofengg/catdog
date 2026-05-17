@@ -61,7 +61,9 @@ Page({
       tLabel = '相爱相杀'
     }
     if (tScore >= 2 && rel.tTag) {
-      displayTags.unshift(rel.tTag)
+      if (displayTags.indexOf(rel.tTag) === -1) {
+        displayTags.unshift(rel.tTag)
+      }
       if (!tLabel) tLabel = '嘴硬心软'
     }
 
@@ -76,7 +78,7 @@ Page({
     for (var k in rel) { displayRel[k] = rel[k] }
     displayRel.title = displayTitle
     displayRel.goldQuote = displayGoldQuote
-    displayRel.tags = displayTags
+    displayRel.tags = displayTags.slice(0, 4)
     displayRel.petComment = petComment
 
     var rareBgColor = '#95A5A6'

@@ -51,14 +51,16 @@ Page({
       for (var k in this._relationship) { rel[k] = this._relationship[k] }
       rel.title = this._relationship.tOverride.title
       rel.goldQuote = this._relationship.tOverride.goldQuote
-      if (tScore >= 2 && this._relationship.tTag) {
+      if (tScore >= 2 && this._relationship.tTag && this._relationship.tags.indexOf(this._relationship.tTag) === -1) {
         rel.tags = [this._relationship.tTag].concat(this._relationship.tags)
       }
       this._relationship = rel
     } else if (tScore >= 2 && rel.tTag) {
       rel = {}
       for (var k in this._relationship) { rel[k] = this._relationship[k] }
-      rel.tags = [this._relationship.tTag].concat(this._relationship.tags)
+      if (this._relationship.tags.indexOf(rel.tTag) === -1) {
+        rel.tags = [this._relationship.tTag].concat(this._relationship.tags)
+      }
       this._relationship = rel
     }
 
