@@ -1,6 +1,6 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
-var appConfig = require('../../config/appConfig.js')
+var holidayConfig = require('../../config/holidayConfig.js')
 var share = require('../../utils/share.js')
 
 Page({
@@ -14,8 +14,6 @@ Page({
   },
 
   onLoad: function () {
-    var is520 = appConfig.is520()
-
     var updates = {
       catSubtitle: catData.brand.homeCTA.subtitle || '',
       catBtnText: catData.brand.homeCTA.btnText || '测猫咪视角',
@@ -23,8 +21,12 @@ Page({
       dogBtnText: dogData.brand.homeCTA.btnText || '测修勾视角'
     }
 
-    if (is520) {
-      updates.brandSlogan = '5.20 不一定要人类告白，你的毛孩子也在偷偷爱你'
+    var holiday = holidayConfig.getCurrentHoliday()
+    if (holiday) {
+      var texts = holidayConfig.getTexts(holiday)
+      if (texts && texts.homeSlogan) {
+        updates.brandSlogan = texts.homeSlogan
+      }
     }
 
     this.setData(updates)

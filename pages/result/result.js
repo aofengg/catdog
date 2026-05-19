@@ -1,6 +1,7 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
 var appConfig = require('../../config/appConfig.js')
+var holidayConfig = require('../../config/holidayConfig.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
 
@@ -117,14 +118,18 @@ Page({
       customIndices: customIndices,
       indicesTitle: indicesTitle,
       relationshipDef: relationshipDef,
-      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : '',
-      ctaUploadText: appConfig.is520()
-        ? '上传照片，生成 5.20 专属告白海报'
-        : '上传照片，生成专属海报',
-      ctaGoText: appConfig.is520()
-        ? '生成 5.20 专属告白海报'
-        : '生成我的专属海报'
+      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : ''
     })
+
+    // 节日 CTA 文案
+    var holiday = holidayConfig.getCurrentHoliday()
+    if (holiday) {
+      var hTexts = holidayConfig.getTexts(holiday, petType)
+      if (hTexts) {
+        if (hTexts.ctaUploadText) this.setData({ ctaUploadText: hTexts.ctaUploadText })
+        if (hTexts.ctaGoText) this.setData({ ctaGoText: hTexts.ctaGoText })
+      }
+    }
 
     // 激励视频广告初始化
     this._initRewardedAd()
@@ -146,10 +151,16 @@ Page({
     })
 
     videoAd.onError(function (err) {
-      console.warn('激励视频广告加载失败', err)
-      self.setData({ adLoaded: false })
-      toast.showSuccess('好嘞，已为你解锁完整报告')
-      self.setData({ contentUnlocked: true })
+      var errCode = err && err.errCode
+      if (errCode === 1004) {
+        // 无合适广告返回，隐藏广告入口，直接解锁
+        console.warn('激励视频：暂无广告填充', err)
+        self.setData({ adLoaded: false, contentUnlocked: true })
+      } else {
+        // 调用异常，同样降级解锁，避免用户卡住
+        console.warn('激励视频广告异常', err)
+        self.setData({ adLoaded: false, contentUnlocked: true })
+      }
     })
 
     videoAd.onClose(function (res) {

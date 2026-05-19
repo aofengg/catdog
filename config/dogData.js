@@ -25,8 +25,6 @@ var dogData = {
       uploadCTA: '上传你家狗照片，生成专属关系卡'
     },
     posterGuideText: '扫码测测你在它心里是什么身份',
-    posterGuideText520: '5.20 测测你在它心里是什么身份',
-    poster520Quote: '5.20 不一定要人类告白，本汪已经认证你了',
     promoTexts: {
       petGroup: [
         '我测出来是「{title}」，有点被我家狗感动到。\n你们也测一下，看你在狗眼里是饭票、司机，还是全世界。',
@@ -36,9 +34,6 @@ var dogData = {
       moments: [
         '测完发现我是「{title}」—— {goldQuote}\n被自己家狗认证了属于是。',
         '{goldQuote}\n我在它心里原来是这样的……你们也来测测'
-      ],
-      moments520: [
-        '5.20 不一定要人类告白，我家毛孩子已经给我发身份认证了。\n我是「{title}」，你们是什么？'
       ]
     }
   },

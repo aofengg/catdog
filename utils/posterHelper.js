@@ -90,7 +90,7 @@ function measureLines(ctx, text, maxWidth) {
 
 /**
  * 绘制海报
- * opts: { relationship, petData, resultCode, photoPath, petName, canvas, guideText, is520, poster520Quote }
+ * opts: { relationship, petData, resultCode, photoPath, petName, canvas, guideText, holidayBadge, holidayQuote }
  */
 function draw(ctx, opts, callback) {
   var relationship = opts.relationship
@@ -99,8 +99,8 @@ function draw(ctx, opts, callback) {
   var petName = opts.petName || (petData.petType === 'cat' ? '猫主子' : '我家修勾')
   var canvas = opts.canvas
   var guideText = opts.guideText || (petData.brand.posterGuideText || '扫码测测你在它心里是什么身份')
-  var is520 = opts.is520 || false
-  var poster520Quote = opts.poster520Quote || ''
+  var holidayBadge = opts.holidayBadge || ''
+  var holidayQuote = opts.holidayQuote || ''
 
   var themeName = relationship.posterTheme || 'milkWhite'
   var theme = THEMES[themeName] || THEMES.milkWhite
@@ -124,8 +124,8 @@ function draw(ctx, opts, callback) {
   var miniCardTotalH = miniCardRows > 0 ? (miniCardRows * miniCardRowH + (miniCardRows - 1) * miniCardGap) : 0
   var qrSize = 120
 
-  // 520 情绪金句高度
-  var quote520H = (is520 && poster520Quote) ? 56 : 0
+  // 节日情绪金句高度
+  var quoteHolidayH = holidayQuote ? 56 : 0
 
   // 各区间距
   var totalH = 56           // top
@@ -133,7 +133,7 @@ function draw(ctx, opts, callback) {
     + 44 + 16              // title + gap
     + quoteBlockH + 20     // quote + gap
     + 32 + 24             // tags + gap
-    + quote520H            // 520 情绪金句
+    + quoteHolidayH        // 节日情绪金句
     + miniCardTotalH + 36  // cards + gap
     + qrSize + 20         // qr area + gap
     + 48                   // bottom
@@ -173,12 +173,11 @@ function draw(ctx, opts, callback) {
       }
       y += photoSize + 32
 
-      // === 2.5 520 限定角标（照片右上角） ===
-      if (is520) {
-        var badgeText = '5.20 限定'
+      // === 2.5 节日限定角标（照片右上角） ===
+      if (holidayBadge) {
         ctx.save()
         ctx.font = 'bold 20px PingFang SC'
-        var badgeW = ctx.measureText(badgeText).width + 24
+        var badgeW = ctx.measureText(holidayBadge).width + 24
         var badgeH = 36
         var badgeX = photoX + photoSize - badgeW + 12
         var badgeY = y - photoSize - 32 + 8
@@ -188,7 +187,7 @@ function draw(ctx, opts, callback) {
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
         ctx.fillStyle = '#FFFFFF'
-        ctx.fillText(badgeText, badgeX + badgeW / 2, badgeY + badgeH / 2)
+        ctx.fillText(holidayBadge, badgeX + badgeW / 2, badgeY + badgeH / 2)
         ctx.restore()
       }
 
@@ -218,14 +217,14 @@ function draw(ctx, opts, callback) {
       ctx.fillText(tagsText, CANVAS_W / 2, y + 16)
       y += 32 + 24
 
-      // === 5.5 520 情绪金句（标签与小卡片之间） ===
-      if (is520 && poster520Quote) {
+      // === 5.5 节日情绪金句（标签与小卡片之间） ===
+      if (holidayQuote) {
         ctx.font = 'bold 24px PingFang SC'
         ctx.fillStyle = '#FF6B81'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText(poster520Quote, CANVAS_W / 2, y + 12)
-        y += quote520H
+        ctx.fillText(holidayQuote, CANVAS_W / 2, y + 12)
+        y += quoteHolidayH
       }
 
       // === 6. 小卡片 2x2 网格 ===

@@ -314,7 +314,7 @@
 }
 
 .unlock-btn {
-  width: 70%;
+  width: 88%;
   height: 96rpx;
   display: flex;
   align-items: center;
@@ -328,7 +328,7 @@
 }
 
 .unlock-btn-text {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: bold;
   color: #fff;
 }

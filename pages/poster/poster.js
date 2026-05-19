@@ -1,6 +1,6 @@
 var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
-var appConfig = require('../../config/appConfig.js')
+var holidayConfig = require('../../config/holidayConfig.js')
 var posterHelper = require('../../utils/posterHelper.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
@@ -64,16 +64,20 @@ Page({
       this._relationship = rel
     }
 
-    // 生成分享文案：优先 promoTexts.moments，fallback circleTexts
+    // 生成分享文案：优先 promoTexts.moments + 节日文案，fallback circleTexts
     var circleText = ''
     var brand = this._petData.brand
     var rel = this._relationship
 
     if (brand.promoTexts && brand.promoTexts.moments && brand.promoTexts.moments.length > 0) {
       var pool = brand.promoTexts.moments.slice()
-      // 5.20 限定：将520专属文案加入选择池
-      if (appConfig.is520() && brand.promoTexts.moments520) {
-        pool = pool.concat(brand.promoTexts.moments520)
+      // 节日限定：将节日专属文案加入选择池
+      var holiday = holidayConfig.getCurrentHoliday()
+      if (holiday) {
+        var hTexts = holidayConfig.getTexts(holiday, petType)
+        if (hTexts && hTexts.moments) {
+          pool = pool.concat(hTexts.moments)
+        }
       }
       var template = pool[Math.floor(Math.random() * pool.length)]
       circleText = template
@@ -101,7 +105,6 @@ Page({
     this._drawPoster()
   },
 
-
   _drawPoster: function () {
     var self = this
     self.setData({ isDrawing: true, drawError: false, posterImage: '' })
@@ -122,13 +125,21 @@ Page({
       // 引导文案（可按日期切换）
       var brand = self._petData.brand
       var guideText = brand.posterGuideText || '扫码测测你在它心里是什么身份'
-      // 5.20 限定
-      if (appConfig.is520() && brand.posterGuideText520) {
-        guideText = brand.posterGuideText520
+
+      var holidayBadge = ''
+      var holidayQuote = ''
+      var holiday = holidayConfig.getCurrentHoliday()
+      if (holiday) {
+        var hTexts = holidayConfig.getTexts(holiday, self.data.petType)
+        var hMeta = holidayConfig.getHolidayMeta(holiday)
+        if (hTexts) {
+          if (hTexts.posterGuideText) guideText = hTexts.posterGuideText
+          if (hTexts.posterQuote) holidayQuote = hTexts.posterQuote
+        }
+        if (hMeta) holidayBadge = hMeta.badge
       }
 
       try {
-        var drawIs520 = appConfig.is520()
         posterHelper.draw(ctx, {
           canvas: canvas,
           petData: self._petData,
@@ -137,8 +148,8 @@ Page({
           photoPath: self.data.photoPath,
           petName: self.data.petName,
           guideText: guideText,
-          is520: drawIs520,
-          poster520Quote: drawIs520 ? (brand.poster520Quote || '') : ''
+          holidayBadge: holidayBadge,
+          holidayQuote: holidayQuote
         }, function (err) {
           if (err) {
             self.setData({ isDrawing: false, drawError: true })
@@ -270,7 +281,6 @@ Page({
       }
     })
   },
-
 
   onUnload: function () {
     if (this._canvasImg) {

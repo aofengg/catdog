@@ -25,8 +25,6 @@ var catData = {
       uploadCTA: '上传你家猫照片，生成专属关系卡'
     },
     posterGuideText: '扫码测测你在它心里是什么身份',
-    posterGuideText520: '5.20 测测你在它心里是什么身份',
-    poster520Quote: '5.20 不一定要人类告白，本喵已经认证你了',
     promoTexts: {
       petGroup: [
         '我刚测出来是「{title}」，太准了……\n{goldQuote}\n你们也测一下，我想看谁家猫最离谱。',
@@ -36,9 +34,6 @@ var catData = {
       moments: [
         '测完觉得很冒犯，但确实无法反驳。\n我在猫眼里是「{title}」—— {goldQuote}',
         '{goldQuote}\n原来我在它心里是这样的人类……你们也来测测'
-      ],
-      moments520: [
-        '5.20 不一定要人类告白，我家毛孩子已经给我发身份认证了。\n我是「{title}」，你们是什么？'
       ]
     }
   },
