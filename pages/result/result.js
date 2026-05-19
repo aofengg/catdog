@@ -275,16 +275,26 @@ Page({
 
   onShareAppMessage: function () {
     var r = this.data.relationship
+    var holiday = holidayConfig.getCurrentHoliday()
+    var hTexts = holiday ? holidayConfig.getTexts(holiday) : null
+    var hMeta = holiday ? holidayConfig.getHolidayMeta(holiday) : null
     var title = ''
     if (r) {
       title = '\u300c' + r.title + '\u300d\u2014\u2014' + r.goldQuote
+    } else if (hTexts && hTexts.shareTitle) {
+      title = hTexts.shareTitle
     } else {
       title = '来《它眼中的你》，测测你在毛孩子眼中是谁！'
     }
+    // 节日期间，在结果文案前拼上节日标语
+    if (r && hTexts && hTexts.shareTitle) {
+      title = hTexts.shareTitle + ' ' + '\u300c' + r.title + '\u300d'
+    }
+    var imageUrl = (hMeta && hMeta.shareImage) ? hMeta.shareImage : '/assets/images/share-cover.jpg'
     return {
       title: title,
       path: '/pages/home/home',
-      imageUrl: '/assets/images/share-cover.jpg'
+      imageUrl: imageUrl
     }
   },
 

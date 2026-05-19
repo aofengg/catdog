@@ -19,6 +19,7 @@ var HOLIDAYS = {
   '520': {
     dateLabel: '5.20',
     badge: '5.20 限定',
+    shareImage: '/assets/images/share-cover-520.jpg',
     month: 5,
     day: 20,
     texts: {
@@ -26,6 +27,8 @@ var HOLIDAYS = {
       ctaUploadText: '上传照片，生成 {date} 专属告白海报',
       ctaGoText: '生成 {date} 专属告白海报',
       posterGuideText: '{date} 测测你在它心里是什么身份',
+      shareTitle: '{date} 我家毛孩子已经偷偷认证我了，你呢？',
+      shareTimelineTitle: '{date} 在毛孩子眼里，你是什么身份？',
       posterQuote: function (petType) {
         return '{date} 不一定要人类告白，' + (petType === 'cat' ? '本喵' : '本汪') + '已经认证你了'
       },
@@ -37,6 +40,7 @@ var HOLIDAYS = {
   '521': {
     dateLabel: '5.21',
     badge: '5.21 限定',
+    shareImage: '/assets/images/share-cover-521.jpg',
     month: 5,
     day: 21,
     texts: {
@@ -44,6 +48,8 @@ var HOLIDAYS = {
       ctaUploadText: '上传照片，生成 {date} 专属认定海报',
       ctaGoText: '生成 {date} 专属认定海报',
       posterGuideText: '{date} 测测你在它心里是什么身份',
+      shareTitle: '{date} 它用陪伴认定了我，你家毛孩子呢？',
+      shareTimelineTitle: '{date} 在毛孩子眼里，你是什么身份？',
       posterQuote: '{date} 它在用自己的方式，偷偷认定你了',
       moments: [
         '{date} 不一定需要回应，我家毛孩子已经用陪伴认定我了。\n我是「{title}」，你们是什么？'
@@ -53,6 +59,7 @@ var HOLIDAYS = {
   '61': {
     dateLabel: '6.1',
     badge: '6.1 限定',
+    shareImage: '/assets/images/share-cover-61.jpg',
     month: 6,
     day: 1,
     texts: {
@@ -60,6 +67,8 @@ var HOLIDAYS = {
       ctaUploadText: '上传照片，生成 {date} 专属儿童节海报',
       ctaGoText: '生成 {date} 专属儿童节海报',
       posterGuideText: '{date} 测测你在它心里是什么身份',
+      shareTitle: '{date} 儿童节我家毛孩子给我发了认证，来测你的！',
+      shareTimelineTitle: '{date} 儿童节，在毛孩子眼里你是什么身份？',
       posterQuote: function (petType) {
         return '{date} 今天你做小朋友，' + (petType === 'cat' ? '本喵' : '本汪') + '来做你的家长'
       },
@@ -95,7 +104,8 @@ function getHolidayMeta (holidayId) {
   return {
     id: holidayId,
     dateLabel: h.dateLabel,
-    badge: h.badge
+    badge: h.badge,
+    shareImage: h.shareImage || null
   }
 }
 
