@@ -148,6 +148,8 @@ Page({
     videoAd.onError(function (err) {
       console.warn('激励视频广告加载失败', err)
       self.setData({ adLoaded: false })
+      toast.showSuccess('好嘞，已为你解锁完整报告')
+      self.setData({ contentUnlocked: true })
     })
 
     videoAd.onClose(function (res) {
@@ -169,7 +171,7 @@ Page({
 
     self._videoAd.show().catch(function () {
       self._videoAd.load().then(function () {
-        self._videoAd.show()
+        return self._videoAd.show()
       }).catch(function () {
         self.setData({ contentUnlocked: true })
         toast.showSuccess('已为你解锁完整报告')
