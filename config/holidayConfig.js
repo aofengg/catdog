@@ -32,9 +32,12 @@ var HOLIDAYS = {
       posterQuote: function (petType) {
         return '{date} 不一定要人类告白，' + (petType === 'cat' ? '本喵' : '本汪') + '已经认证你了'
       },
-      moments: [
-        '{date} 不一定要人类告白，我家毛孩子已经给我发身份认证了。\n我是「{title}」，你们是什么？'
-      ]
+      moments: function (petType) {
+        if (petType === 'cat') {
+          return ['520，男/女友靠不靠得住不知道，猫主子也不一定靠得住，但它认证了你就够了。\n我是「{title}」，你呢？\n#它眼中的你 #人宠关系测试PETI']
+        }
+        return ['520，男/女友靠不靠得住不知道，狗子靠得住。\n我家狗子认证我是「{title}」，你也来测测。\n#它眼中的你 #人宠关系测试PETI']
+      }
     }
   },
   '521': {
@@ -51,9 +54,12 @@ var HOLIDAYS = {
       shareTitle: '{date} 它用陪伴认定了我，你家毛孩子呢？',
       shareTimelineTitle: '{date} 在毛孩子眼里，你是什么身份？',
       posterQuote: '{date} 它在用自己的方式，偷偷认定你了',
-      moments: [
-        '{date} 不一定需要回应，我家毛孩子已经用陪伴认定我了。\n我是「{title}」，你们是什么？'
-      ]
+      moments: function (petType) {
+        if (petType === 'cat') {
+          return ['521，主子不表白，但它认证了你，比表白值钱。\n我是「{title}」，你呢？\n#它眼中的你 #人宠关系测试PETI']
+        }
+        return ['521，不需要人表白，我家狗子先认定我了。\n它说我是「{title}」，这辈子就这样了。\n#它眼中的你 #人宠关系测试PETI']
+      }
     }
   },
   '61': {
@@ -72,9 +78,12 @@ var HOLIDAYS = {
       posterQuote: function (petType) {
         return '{date} 今天你做小朋友，' + (petType === 'cat' ? '本喵' : '本汪') + '来做你的家长'
       },
-      moments: [
-        '{date} 今天换我做小朋友了，我家毛孩子已经给我发了儿童节认证。\n我是「{title}」，你们是什么？'
-      ]
+      moments: function (petType) {
+        if (petType === 'cat') {
+          return ['儿童节，主子测出来我是「{title}」。\n今天才搞清楚，在它眼里我从来就是个小朋友。\n#它眼中的你 #人宠关系测试PETI']
+        }
+        return ['儿童节，我家狗子把我测成了「{title}」。\n原来在它眼里，我才是那个需要被带着跑的小朋友。\n#它眼中的你 #人宠关系测试PETI']
+      }
     }
   }
 }

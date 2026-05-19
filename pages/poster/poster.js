@@ -64,31 +64,37 @@ Page({
       this._relationship = rel
     }
 
-    // 生成分享文案：优先 promoTexts.moments + 节日文案，fallback circleTexts
+    // 生成分享文案：节日期间只用节日文案，非节日走兜底
     var circleText = ''
     var brand = this._petData.brand
     var rel = this._relationship
+    var holiday = holidayConfig.getCurrentHoliday()
 
-    if (brand.promoTexts && brand.promoTexts.moments && brand.promoTexts.moments.length > 0) {
-      var pool = brand.promoTexts.moments.slice()
-      // 节日限定：将节日专属文案加入选择池
-      var holiday = holidayConfig.getCurrentHoliday()
-      if (holiday) {
-        var hTexts = holidayConfig.getTexts(holiday, petType)
-        if (hTexts && hTexts.moments) {
-          pool = pool.concat(hTexts.moments)
-        }
+    if (holiday) {
+      // 节日期间：只用节日专属文案
+      var hTexts = holidayConfig.getTexts(holiday, petType)
+      if (hTexts && hTexts.moments && hTexts.moments.length > 0) {
+        var hTemplate = hTexts.moments[Math.floor(Math.random() * hTexts.moments.length)]
+        circleText = hTemplate
+          .replace(/\{title\}/g, rel.title)
+          .replace(/\{goldQuote\}/g, rel.goldQuote)
       }
-      var template = pool[Math.floor(Math.random() * pool.length)]
-      circleText = template
-        .replace(/\{title\}/g, rel.title)
-        .replace(/\{goldQuote\}/g, rel.goldQuote)
-    } else {
-      var circleTexts = rel.circleTexts
-      if (circleTexts && circleTexts.length > 0) {
-        circleText = circleTexts[Math.floor(Math.random() * circleTexts.length)]
+    }
+
+    if (!circleText) {
+      // 非节日或节日文案缺失：走兜底逻辑
+      if (brand.promoTexts && brand.promoTexts.moments && brand.promoTexts.moments.length > 0) {
+        var template = brand.promoTexts.moments[Math.floor(Math.random() * brand.promoTexts.moments.length)]
+        circleText = template
+          .replace(/\{title\}/g, rel.title)
+          .replace(/\{goldQuote\}/g, rel.goldQuote)
       } else {
-        circleText = rel.circleText || ''
+        var circleTexts = rel.circleTexts
+        if (circleTexts && circleTexts.length > 0) {
+          circleText = circleTexts[Math.floor(Math.random() * circleTexts.length)]
+        } else {
+          circleText = rel.circleText || ''
+        }
       }
     }
 
