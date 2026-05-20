@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 60rpx 40rpx calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.theme-cat { background: #F8F7FF; }
+.theme-dog { background: #FFFAF0; }
+
+.upload-guide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80rpx;
+}
+
+.upload-guide-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.upload-guide-desc {
+  font-size: 28rpx;
+  color: #888;
+  text-align: center;
+  margin-bottom: 60rpx;
+  line-height: 1.6;
+}
+
+.upload-area {
+  width: 360rpx;
+  height: 360rpx;
+  border-radius: 24rpx;
+  margin-bottom: 48rpx;
+  border: 4rpx dashed #D0D0D0;
+  background: #FAFAFA;
+}
+
+.theme-cat .upload-area {
+  border-color: #C8BFFF;
+  background: #FDFCFF;
+}
+
+.theme-dog .upload-area {
+  border-color: #FFD4A8;
+  background: #FFFCFA;
+}
+
+.upload-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-plus {
+  font-size: 80rpx;
+  color: #CCCCCC;
+  font-weight: 200;
+  line-height: 1;
+  margin-bottom: 16rpx;
+}
+
+.theme-cat .upload-plus { color: #B8AEFF; }
+.theme-dog .upload-plus { color: #FFBB80; }
+
+.upload-placeholder-tip {
+  font-size: 26rpx;
+  color: #AAAAAA;
+}
+
+.upload-preview {
+  width: 100%;
+  height: 100%;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.upload-preview-img {
+  width: 100%;
+  height: 100%;
+}
+
+.pet-name-wrap {
+  width: 80%;
+  margin-bottom: 32rpx;
+}
+
+.pet-name-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 40rpx;
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.theme-cat .pet-name-input { border-color: #E8E0FF; }
+.theme-dog .pet-name-input { border-color: #FFE8D4; }
+
+.upload-btn {
+  width: 80%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 44rpx;
+  margin-bottom: 28rpx;
+}
+
+.upload-btn:active { transform: scale(0.97); }
+
+.upload-btn-text {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.upload-skip { padding: 16rpx 32rpx; }
+
+.upload-skip-text {
+  font-size: 26rpx;
+  color: #AAAAAA;
+}
+
+.cta-cat { background: linear-gradient(135deg, #6B5CE7, #8B7CF7); }
+.cta-dog { background: linear-gradient(135deg, #FF8C42, #FFA366); }

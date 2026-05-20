@@ -49,7 +49,8 @@
     <view wx:if="{{!contentUnlocked}}" class="locked-overlay">
       <text class="unlock-icon">{{petType === 'cat' ? '🐱' : '🐶'}}</text>
       <view class="unlock-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onUnlockTap">
-        <text class="unlock-btn-text">{{petType === 'cat' ? '解锁本喵的隐藏评价，并生成专属海报' : '解锁本汪的隐藏评价，并生成专属海报'}}</text>
+        <text class="unlock-btn-main">看个视频，解锁完整鉴定</text>
+        <text class="unlock-btn-sub">并生成专属海报</text>
       </view>
       <text class="unlock-hint">{{petType === 'cat' ? '本喵辛辛苦苦写的，不看完亏了' : '本汪用心写的，不看完可惜了'}}</text>
     </view>
@@ -128,6 +129,10 @@
   <view class="retest-wrap">
     <view class="sub-btn" bindtap="onRetest">
       <text>再测一次</text>
+    </view>
+    <text class="sub-btn-divider">|</text>
+    <view class="sub-btn" bindtap="onGoHome">
+      <text>返回首页</text>
     </view>
   </view>
 

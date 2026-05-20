@@ -2,6 +2,7 @@ var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
 var scorer = require('../../utils/scorer.js')
 var share = require('../../utils/share.js')
+var history = require('../../utils/history.js')
 
 Page({
   data: {
@@ -12,22 +13,18 @@ Page({
     answers: [],
     selectedIndex: -1,
     optionLabels: ['A', 'B', 'C', 'D'],
-    questionType: 'upload',
+    questionType: 'normal',
     normalProgress: 0,
     normalTotal: 12,
     showPhaseLabel: '',
-    // upload phase
-    showUpload: true,
+    feedbackText: '',
+    // 从 upload 页传入
     photoPath: '',
-    petName: '',
-    uploadTitle: '',
-    uploadDesc: '',
-    uploadCTA: '',
-    // midFeedback
-    feedbackText: ''
+    petName: ''
   },
 
   _petData: null,
+  _submitting: false,
 
   onLoad: function (options) {
     var petType = options.petType || 'cat'
@@ -39,76 +36,21 @@ Page({
       if ((questions[i].type || 'normal') === 'normal') normalTotal++
     }
 
-    var uploadTitle = petType === 'dog'
-      ? '先交出你家修勾的证件照'
-      : '先交出你家主子的证件照'
-    var uploadDesc = '等下会生成专属关系卡，不然只能用系统默认图。'
-    var uploadCTA = this._petData.brand.homeCTA.uploadCTA || '上传我家宝贝照片'
-
+    var q = questions[0]
     this.setData({
       petType: petType,
       totalQuestions: questions.length,
       normalTotal: normalTotal,
-      currentQuestion: questions[0],
-      questionType: 'upload',
-      showUpload: true,
-      showPhaseLabel: '',
-      uploadTitle: uploadTitle,
-      uploadDesc: uploadDesc,
-      uploadCTA: uploadCTA,
-      answers: []
-    })
-  },
-
-  // --- Upload phase ---
-  onUploadPhoto: function () {
-    var self = this
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        var tempPath = res.tempFiles[0].tempFilePath
-        if (wx.cropImage) {
-          wx.cropImage({
-            src: tempPath,
-            cropScale: '1:1',
-            success: function (cropRes) {
-              self.setData({ photoPath: cropRes.tempFilePath })
-            },
-            fail: function () {
-              self.setData({ photoPath: tempPath })
-            }
-          })
-        } else {
-          self.setData({ photoPath: tempPath })
-        }
-      }
-    })
-  },
-
-  onConfirmUpload: function () {
-    if (!this.data.photoPath) {
-      this.onUploadPhoto()
-      return
-    }
-    this._exitUpload()
-  },
-
-  onSkipUpload: function () {
-    this._exitUpload()
-  },
-
-  onPetNameInput: function (e) {
-    this.setData({ petName: e.detail.value })
-  },
-
-  _exitUpload: function () {
-    var q = this._petData.questions[0]
-    this.setData({
-      showUpload: false,
+      currentQuestion: q,
       questionType: q.type || 'normal',
-      showPhaseLabel: q.type === 'prediction' ? '热身题' : ''
+      showPhaseLabel: q.type === 'prediction' ? '热身题' : '',
+      answers: [],
+      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : '',
+      petName: options.petName ? decodeURIComponent(options.petName) : ''
+    })
+
+    wx.enableAlertBeforeUnload({
+      message: '答题未完成，退出后进度不会保存，确定离开吗？'
     })
   },
 
@@ -117,7 +59,6 @@ Page({
     var idx = this.data.currentIndex
     var answers = this.data.answers.slice()
 
-    // 查找是否已有该题答案
     var found = false
     for (var i = 0; i < answers.length; i++) {
       if (answers[i].questionId === idx) {
@@ -148,7 +89,6 @@ Page({
     var q = this._petData.questions[newIdx]
     var qType = q.type || 'normal'
 
-    // 回退时重算 normalProgress
     var normalProgress = 0
     for (var i = 0; i < newIdx; i++) {
       if ((this._petData.questions[i].type || 'normal') === 'normal') normalProgress++
@@ -218,7 +158,6 @@ Page({
       showPhaseLabel: showPhaseLabel
     })
 
-    // 只在刚完成一道正式题时检测 midFeedback
     if ((curQ.type || 'normal') === 'normal') {
       this._checkMidFeedback(normalProgress)
     }
@@ -240,10 +179,32 @@ Page({
   },
 
   _goResult: function () {
+    if (this._submitting) return
+    this._submitting = true
+    wx.disableAlertBeforeUnload()
     var result = scorer.calculate(this.data.answers, this._petData.questions)
-    var url = '/pages/result/result?petType=' + this.data.petType
+    var petType = this.data.petType
+    var rel = this._petData.relationships[result.code]
+
+    // 写入历史记录
+    var historyId = petType + '_' + result.code + '_' + Date.now()
+    history.add({
+      id: historyId,
+      petType: petType,
+      resultCode: result.code,
+      tScore: result.tScore,
+      predAnswer: result.predAnswer || '',
+      petName: this.data.petName || '',
+      title: rel ? rel.title : result.code,
+      rare: rel ? rel.rare : '',
+      createdAt: Date.now(),
+      unlocked: false
+    })
+
+    var url = '/pages/result/result?petType=' + petType
       + '&resultCode=' + result.code
       + '&tScore=' + result.tScore
+      + '&historyId=' + historyId
     if (result.predAnswer) {
       url += '&predAnswer=' + result.predAnswer
     }

@@ -1,0 +1,95 @@
+.container {
+  min-height: 100vh;
+  background: #F8F7FF;
+  padding: 24rpx 28rpx 0;
+  box-sizing: border-box;
+}
+
+/* 空状态 */
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120rpx;
+}
+
+.empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-text { font-size: 32rpx; font-weight: bold; color: #333; margin-bottom: 12rpx; }
+.empty-sub { font-size: 26rpx; color: #999; }
+
+/* 2列网格 */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.record-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.record-card:active { opacity: 0.82; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.pet-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.tag-cat { background: #F0EDFF; color: #6B5CE7; }
+.tag-dog { background: #FFF0E6; color: #FF8C42; }
+
+.record-time {
+  font-size: 20rpx;
+  color: #ccc;
+}
+
+.record-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2C2C2C;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.record-rare {
+  font-size: 22rpx;
+  color: #aaa;
+}
+
+.unlock-status {
+  padding: 4rpx 14rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.unlocked { background: #E8F8EE; color: #27AE60; }
+.locked { background: #F5F5F5; color: #AAAAAA; }

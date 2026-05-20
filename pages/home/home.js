@@ -2,6 +2,7 @@ var catData = require('../../config/catData.js')
 var dogData = require('../../config/dogData.js')
 var holidayConfig = require('../../config/holidayConfig.js')
 var share = require('../../utils/share.js')
+var history = require('../../utils/history.js')
 
 Page({
   data: {
@@ -10,7 +11,8 @@ Page({
     catSubtitle: '',
     catBtnText: '',
     dogSubtitle: '',
-    dogBtnText: ''
+    dogBtnText: '',
+    hasHistory: false
   },
 
   onLoad: function () {
@@ -32,6 +34,11 @@ Page({
     this.setData(updates)
   },
 
+  onShow: function () {
+    // 每次展示时刷新历史入口可见性
+    this.setData({ hasHistory: history.getAll().length > 0 })
+  },
+
   onTapCat: function () {
     this._goQuiz('cat')
   },
@@ -40,13 +47,17 @@ Page({
     this._goQuiz('dog')
   },
 
+  onTapHistory: function () {
+    wx.navigateTo({ url: '/pages/history/history' })
+  },
+
   _goQuiz: function (petType) {
     var self = this
     self.setData({ tapAnim: petType })
     wx.vibrateShort({ type: 'light' })
     setTimeout(function () {
       self.setData({ tapAnim: '' })
-      wx.navigateTo({ url: '/pages/quiz/quiz?petType=' + petType })
+      wx.redirectTo({ url: '/pages/upload/upload?petType=' + petType })
     }, 200)
   },
 

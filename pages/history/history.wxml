@@ -1,0 +1,33 @@
+<view class="container">
+  <!-- 空状态 -->
+  <view wx:if="{{!list.length}}" class="empty-wrap">
+    <text class="empty-icon">🐾</text>
+    <text class="empty-text">还没有测试记录</text>
+    <text class="empty-sub">去首页选个版本测一测吧</text>
+  </view>
+
+  <!-- 2列网格，最多8条全部展示 -->
+  <view wx:else class="grid">
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      class="record-card"
+      bindtap="onTapRecord"
+      data-id="{{item.id}}"
+    >
+      <view class="card-top">
+        <view class="pet-tag {{item.petType === 'cat' ? 'tag-cat' : 'tag-dog'}}">
+          <text>{{item.petType === 'cat' ? '🐱 猫' : '🐶 狗'}}</text>
+        </view>
+        <text class="record-time">{{item.timeLabel}}</text>
+      </view>
+      <text class="record-title">{{item.title}}</text>
+      <view class="card-bottom">
+        <text class="record-rare">{{item.rare}}</text>
+        <view class="unlock-status {{item.unlocked ? 'unlocked' : 'locked'}}">
+          <text>{{item.unlocked ? '已解锁' : '未解锁'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

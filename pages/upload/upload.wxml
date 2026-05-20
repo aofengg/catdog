@@ -1,0 +1,32 @@
+<view class="container {{petType === 'cat' ? 'theme-cat' : 'theme-dog'}}">
+  <view class="upload-guide">
+    <text class="upload-guide-title">{{uploadTitle}}</text>
+    <text class="upload-guide-desc">{{uploadDesc}}</text>
+
+    <view class="upload-area" bindtap="onUploadPhoto">
+      <view wx:if="{{photoPath}}" class="upload-preview">
+        <image class="upload-preview-img" src="{{photoPath}}" mode="aspectFill" />
+      </view>
+      <view wx:else class="upload-placeholder">
+        <text class="upload-plus">+</text>
+        <text class="upload-placeholder-tip">点击选择照片</text>
+      </view>
+    </view>
+
+    <view class="pet-name-wrap">
+      <input class="pet-name-input"
+        placeholder="{{petType === 'cat' ? '你家猫叫什么名字？（选填）' : '你家狗叫什么名字？（选填）'}}"
+        value="{{petName}}"
+        bindinput="onPetNameInput"
+        maxlength="8" />
+    </view>
+
+    <view class="upload-btn {{petType === 'cat' ? 'cta-cat' : 'cta-dog'}}" bindtap="onConfirmUpload">
+      <text class="upload-btn-text">{{photoPath ? '开始答题' : uploadCTA}}</text>
+    </view>
+
+    <view class="upload-skip" bindtap="onSkipUpload">
+      <text class="upload-skip-text">先跳过，稍后再补</text>
+    </view>
+  </view>
+</view>

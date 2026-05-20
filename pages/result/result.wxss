@@ -314,23 +314,35 @@
 }
 
 .unlock-btn {
-  width: 88%;
-  height: 96rpx;
+  width: auto;
+  min-width: 460rpx;
+  max-width: 600rpx;
+  padding: 28rpx 48rpx;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 48rpx;
+  border-radius: 56rpx;
   animation: unlockPulse 2s ease-in-out infinite;
+  gap: 6rpx;
+  box-shadow: 0 8rpx 24rpx rgba(107, 92, 231, 0.35);
 }
 
 .unlock-btn:active {
   transform: scale(0.97);
 }
 
-.unlock-btn-text {
-  font-size: 32rpx;
+.unlock-btn-main {
+  font-size: 30rpx;
   font-weight: bold;
   color: #fff;
+  line-height: 1.4;
+}
+
+.unlock-btn-sub {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
 }
 
 .unlock-hint {
@@ -583,6 +595,7 @@
 .retest-wrap {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 40rpx;
 }
 
@@ -590,6 +603,11 @@
   font-size: 28rpx;
   color: #999;
   padding: 16rpx 24rpx;
+}
+
+.sub-btn-divider {
+  font-size: 24rpx;
+  color: #E0E0E0;
 }
 
 

@@ -2,7 +2,12 @@
   <!-- 品牌区 -->
   <view class="brand-area">
     <text class="brand-icon">🐾</text>
-    <text class="brand-title">它眼中的你</text>
+    <view class="brand-title-row">
+      <text class="brand-title">它眼中的你</text>
+      <view wx:if="{{hasHistory}}" class="history-entry" bindtap="onTapHistory">
+        <text class="history-entry-text">📋 记录</text>
+      </view>
+    </view>
     <text class="brand-slogan">{{brandSlogan}}</text>
   </view>
 
@@ -27,8 +32,9 @@
     </view>
   </view>
 
-  <!-- 免责声明 -->
+  <!-- 免责声明（紧跟测评卡片） -->
   <view class="disclaimer">
     <text class="disclaimer-text">🐾 本测试为趣味娱乐内容，基于日常互动行为观察设计，结果仅供参考，不构成任何专业建议。</text>
   </view>
+
 </view>

@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80rpx 40rpx 60rpx;
+  padding: 16rpx 40rpx 60rpx;
   background: linear-gradient(180deg, #F8F7FF 0%, #FFFFFF 100%);
 }
 
@@ -12,19 +12,37 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 80rpx;
+  margin-bottom: 32rpx;
 }
 
 .brand-icon {
   font-size: 60rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 8rpx;
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
 }
 
 .brand-title {
   font-size: 56rpx;
   font-weight: bold;
   color: #2C2C2C;
-  margin-bottom: 16rpx;
+}
+
+.history-entry {
+  background: #F0EDFF;
+  border-radius: 24rpx;
+  padding: 6rpx 18rpx;
+}
+
+.history-entry-text {
+  font-size: 22rpx;
+  color: #6B5CE7;
+  font-weight: bold;
 }
 
 .brand-slogan {
@@ -38,7 +56,7 @@
   justify-content: space-between;
   width: 100%;
   gap: 24rpx;
-  margin-bottom: 80rpx;
+  margin-bottom: 0;
 }
 
 .species-card {
@@ -121,7 +139,8 @@
 /* 免责声明 */
 .disclaimer {
   padding: 0 20rpx;
-  margin-top: auto;
+  margin-top: 24rpx;
+  margin-bottom: 32rpx;
 }
 
 .disclaimer-text {
@@ -130,3 +149,4 @@
   text-align: center;
   line-height: 1.6;
 }
+

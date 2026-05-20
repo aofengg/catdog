@@ -1,16 +1,19 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/upload/upload",
     "pages/quiz/quiz",
     "pages/result/result",
-    "pages/poster/poster"
+    "pages/poster/poster",
+    "pages/history/history"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "它眼中的你",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#F8F7FF",
-    "backgroundTextStyle": "dark"
+    "backgroundTextStyle": "dark",
+    "disableSwipeBack": true
   },
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",

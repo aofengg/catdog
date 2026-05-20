@@ -4,6 +4,7 @@ var appConfig = require('../../config/appConfig.js')
 var holidayConfig = require('../../config/holidayConfig.js')
 var toast = require('../../utils/toast.js')
 var share = require('../../utils/share.js')
+var history = require('../../utils/history.js')
 
 Page({
   data: {
@@ -28,19 +29,24 @@ Page({
 
   _petData: null,
   _videoAd: null,
+  _historyId: null,
 
   onLoad: function (options) {
-    var pages = getCurrentPages()
-    if (pages.length <= 1) {
-      wx.redirectTo({ url: '/pages/home/home' })
-      return
-    }
-
     var petType = options.petType || 'cat'
     var resultCode = options.resultCode || 'SHCD'
     var tScore = parseInt(options.tScore) || 0
     var predAnswer = options.predAnswer || null
     var petName = options.petName ? decodeURIComponent(options.petName) : ''
+
+    // 记录 historyId，用于广告解锁后更新存储
+    this._historyId = options.historyId || null
+
+    // 从历史记录读取 unlocked 状态
+    var alreadyUnlocked = false
+    if (this._historyId) {
+      var record = history.getById(this._historyId)
+      if (record && record.unlocked) alreadyUnlocked = true
+    }
 
     var petData = petType === 'dog' ? dogData : catData
     var rel = petData.relationships[resultCode]
@@ -105,6 +111,7 @@ Page({
     }
 
     this._petData = petData
+
     this.setData({
       petType: petType,
       resultCode: resultCode,
@@ -118,7 +125,8 @@ Page({
       customIndices: customIndices,
       indicesTitle: indicesTitle,
       relationshipDef: relationshipDef,
-      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : ''
+      photoPath: options.photoPath ? decodeURIComponent(options.photoPath) : '',
+      contentUnlocked: alreadyUnlocked
     })
 
     // 节日 CTA 文案
@@ -153,18 +161,19 @@ Page({
     videoAd.onError(function (err) {
       var errCode = err && err.errCode
       if (errCode === 1004) {
-        // 无合适广告返回，隐藏广告入口，直接解锁
         console.warn('激励视频：暂无广告填充', err)
-        self.setData({ adLoaded: false, contentUnlocked: true })
       } else {
-        // 调用异常，同样降级解锁，避免用户卡住
         console.warn('激励视频广告异常', err)
-        self.setData({ adLoaded: false, contentUnlocked: true })
       }
+      if (self._historyId) history.update(self._historyId, { unlocked: true })
+      self.setData({ adLoaded: false, contentUnlocked: true })
     })
 
     videoAd.onClose(function (res) {
       if (res && res.isEnded) {
+        if (self._historyId) {
+          history.update(self._historyId, { unlocked: true })
+        }
         self.setData({ contentUnlocked: true })
       } else {
         toast.showError('看完视频才能解锁哦~')
@@ -175,6 +184,7 @@ Page({
   onUnlockTap: function () {
     var self = this
     if (!self._videoAd || !self.data.adLoaded) {
+      if (self._historyId) history.update(self._historyId, { unlocked: true })
       self.setData({ contentUnlocked: true })
       toast.showSuccess('已为你解锁完整报告')
       return
@@ -184,6 +194,7 @@ Page({
       self._videoAd.load().then(function () {
         return self._videoAd.show()
       }).catch(function () {
+        if (self._historyId) history.update(self._historyId, { unlocked: true })
         self.setData({ contentUnlocked: true })
         toast.showSuccess('已为你解锁完整报告')
       })
@@ -263,7 +274,7 @@ Page({
     var self = this
     toast.showModal({
       title: '确定重新测试吗？',
-      content: '当前结果不会被保存',
+      content: '本次结果已保存在测试记录中，随时可以查看',
       confirmText: '重新测试',
       confirmColor: self.data.petType === 'cat' ? '#6B5CE7' : '#FF8C42'
     }).then(function (confirmed) {
@@ -271,6 +282,10 @@ Page({
         wx.redirectTo({ url: '/pages/quiz/quiz?petType=' + self.data.petType })
       }
     })
+  },
+
+  onGoHome: function () {
+    wx.reLaunch({ url: '/pages/home/home' })
   },
 
   onShareAppMessage: function () {
